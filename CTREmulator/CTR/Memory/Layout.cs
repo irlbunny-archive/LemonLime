@@ -4,11 +4,11 @@ using System.Text;
 
 namespace CTREmulator.CTR.Memory
 {
-    class MemoryMap
+    class Layout
     {
-        private int ProcessorId;
+        private LayoutTypes ProcessorId;
 
-        public MemoryMap(int ProcessorId = 0) // 0 = ARM9, 1 = ARM11
+        public Layout(LayoutTypes ProcessorId = LayoutTypes.ARM9)
         {
             this.ProcessorId = ProcessorId;
         }

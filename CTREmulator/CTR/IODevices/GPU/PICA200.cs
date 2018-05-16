@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CTREmulator.CTR.IODevices
+namespace CTREmulator.CTR.IODevices.GPU
 {
     class PICA200
     {

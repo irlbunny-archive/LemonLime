@@ -11,7 +11,7 @@ namespace CTREmulator.CTR
         public Core()
         {
             // we need to load the bootrom into arm11 memory?
-            ARM11 = new ARMInterpreter(Memory);
+            ARM11 = new ARMInterpreter(/*MemoryLayout*/); // actually, no. we need to implement the MMU?
         }
     }
 }
