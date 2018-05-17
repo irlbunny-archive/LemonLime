@@ -31,7 +31,7 @@ namespace CTREmulator.CTR.Memory
         {
             Address &= 0x3fffffff;
 
-            Logging.WriteInfo($"Read @ 0x{Address.ToString("X4")}");
+            Logging.WriteInfo($"Read @ 0x{Address.ToString("X")}");
 
             if (ProcessorId == LayoutTypes.ARM11)
             {
