@@ -13,7 +13,7 @@ namespace CTREmulator.CTR.Memory
 
         public Memory()
         {
-            FCRAM = new byte[CTRSettings.FCRAMSize * MB];
+            FCRAM = new byte[Settings.FCRAMSize * MB];
         }
     }
 }

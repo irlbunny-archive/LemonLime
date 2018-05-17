@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CTREmulator
 {
-    class CTRSettings
+    class Settings
     {
         public const int FCRAMSize = 128; // FCRAM size (in MB)
     }

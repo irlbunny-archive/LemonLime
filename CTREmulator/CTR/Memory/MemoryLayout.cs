@@ -19,17 +19,19 @@ namespace CTREmulator.CTR.Memory
             this.ProcessorId = ProcessorId;
             if (ProcessorId == LayoutTypes.ARM11)
             {
-                this.BootROM11 = new ARM11();
+                BootROM11 = new ARM11();
             }
             else
             {
-                this.BootROM9 = new ARM9();
+                BootROM9 = new ARM9();
             }
         }
 
         public byte ReadUInt8(uint Address)
         {
             Address &= 0x3fffffff;
+
+            Logging.WriteInfo($"Read @ 0x{Address.ToString("X4")}");
 
             if (ProcessorId == LayoutTypes.ARM11)
             {
@@ -51,8 +53,6 @@ namespace CTREmulator.CTR.Memory
                     return BootROM9.ARM9_BootROM[Address - 0xFFFF0000]; // this starts at 0x8000?
             }
 
-            Console.WriteLine($"Read at address {Address.ToString("X4")}");
-
             return 0;
         }
 
@@ -67,6 +67,8 @@ namespace CTREmulator.CTR.Memory
         public void WriteUInt8(uint Address, byte Value)
         {
             Address &= 0x3fffffff;
+
+            Logging.WriteInfo($"Write @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
 
             if (ProcessorId == LayoutTypes.ARM11)
             {
@@ -87,8 +89,6 @@ namespace CTREmulator.CTR.Memory
                 if (Address >= 0xFFFF0000 && Address < 0x10000000)
                     BootROM9.ARM9_BootROM[Address - 0xFFFF0000] = Value; // this starts at 0x8000?
             }
-
-            Console.WriteLine($"Write at address {Address.ToString("X")}, Value = {Value.ToString("X")}");
         }
 
         public void WriteUInt32(uint Address, uint Value)
