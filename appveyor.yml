@@ -32,8 +32,3 @@ artifacts:
 
 on_finish:
 - ps: | # Bump AppVeyor Version
-
-    © 2018 GitHub, Inc.
-    Terms
-    Privacy
-    Security
