@@ -8,5 +8,6 @@ namespace CTREmulator.CTR.Memory
     {
         ARM9  = 0,
         ARM11 = 1,
+        ARM7 = 2,
     }
 }

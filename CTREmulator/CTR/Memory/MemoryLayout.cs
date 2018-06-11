@@ -21,7 +21,7 @@ namespace CTREmulator.CTR.Memory
             {
                 BootROM11 = new ARM11();
             }
-            else
+            else if (ProcessorId == LayoutTypes.ARM9)
             {
                 BootROM9 = new ARM9();
             }
@@ -35,22 +35,27 @@ namespace CTREmulator.CTR.Memory
 
             if (ProcessorId == LayoutTypes.ARM11)
             {
-                if (Address >= 0x00000000 && Address < 0x00010000)
-                    return BootROM11.ARM11_BootROM[Address];
-                if (Address >= 0x00010000 && Address < 0x00020000)
-                    return BootROM11.ARM11_BootROM[Address - 0x00010000];
-            }
-            if (Address >= 0x20000000 && Address < 0x28000000)
-                return Memory.FCRAM[Address];
-            if (ProcessorId == LayoutTypes.ARM11)
-            {
-                if (Address >= 0xFFFF0000 && Address < 0x10000000)
-                    return BootROM11.ARM11_BootROM[Address - 0xFFFF0000];
+                if (Address >= 0x00000000 && Address < 0x00020000)
+                    return BootROM11.ARM11_BootROM[Address & 0x0000FFFF];
+                if (Address >= 0x17E00000 && Address < 0x17E02000)
+                    return Memory.ARM11_PRIV_MEM[Address & 0x00001FFF];
+                if (Address >= 0x1FF80000 && Address < 0x20000000)
+                    return Memory.AXI_WRAM[Address & 0x0007FFFF];
+                if (Address >= 0x20000000 && Address < 0x28000000)
+                    return Memory.FCRAM[Address & 0x07FFFFFF];
+                if (Address >= 0xFFFF0000)
+                    return BootROM11.ARM11_BootROM[Address & 0x0000FFFF];
             }
             else
             {
-                if (Address >= 0xFFFF0000 && Address < 0x10000000)
-                    return BootROM9.ARM9_BootROM[Address - 0xFFFF0000]; // this starts at 0x8000?
+                if (Address < 0x08000000)
+                    return Memory.ARM9_ITCM[Address & 0x00007FFF];
+                if (Address >= 0x1FF80000 && Address < 0x20000000)
+                    return Memory.AXI_WRAM[Address & 0x0007FFFF];
+                if (Address >= 0x20000000 && Address < 0x28000000)
+                    return Memory.FCRAM[Address & 0x07FFFFFF];
+                if (Address >= 0xFFFF0000)
+                    return BootROM9.ARM9_BootROM[Address & 0x0000FFFF]; // this starts at 0x8000?
             }
 
             return 0;
@@ -73,21 +78,28 @@ namespace CTREmulator.CTR.Memory
             if (ProcessorId == LayoutTypes.ARM11)
             {
                 if (Address >= 0x00000000 && Address < 0x00010000)
-                    BootROM11.ARM11_BootROM[Address] = Value;
-                if (Address >= 0x00010000 && Address < 0x00020000)
-                    BootROM11.ARM11_BootROM[Address - 0x00010000] = Value;
-            }
-            if (Address >= 0x20000000 && Address < 0x28000000)
-                Memory.FCRAM[Address] = Value;
-            if (ProcessorId == LayoutTypes.ARM11)
-            {
-                if (Address >= 0xFFFF0000 && Address < 0x10000000)
+                    BootROM11.ARM11_BootROM[Address & 0x0000FFFF] = Value;
+                else if (Address >= 0x17E00000 && Address < 0x17E02000)
+                    Memory.ARM11_PRIV_MEM[Address & 0x00001FFF] = Value;
+                else if (Address >= 0x1FF80000 && Address < 0x20000000)
+                    Memory.AXI_WRAM[Address & 0x0007FFFF] = Value;
+                else if (Address >= 0x20000000 && Address < 0x28000000)
+                    Memory.FCRAM[Address & 0x07FFFFFF] = Value;
+                else if (Address >= 0xFFFF0000 && Address < 0x10000000)
                     BootROM11.ARM11_BootROM[Address - 0xFFFF0000] = Value;
+                else return;
             }
-            else
+            else if(ProcessorId == LayoutTypes.ARM9)
             {
-                if (Address >= 0xFFFF0000 && Address < 0x10000000)
+                if (Address < 0x08000000)
+                    Memory.ARM9_ITCM[Address & 0x00007FFF] = Value;
+                else if (Address >= 0x1FF80000 && Address < 0x20000000)
+                    Memory.AXI_WRAM[Address & 0x0007FFFF] = Value;
+                else if (Address >= 0x20000000 && Address < 0x28000000)
+                    Memory.FCRAM[Address & 0x07FFFFFF] = Value;
+                else if (Address >= 0xFFFF0000)
                     BootROM9.ARM9_BootROM[Address - 0xFFFF0000] = Value; // this starts at 0x8000?
+                else return;
             }
         }
 
