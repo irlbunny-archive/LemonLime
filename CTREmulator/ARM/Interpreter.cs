@@ -5,7 +5,7 @@ namespace CTREmulator.ARM
     /// <summary>
     ///     ARM CPU execution core.
     /// </summary>
-    public partial class ARMInterpreter
+    public partial class Interpreter
     {
         private IBus Bus;
         private Coprocessor15 CP15;
@@ -22,7 +22,7 @@ namespace CTREmulator.ARM
         /// </summary>
         /// <param name="Bus">Bus used to read and write data</param>
         /// <param name="HighVectors">True if the Vector Table starts at 0xFFFF0000 instead of 0x0, false otherwise</param>
-        public ARMInterpreter(IBus Bus, bool HighVectors = false)
+        public Interpreter(IBus Bus, bool HighVectors = false)
         {
             this.Bus = Bus;
             this.HighVectors = HighVectors;

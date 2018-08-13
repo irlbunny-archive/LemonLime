@@ -2,7 +2,7 @@
 
 namespace CTREmulator.ARM
 {
-    public partial class ARMInterpreter
+    public partial class Interpreter
     {
         /// <summary>
         ///     Flags used on the registers CPSR and SPSR.

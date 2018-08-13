@@ -20,7 +20,7 @@
         void WriteUInt8(uint Address, byte Value);
     }
 
-    public partial class ARMInterpreter
+    public partial class Interpreter
     {
         //Read
 

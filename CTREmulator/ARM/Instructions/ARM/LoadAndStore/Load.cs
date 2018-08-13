@@ -1,6 +1,6 @@
 ﻿namespace CTREmulator.ARM
 {
-    public partial class ARMInterpreter
+    public partial class Interpreter
     {
         /// <summary>
         ///     Load Multiple.

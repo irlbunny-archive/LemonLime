@@ -1,6 +1,6 @@
 ﻿namespace CTREmulator.ARM
 {
-    public partial class ARMInterpreter
+    public partial class Interpreter
     {
         const uint UserMask = 0xf80f0200;
         const uint PrivilegedMask = 0x1df;

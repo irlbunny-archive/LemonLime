@@ -1,6 +1,6 @@
 ﻿namespace CTREmulator.ARM
 {
-    public partial class ARMInterpreter
+    public partial class Interpreter
     {
         /// <summary>
         ///     Checks whenever a bit on the 32-bits Opcode value is set or not.
