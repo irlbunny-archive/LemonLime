@@ -18,13 +18,15 @@ namespace CTREmulator.CTR
         {
             NONE,
             DATA_TCM,
-            BOOTROM_ARM9
+            BOOTROM_ARM9,
+            IO_MEMORY
         }
 
         private BootROM.ARM9      BootROM9;
-        private List<MemoryEntry> MemoryEntrys;
+        private List<MemoryEntry> MemoryEntries;
 
-        private byte[] DataTCM = new byte[0x00004000];
+        private byte[] DataTCM  = new byte[0x00004000];
+        private byte[] IOMemory = new byte[0x08000000];
 
         public Memory()
         {
@@ -34,65 +36,65 @@ namespace CTREmulator.CTR
 
         private void InitMemoryEntrys()
         {
-            MemoryEntrys = new List<MemoryEntry>();
+            MemoryEntries = new List<MemoryEntry>();
 
-            MemoryEntrys.Add(new MemoryEntry
+            MemoryEntries.Add(new MemoryEntry
             {
                 Address   = 0x00000000,
                 Size      = 0x08000000,
                 DebugName = "Instruction TCM",
-                Type    = MemoryType.NONE
+                Type      = MemoryType.NONE
             });
 
-            MemoryEntrys.Add(new MemoryEntry
+            MemoryEntries.Add(new MemoryEntry
             {
                 Address   = 0x01FF8000,
                 Size      = 0x00008000,
                 DebugName = "Instruction TCM (Kernel & Process)",
-                Type    = MemoryType.NONE
+                Type      = MemoryType.NONE
             });
 
-            MemoryEntrys.Add(new MemoryEntry
+            MemoryEntries.Add(new MemoryEntry
             {
                 Address   = 0x07FF8000,
                 Size      = 0x00008000,
                 DebugName = "Instruction TCM (BootROM)",
-                Type    = MemoryType.NONE
+                Type      = MemoryType.NONE
             });
 
-            MemoryEntrys.Add(new MemoryEntry
+            MemoryEntries.Add(new MemoryEntry
             {
                 Address   = 0x08000000,
                 Size      = 0x00100000,
                 DebugName = "ARM9 Internal Memory",
-                Type    = MemoryType.NONE
+                Type      = MemoryType.NONE
             });
 
-            MemoryEntrys.Add(new MemoryEntry
+            MemoryEntries.Add(new MemoryEntry
             {
                 Address   = 0x10000000,
                 Size      = 0x08000000,
                 DebugName = "IO Memory",
-                Type    = MemoryType.NONE
+                Type      = MemoryType.NONE
             });
 
-            MemoryEntrys.Add(new MemoryEntry
+            MemoryEntries.Add(new MemoryEntry
             {
                 Address   = 0x18000000,
                 Size      = 0x00600000,
                 DebugName = "VRAM",
-                Type    = MemoryType.NONE
+                Type      = MemoryType.NONE
             });
 
-            MemoryEntrys.Add(new MemoryEntry
+            MemoryEntries.Add(new MemoryEntry
             {
                 Address   = 0x20000000,
                 Size      = 0x08000000,
                 DebugName = "FCRAM",
-                Type    = MemoryType.NONE
+                Type      = MemoryType.NONE
             });
 
-            MemoryEntrys.Add(new MemoryEntry
+            MemoryEntries.Add(new MemoryEntry
             {
                 Address   = 0xFFF00000,
                 Size      = 0x00004000,
@@ -100,7 +102,7 @@ namespace CTREmulator.CTR
                 Type    = MemoryType.DATA_TCM
             });
 
-            MemoryEntrys.Add(new MemoryEntry
+            MemoryEntries.Add(new MemoryEntry
             {
                 Address   = 0xFFFF0000,
                 Size      = 0x00010000,
@@ -112,9 +114,9 @@ namespace CTREmulator.CTR
         public byte ReadUInt8(uint Address)
         {
 
-            for (int i = 0; i < MemoryEntrys.Count; ++i)
+            for (int i = 0; i < MemoryEntries.Count; ++i)
             {
-                MemoryEntry entry = MemoryEntrys[i];
+                MemoryEntry entry = MemoryEntries[i];
 
                 if (entry.Address + entry.Size < Address) break;
 
@@ -130,6 +132,8 @@ namespace CTREmulator.CTR
                             return DataTCM[Address - entry.Address];
                         case MemoryType.BOOTROM_ARM9:
                             return BootROM9.ARM9_BootROM[Address - entry.Address];
+                        case MemoryType.IO_MEMORY:
+                            return IOMemory[Address - entry.Address];
                     }
                 }
             }
@@ -141,9 +145,9 @@ namespace CTREmulator.CTR
 
         public void WriteUInt8(uint Address, byte Value)
         {
-            for (int i = 0; i < MemoryEntrys.Count; ++i)
+            for (int i = 0; i < MemoryEntries.Count; ++i)
             {
-                MemoryEntry entry = MemoryEntrys[i];
+                MemoryEntry entry = MemoryEntries[i];
 
                 if (entry.Address + entry.Size < Address) break;
 
@@ -159,6 +163,9 @@ namespace CTREmulator.CTR
                             DataTCM[Address - entry.Address] = Value;
                             return;
                         case MemoryType.BOOTROM_ARM9:
+                            return;
+                        case MemoryType.IO_MEMORY:
+                            IOMemory[Address - entry.Address] = Value;
                             return;
                     }
                 }
