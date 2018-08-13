@@ -6,6 +6,6 @@ The BootROM (Boot9) has started showing signs of life, it tries to access CONFIG
 We also have an official Discord server for development: https://discord.gg/aKjJTMd
 
 # Credits
-[gdkchan](https://github.com/gdkchan) - For ChocolateARM
+[gdkchan](https://github.com/gdkchan) - For [https://github.com/gdkchan/ChocolateARM](ChocolateARM)
 
-[Sono](https://github.com/MarcuzD) - For helping with this
+[Sono](https://github.com/SonoSooS) - For helping with this
