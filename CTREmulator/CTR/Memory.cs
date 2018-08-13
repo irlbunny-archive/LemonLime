@@ -75,7 +75,7 @@ namespace CTREmulator.CTR
                 Address   = 0x10000000,
                 Size      = 0x08000000,
                 DebugName = "IO Memory",
-                Type      = MemoryType.NONE
+                Type      = MemoryType.IO_MEMORY
             });
 
             MemoryEntries.Add(new MemoryEntry
