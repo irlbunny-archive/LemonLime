@@ -1,10 +1,15 @@
 ﻿using CTREmulator.ARM;
+using CTREmulator.CTR.IO;
 using System;
 
 namespace CTREmulator.CTR
 {
     class Memory : IBus
     {
+        private Interpreter CPU;
+
+        private IOHandler IO;
+
         private BootROM.ARM9 BootROM9;
 
         private byte[] DataTCM = new byte[0x00004000];
@@ -12,6 +17,13 @@ namespace CTREmulator.CTR
         public Memory()
         {
             BootROM9 = new BootROM.ARM9();
+        }
+
+        public void SetIO(Interpreter CPU)
+        {
+            this.CPU = CPU;
+
+            IO = new IOHandler(CPU);
         }
 
         public byte ReadUInt8(uint Address)
@@ -42,9 +54,7 @@ namespace CTREmulator.CTR
             }
             else if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                Logging.WriteInfo($"IO Memory @ 0x{Address.ToString("X")}");
-
-                return 0;
+                return IO.Call(Address);
             }
             else if (Address >= 0x18000000 && Address < 0x18000000 + 0x00600000)
             {
