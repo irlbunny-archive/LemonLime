@@ -1,125 +1,170 @@
 ﻿using CTREmulator.ARM;
 using System;
+using System.Collections.Generic;
 
 namespace CTREmulator.CTR
 {
     class Memory : IBus
     {
-        private BootROM.ARM9 BootROM9;
+        private struct MemoryEntry
+        {
+            public uint             Address;
+            public uint             Size;
+            public string           DebugName;
+            public MemoryType       Type;
+        }
+
+        private enum MemoryType
+        {
+            NONE,
+            DATA_TCM,
+            BOOTROM_ARM9
+        }
+
+        private BootROM.ARM9      BootROM9;
+        private List<MemoryEntry> MemoryEntrys;
 
         private byte[] DataTCM = new byte[0x00004000];
 
         public Memory()
         {
-            BootROM9 = new BootROM.ARM9();
+            BootROM9  = new BootROM.ARM9();
+            InitMemoryEntrys();
         }
 
+        private void InitMemoryEntrys()
+        {
+            MemoryEntrys = new List<MemoryEntry>();
+
+            MemoryEntrys.Add(new MemoryEntry
+            {
+                Address   = 0x00000000,
+                Size      = 0x08000000,
+                DebugName = "Instruction TCM",
+                Type    = MemoryType.NONE
+            });
+
+            MemoryEntrys.Add(new MemoryEntry
+            {
+                Address   = 0x01FF8000,
+                Size      = 0x00008000,
+                DebugName = "Instruction TCM (Kernel & Process)",
+                Type    = MemoryType.NONE
+            });
+
+            MemoryEntrys.Add(new MemoryEntry
+            {
+                Address   = 0x07FF8000,
+                Size      = 0x00008000,
+                DebugName = "Instruction TCM (BootROM)",
+                Type    = MemoryType.NONE
+            });
+
+            MemoryEntrys.Add(new MemoryEntry
+            {
+                Address   = 0x08000000,
+                Size      = 0x00100000,
+                DebugName = "ARM9 Internal Memory",
+                Type    = MemoryType.NONE
+            });
+
+            MemoryEntrys.Add(new MemoryEntry
+            {
+                Address   = 0x10000000,
+                Size      = 0x08000000,
+                DebugName = "IO Memory",
+                Type    = MemoryType.NONE
+            });
+
+            MemoryEntrys.Add(new MemoryEntry
+            {
+                Address   = 0x18000000,
+                Size      = 0x00600000,
+                DebugName = "VRAM",
+                Type    = MemoryType.NONE
+            });
+
+            MemoryEntrys.Add(new MemoryEntry
+            {
+                Address   = 0x20000000,
+                Size      = 0x08000000,
+                DebugName = "FCRAM",
+                Type    = MemoryType.NONE
+            });
+
+            MemoryEntrys.Add(new MemoryEntry
+            {
+                Address   = 0xFFF00000,
+                Size      = 0x00004000,
+                DebugName = "Data TCM (BootROM Mapped)",
+                Type    = MemoryType.DATA_TCM
+            });
+
+            MemoryEntrys.Add(new MemoryEntry
+            {
+                Address   = 0xFFFF0000,
+                Size      = 0x00010000,
+                DebugName = "ARM9 BootROM",
+                Type    = MemoryType.BOOTROM_ARM9
+            });
+        }
+        
         public byte ReadUInt8(uint Address)
         {
-            if (Address < 0x08000000)
-            {
-                Logging.WriteInfo($"Instruction TCM @ 0x{Address.ToString("X")}");
 
-                return 0;
-            }
-            else if (Address >= 0x01FF8000 && Address < 0x01FF8000 + 0x00008000)
+            for (int i = 0; i < MemoryEntrys.Count; ++i)
             {
-                Logging.WriteInfo($"Instruction TCM (Kernel & Process) @ 0x{Address.ToString("X")}");
+                MemoryEntry entry = MemoryEntrys[i];
 
-                return 0;
-            }
-            else if (Address >= 0x07FF8000 && Address < 0x07FF8000 + 0x00008000)
-            {
-                Logging.WriteInfo($"Instruction TCM (BootROM) @ 0x{Address.ToString("X")}");
+                if (entry.Address + entry.Size < Address) break;
 
-                return 0;
-            }
-            else if (Address >= 0x08000000 && Address < 0x08000000 + 0x00100000)
-            {
-                Logging.WriteInfo($"ARM9 Internal Memory @ 0x{Address.ToString("X")}");
+                if (Util.inRange(Address, entry.Address, (entry.Address + entry.Size) - 1))
+                {
+                    Logging.WriteInfo($"{entry.DebugName} @ 0x{Address:X}");
 
-                return 0;
-            }
-            else if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
-            {
-                Logging.WriteInfo($"IO Memory @ 0x{Address.ToString("X")}");
-
-                return 0;
-            }
-            else if (Address >= 0x18000000 && Address < 0x18000000 + 0x00600000)
-            {
-                Logging.WriteInfo($"VRAM @ 0x{Address.ToString("X")}");
-
-                return 0;
-            }
-            else if (Address >= 0x20000000 && Address < 0x20000000 + 0x08000000)
-            {
-                Logging.WriteInfo($"FCRAM @ 0x{Address.ToString("X")}");
-
-                return 0;
-            }
-            else if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
-            {
-                Logging.WriteInfo($"Data TCM (BootROM Mapped) @ 0x{Address.ToString("X")}");
-
-                return DataTCM[Address - 0xFFF00000];
-            }
-            else if (Address >= 0xFFFF0000)
-            {
-                return BootROM9.ARM9_BootROM[Address - 0xFFFF0000];
+                    switch (entry.Type)
+                    {
+                        case MemoryType.NONE:
+                            return 0;
+                        case MemoryType.DATA_TCM:
+                            return DataTCM[Address - entry.Address];
+                        case MemoryType.BOOTROM_ARM9:
+                            return BootROM9.ARM9_BootROM[Address - entry.Address];
+                    }
+                }
             }
 
-            Logging.WriteInfo($"Read @ 0x{Address.ToString("X")}");
+            Logging.WriteInfo($"Read @ 0x{Address:X}");
 
             return 0;
         }
 
         public void WriteUInt8(uint Address, byte Value)
         {
-            if (Address < 0x08000000)
+            for (int i = 0; i < MemoryEntrys.Count; ++i)
             {
-                Logging.WriteInfo($"Instruction TCM @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-                return;
-            }
-            else if (Address >= 0x01FF8000 && Address < 0x01FF8000 + 0x00008000)
-            {
-                Logging.WriteInfo($"Instruction TCM (Kernel & Process) @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-                return;
-            }
-            else if (Address >= 0x07FF8000 && Address < 0x07FF8000 + 0x00008000)
-            {
-                Logging.WriteInfo($"Instruction TCM (BootROM) @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-                return;
-            }
-            else if (Address >= 0x08000000 && Address < 0x08000000 + 0x00100000)
-            {
-                Logging.WriteInfo($"ARM9 Internal Memory @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-                return;
-            }
-            else if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
-            {
-                Logging.WriteInfo($"IO Memory @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-                return;
-            }
-            else if (Address >= 0x18000000 && Address < 0x18000000 + 0x00600000)
-            {
-                Logging.WriteInfo($"VRAM @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-                return;
-            }
-            else if (Address >= 0x20000000 && Address < 0x20000000 + 0x08000000)
-            {
-                Logging.WriteInfo($"FCRAM @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-                return;
-            }
-            else if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
-            {
-                Logging.WriteInfo($"Data TCM (BootROM Mapped) @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
+                MemoryEntry entry = MemoryEntrys[i];
 
-                DataTCM[Address - 0xFFF00000] = Value;
-                return;
+                if (entry.Address + entry.Size < Address) break;
+
+                if (Util.inRange(Address, entry.Address, (entry.Address + entry.Size) - 1))
+                {
+                    Logging.WriteInfo($"{entry.DebugName} @ 0x{Address:X}, Value = {Value:X}");
+
+                    switch (entry.Type)
+                    {
+                        case MemoryType.NONE:
+                            return;
+                        case MemoryType.DATA_TCM:
+                            DataTCM[Address - entry.Address] = Value;
+                            return;
+                        case MemoryType.BOOTROM_ARM9:
+                            return;
+                    }
+                }
             }
 
-            Logging.WriteInfo($"Write @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
+            Logging.WriteInfo($"Write @ 0x{Address:X}, Value = {Value:X}");
         }
     }
 }
