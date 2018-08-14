@@ -31,6 +31,8 @@ namespace CTREmulator.CTR
 
         private List<MemoryEntry> MemoryEntries;
 
+        private byte[] DataTCM = new byte[0x00004000];
+
         public Memory()
         {
             BootROM9  = new BootROM.ARM9();
