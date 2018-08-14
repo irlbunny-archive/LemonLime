@@ -29,6 +29,8 @@ namespace CTREmulator.CTR
 
         private BootROM.ARM9 BootROM9;
 
+        private List<MemoryEntry> MemoryEntries;
+
         public Memory()
         {
             BootROM9  = new BootROM.ARM9();
