@@ -1,4 +1,4 @@
-﻿using LemonLime.CTR;
+﻿using LemonLime.Common;
 using System;
 
 namespace LemonLime
@@ -7,9 +7,12 @@ namespace LemonLime
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            Core CTR = new Core();
-            CTR.Start();
+            Logger.WriteInfo("Starting...");
+            Logger.WriteStub("Stub");
+            Logger.WriteWarning("Warning");
+            Logger.WriteError("Error");
+            //Core CTR = new Core();
+            //CTR.Start();
         }
     }
 }
