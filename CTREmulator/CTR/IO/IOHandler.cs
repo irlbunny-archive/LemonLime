@@ -6,27 +6,34 @@ namespace CTREmulator.CTR.IO
 {
     partial class IOHandler
     {
-        private delegate byte IOFunc(Interpreter CPU);
+        private delegate byte ReadIOFunc (Interpreter CPU);
+        private delegate void WriteIOFunc(Interpreter CPU, byte Value);
 
-        private Dictionary<uint, IOFunc> IOFuncs;
+        struct IOCallbacks
+        {
+            public ReadIOFunc  Read;
+            public WriteIOFunc Write;
+        }
+
+        private Dictionary<uint, IOCallbacks> IOFuncs;
 
         private Interpreter CPU;
 
         public IOHandler(Interpreter CPU)
         {
-            IOFuncs = new Dictionary<uint, IOFunc>()
+            IOFuncs = new Dictionary<uint, IOCallbacks>()
             {
-                { 0x10000002, CFG9_RST11 }
+                { 0x10000002, new IOCallbacks { Read = CFG9_RST11_READ, Write = CFG9_RST11_WRITE } }
             };
 
             this.CPU = CPU;
         }
 
-        public byte Call(uint Address)
+        public byte Read(uint Address)
         {
-            if (IOFuncs.TryGetValue(Address, out IOFunc Func))
+            if (IOFuncs.TryGetValue(Address, out IOCallbacks Funcs))
             {
-                Func(CPU);
+                Funcs.Read(CPU);
             }
             else
             {
@@ -34,6 +41,18 @@ namespace CTREmulator.CTR.IO
             }
 
             return 0;
+        }
+
+        public void Write(uint Address, byte Value)
+        {
+            if (IOFuncs.TryGetValue(Address, out IOCallbacks Funcs))
+            {
+                Funcs.Write(CPU, Value);
+            }
+            else
+            {
+                throw new NotImplementedException(Address.ToString("X4"));
+            }
         }
     }
 }
