@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LemonLime", "LemonLime\LemonLime.csproj", "{ACC38EBC-8FCB-4A25-A8D9-462089758C25}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LemonLime.ARM", "LemonLime.ARM\LemonLime.ARM.csproj", "{65067963-DDB5-4429-9DBE-CCAFBB3FAF56}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ACC38EBC-8FCB-4A25-A8D9-462089758C25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACC38EBC-8FCB-4A25-A8D9-462089758C25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACC38EBC-8FCB-4A25-A8D9-462089758C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACC38EBC-8FCB-4A25-A8D9-462089758C25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65067963-DDB5-4429-9DBE-CCAFBB3FAF56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65067963-DDB5-4429-9DBE-CCAFBB3FAF56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65067963-DDB5-4429-9DBE-CCAFBB3FAF56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65067963-DDB5-4429-9DBE-CCAFBB3FAF56}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9B80EC19-0F61-4A9B-80C2-7AF319300164}
+	EndGlobalSection
+EndGlobal
