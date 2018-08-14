@@ -111,7 +111,7 @@ namespace CTREmulator.CTR
                 Address   = 0xFFF00000,
                 Size      = 0x00004000,
                 DebugName = "Data TCM (BootROM Mapped)",
-                Type    = MemoryType.DATA_TCM
+                Type      = MemoryType.DATA_TCM
             });
 
             MemoryEntries.Add(new MemoryEntry
@@ -119,7 +119,7 @@ namespace CTREmulator.CTR
                 Address   = 0xFFFF0000,
                 Size      = 0x00010000,
                 DebugName = "ARM9 BootROM",
-                Type    = MemoryType.BOOTROM_ARM9
+                Type      = MemoryType.BOOTROM_ARM9
             });
         }
         
@@ -145,7 +145,7 @@ namespace CTREmulator.CTR
                         case MemoryType.BOOTROM_ARM9:
                             return BootROM9.ARM9_BootROM[Address - entry.Address];
                         case MemoryType.IO_MEMORY:
-                            return IO.Call(Address);
+                            return IO.Read(Address);
                     }
                 }
             }
@@ -177,6 +177,7 @@ namespace CTREmulator.CTR
                         case MemoryType.BOOTROM_ARM9:
                             return;
                         case MemoryType.IO_MEMORY:
+                            IO.Write(Address, Value);
                             return;
                     }
                 }
