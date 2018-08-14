@@ -1,4 +1,5 @@
 ﻿using CTREmulator.ARM;
+using CTREmulator.CTR.IO;
 using System;
 using System.Collections.Generic;
 
@@ -21,19 +22,26 @@ namespace CTREmulator.CTR
             BOOTROM_ARM9,
             IO_MEMORY
         }
+        
+        private Interpreter CPU;
 
-        private BootROM.ARM9      BootROM9;
-        private List<MemoryEntry> MemoryEntries;
+        private IOHandler IO;
 
-        private byte[] DataTCM  = new byte[0x00004000];
-        private byte[] IOMemory = new byte[0x08000000];
+        private BootROM.ARM9 BootROM9;
 
         public Memory()
         {
             BootROM9  = new BootROM.ARM9();
             InitMemoryEntrys();
         }
+        
+        public void SetIO(Interpreter CPU)
+        {
+            this.CPU = CPU;
 
+            IO = new IOHandler(CPU);
+        }
+        
         private void InitMemoryEntrys()
         {
             MemoryEntries = new List<MemoryEntry>();
@@ -133,7 +141,7 @@ namespace CTREmulator.CTR
                         case MemoryType.BOOTROM_ARM9:
                             return BootROM9.ARM9_BootROM[Address - entry.Address];
                         case MemoryType.IO_MEMORY:
-                            return IOMemory[Address - entry.Address];
+                            return IO.Call(Address);
                     }
                 }
             }
@@ -165,7 +173,6 @@ namespace CTREmulator.CTR
                         case MemoryType.BOOTROM_ARM9:
                             return;
                         case MemoryType.IO_MEMORY:
-                            IOMemory[Address - entry.Address] = Value;
                             return;
                     }
                 }

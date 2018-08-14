@@ -25,11 +25,21 @@
         //Read
 
         /// <summary>
+        ///     Reads a 8-bits value from the Memory.
+        /// </summary>
+        /// <param name="Address">Address to read the data from</param>
+        /// <returns>Data on the address</returns>
+        public byte ReadUInt8(uint Address)
+        {
+            return Bus.ReadUInt8(Address);
+        }
+
+        /// <summary>
         ///     Reads a 16-bits Little Endian value from the Memory.
         /// </summary>
         /// <param name="Address">Address to read the data from</param>
         /// <returns>Data on the address</returns>
-        private ushort ReadUInt16(uint Address)
+        public ushort ReadUInt16(uint Address)
         {
             return (ushort)(Bus.ReadUInt8(Address) |
                 (Bus.ReadUInt8(Address + 1) << 8));
@@ -40,7 +50,7 @@
         /// </summary>
         /// <param name="Address">Address to read the data from</param>
         /// <returns>Data on the address</returns>
-        private uint ReadUInt32(uint Address)
+        public uint ReadUInt32(uint Address)
         {
             return (uint)(Bus.ReadUInt8(Address) |
                 (Bus.ReadUInt8(Address + 1) << 8) |
@@ -53,7 +63,7 @@
         /// </summary>
         /// <param name="Address">Address to read the data from</param>
         /// <returns>Data on the address</returns>
-        private ushort ReadUInt16E(uint Address)
+        public ushort ReadUInt16E(uint Address)
         {
             if (Registers.IsFlagSet(ARMFlag.Endianness))
                 return (ushort)((Bus.ReadUInt8(Address) << 8) |
@@ -67,7 +77,7 @@
         /// </summary>
         /// <param name="Address">Address to read the data from</param>
         /// <returns>Data on the address</returns>
-        private uint ReadUInt32E(uint Address)
+        public uint ReadUInt32E(uint Address)
         {
             if (Registers.IsFlagSet(ARMFlag.Endianness))
                 return (uint)((Bus.ReadUInt8(Address) << 24) |
@@ -81,11 +91,21 @@
         //Write
 
         /// <summary>
+        ///     Writes a 8-bits value to the Memory.
+        /// </summary>
+        /// <param name="Address">Address to write the data on</param>
+        /// <param name="Value">Value to be written</param>
+        public void WriteUInt8(uint Address, byte Value)
+        {
+            Bus.WriteUInt8(Address, Value);
+        }
+
+        /// <summary>
         ///     Writes a 16-bits Little Endian value to the Memory.
         /// </summary>
         /// <param name="Address">Address to write the data on</param>
         /// <param name="Value">Value to be written</param>
-        private void WriteUInt16(uint Address, ushort Value)
+        public void WriteUInt16(uint Address, ushort Value)
         {
             Bus.WriteUInt8(Address, (byte)Value);
             Bus.WriteUInt8(Address + 1, (byte)(Value >> 8));
@@ -109,7 +129,7 @@
         /// </summary>
         /// <param name="Address">Address to write the data on</param>
         /// <param name="Value">Value to be written</param>
-        private void WriteUInt16E(uint Address, ushort Value)
+        public void WriteUInt16E(uint Address, ushort Value)
         {
             if (Registers.IsFlagSet(ARMFlag.Endianness))
             {
@@ -125,7 +145,7 @@
         /// </summary>
         /// <param name="Address">Address to write the data on</param>
         /// <param name="Value">Value to be written</param>
-        private void WriteUInt32E(uint Address, uint Value)
+        public void WriteUInt32E(uint Address, uint Value)
         {
             if (Registers.IsFlagSet(ARMFlag.Endianness))
             {

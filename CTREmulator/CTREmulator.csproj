@@ -9,4 +9,8 @@
     <Compile Remove="ARMInterpreter.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CTREmulator.ARM\CTREmulator.ARM.csproj" />
+  </ItemGroup>
+
 </Project>

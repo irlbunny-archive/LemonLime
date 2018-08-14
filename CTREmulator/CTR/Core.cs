@@ -13,7 +13,10 @@ namespace CTREmulator.CTR
         public Core()
         {
             Memory = new Memory();
+
             CPU = new Interpreter(Memory, true);
+
+            Memory.SetIO(CPU);
         }
 
         public void Start()
@@ -25,6 +28,7 @@ namespace CTREmulator.CTR
         private void Run()
         {
             IsExecuting = true;
+
             while (IsExecuting)
             {
                 CPU.Execute();
