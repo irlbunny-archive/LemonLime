@@ -117,22 +117,24 @@ namespace CTREmulator.CTR
             MemoryEntries.Add(new MemoryEntry
             {
                 Address   = 0xFFFF0000,
-                Size      = 0x00010000,
+                Size      = 0x0000FFFF,
                 DebugName = "ARM9 BootROM",
                 Type      = MemoryType.BOOTROM_ARM9
             });
         }
-        
+
+        private bool IsInMappedMemory(uint Address, uint EntryStart, uint EntrySize)
+        {
+            return (Address >= EntryStart && Address < EntryStart + EntrySize);
+        }
+
         public byte ReadUInt8(uint Address)
         {
-
             for (int i = 0; i < MemoryEntries.Count; ++i)
             {
                 MemoryEntry entry = MemoryEntries[i];
 
-                if (entry.Address + entry.Size < Address) break;
-
-                if (Util.inRange(Address, entry.Address, (entry.Address + entry.Size) - 1))
+                if (IsInMappedMemory(Address, entry.Address, entry.Size))
                 {
                     Logging.WriteInfo($"{entry.DebugName} @ 0x{Address:X}");
 
@@ -161,9 +163,7 @@ namespace CTREmulator.CTR
             {
                 MemoryEntry entry = MemoryEntries[i];
 
-                if (entry.Address + entry.Size < Address) break;
-
-                if (Util.inRange(Address, entry.Address, (entry.Address + entry.Size) - 1))
+                if (IsInMappedMemory(Address, entry.Address, entry.Size))
                 {
                     Logging.WriteInfo($"{entry.DebugName} @ 0x{Address:X}, Value = {Value:X}");
 
