@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LemonLime.ARM\LemonLime.ARM.csproj" />
+    <ProjectReference Include="..\LemonLime.Common\LemonLime.Common.csproj" />
+  </ItemGroup>
+
 </Project>

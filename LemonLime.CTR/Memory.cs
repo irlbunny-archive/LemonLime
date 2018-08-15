@@ -1,10 +1,10 @@
 ﻿using LemonLime.ARM;
+using LemonLime.Common;
 using LemonLime.CTR.IO;
-using System;
 
 namespace LemonLime.CTR
 {
-    class Memory : IBus
+    public class Memory : IBus
     {
         private Interpreter CPU;
 
@@ -17,61 +17,23 @@ namespace LemonLime.CTR
         public Memory()
         {
             BootROM9 = new BootROM.ARM9();
+
+            IO = new IOHandler();
         }
 
-        public void SetIO(Interpreter CPU)
+        public void SetCPU(Interpreter CPU)
         {
             this.CPU = CPU;
-
-            IO = new IOHandler(CPU);
         }
 
         public byte ReadUInt8(uint Address)
         {
-            if (Address < 0x08000000)
+            if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                Logging.WriteInfo($"Instruction TCM @ 0x{Address.ToString("X")}");
-
-                return 0;
-            }
-            else if (Address >= 0x01FF8000 && Address < 0x01FF8000 + 0x00008000)
-            {
-                Logging.WriteInfo($"Instruction TCM (Kernel & Process) @ 0x{Address.ToString("X")}");
-
-                return 0;
-            }
-            else if (Address >= 0x07FF8000 && Address < 0x07FF8000 + 0x00008000)
-            {
-                Logging.WriteInfo($"Instruction TCM (BootROM) @ 0x{Address.ToString("X")}");
-
-                return 0;
-            }
-            else if (Address >= 0x08000000 && Address < 0x08000000 + 0x00100000)
-            {
-                Logging.WriteInfo($"ARM9 Internal Memory @ 0x{Address.ToString("X")}");
-
-                return 0;
-            }
-            else if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
-            {
-                return IO.Call(Address);
-            }
-            else if (Address >= 0x18000000 && Address < 0x18000000 + 0x00600000)
-            {
-                Logging.WriteInfo($"VRAM @ 0x{Address.ToString("X")}");
-
-                return 0;
-            }
-            else if (Address >= 0x20000000 && Address < 0x20000000 + 0x08000000)
-            {
-                Logging.WriteInfo($"FCRAM @ 0x{Address.ToString("X")}");
-
-                return 0;
+                return IO.Call(new IOData(Address, IOType.Read, 1));
             }
             else if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
             {
-                Logging.WriteInfo($"Data TCM (BootROM Mapped) @ 0x{Address.ToString("X")}");
-
                 return DataTCM[Address - 0xFFF00000];
             }
             else if (Address >= 0xFFFF0000)
@@ -79,57 +41,75 @@ namespace LemonLime.CTR
                 return BootROM9.ARM9_BootROM[Address - 0xFFFF0000];
             }
 
-            Logging.WriteInfo($"Read @ 0x{Address.ToString("X")}");
+            Logger.WriteInfo($"Read @ 0x{Address.ToString("X")}");
 
             return 0;
         }
 
+        public ushort ReadUInt16(uint Address)
+        {
+            if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
+            {
+                return IO.Call(new IOData(Address, IOType.Read, 2));
+            }
+
+            return (ushort)(ReadUInt8(Address) |
+                (ReadUInt8(Address + 1) << 8));
+        }
+
+        public uint ReadUInt32(uint Address)
+        {
+            if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
+            {
+                return IO.Call(new IOData(Address, IOType.Read, 4));
+            }
+
+            return (uint)(ReadUInt8(Address)   |
+                (ReadUInt8(Address + 1) << 8)  |
+                (ReadUInt8(Address + 2) << 16) |
+                (ReadUInt8(Address + 3) << 24));
+        }
+
         public void WriteUInt8(uint Address, byte Value)
         {
-            if (Address < 0x08000000)
+            if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                Logging.WriteInfo($"Instruction TCM @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-                return;
-            }
-            else if (Address >= 0x01FF8000 && Address < 0x01FF8000 + 0x00008000)
-            {
-                Logging.WriteInfo($"Instruction TCM (Kernel & Process) @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-                return;
-            }
-            else if (Address >= 0x07FF8000 && Address < 0x07FF8000 + 0x00008000)
-            {
-                Logging.WriteInfo($"Instruction TCM (BootROM) @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-                return;
-            }
-            else if (Address >= 0x08000000 && Address < 0x08000000 + 0x00100000)
-            {
-                Logging.WriteInfo($"ARM9 Internal Memory @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-                return;
-            }
-            else if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
-            {
-                Logging.WriteInfo($"IO Memory @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-                return;
-            }
-            else if (Address >= 0x18000000 && Address < 0x18000000 + 0x00600000)
-            {
-                Logging.WriteInfo($"VRAM @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-                return;
-            }
-            else if (Address >= 0x20000000 && Address < 0x20000000 + 0x08000000)
-            {
-                Logging.WriteInfo($"FCRAM @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
+                IO.Call(new IOData(Address, IOType.Write, 1, Value));
                 return;
             }
             else if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
             {
-                Logging.WriteInfo($"Data TCM (BootROM Mapped) @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
-
                 DataTCM[Address - 0xFFF00000] = Value;
                 return;
             }
 
-            Logging.WriteInfo($"Write @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
+            Logger.WriteInfo($"Write @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
+        }
+
+        public void WriteUInt16(uint Address, ushort Value)
+        {
+            if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
+            {
+                IO.Call(new IOData(Address, IOType.Write, 2, 0, Value));
+                return;
+            }
+
+            WriteUInt8(Address,     (byte)Value);
+            WriteUInt8(Address + 1, (byte)(Value >> 8));
+        }
+
+        public void WriteUInt32(uint Address, uint Value)
+        {
+            if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
+            {
+                IO.Call(new IOData(Address, IOType.Write, 4, 0, 0, Value));
+                return;
+            }
+
+            WriteUInt8(Address,     (byte)Value);
+            WriteUInt8(Address + 1, (byte)(Value >> 8));
+            WriteUInt8(Address + 2, (byte)(Value >> 16));
+            WriteUInt8(Address + 3, (byte)(Value >> 24));
         }
     }
 }

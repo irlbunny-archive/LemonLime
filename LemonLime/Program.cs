@@ -1,5 +1,5 @@
 ﻿using LemonLime.Common;
-using System;
+using LemonLime.CTR;
 
 namespace LemonLime
 {
@@ -7,12 +7,11 @@ namespace LemonLime
     {
         static void Main(string[] args)
         {
+            //Logger.LogFile = "lemonlime_log-" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
             Logger.WriteInfo("Starting...");
-            Logger.WriteStub("Stub");
-            Logger.WriteWarning("Warning");
-            Logger.WriteError("Error");
-            //Core CTR = new Core();
-            //CTR.Start();
+
+            Core CTR = new Core();
+            CTR.Start();
         }
     }
 }

@@ -13,11 +13,39 @@
         byte ReadUInt8(uint Address);
 
         /// <summary>
+        ///     Reads a 16-bits Little Endian value from the Memory.
+        /// </summary>
+        /// <param name="Address">Address to read the data from</param>
+        /// <returns>Data on the address</returns>
+        ushort ReadUInt16(uint Address);
+
+        /// <summary>
+        ///     Reads a 32-bits Little Endian value from the Memory.
+        /// </summary>
+        /// <param name="Address">Address to read the data from</param>
+        /// <returns>Data on the address</returns>
+        uint ReadUInt32(uint Address);
+
+        /// <summary>
         ///     Writes a 8-bits value to the Memory.
         /// </summary>
         /// <param name="Address">Address to write the data on</param>
         /// <param name="Value">Value to be written</param>
         void WriteUInt8(uint Address, byte Value);
+
+        /// <summary>
+        ///     Writes a 16-bits Little Endian value to the Memory.
+        /// </summary>
+        /// <param name="Address">Address to write the data on</param>
+        /// <param name="Value">Value to be written</param>
+        void WriteUInt16(uint Address, ushort Value);
+
+        /// <summary>
+        ///     Writes a 32-bits Little Endian value to the Memory.
+        /// </summary>
+        /// <param name="Address">Address to write the data on</param>
+        /// <param name="Value">Value to be written</param>
+        void WriteUInt32(uint Address, uint Value);
     }
 
     public partial class Interpreter
@@ -41,8 +69,7 @@
         /// <returns>Data on the address</returns>
         public ushort ReadUInt16(uint Address)
         {
-            return (ushort)(Bus.ReadUInt8(Address) |
-                (Bus.ReadUInt8(Address + 1) << 8));
+            return Bus.ReadUInt16(Address);
         }
 
         /// <summary>
@@ -52,10 +79,7 @@
         /// <returns>Data on the address</returns>
         public uint ReadUInt32(uint Address)
         {
-            return (uint)(Bus.ReadUInt8(Address) |
-                (Bus.ReadUInt8(Address + 1) << 8) |
-                (Bus.ReadUInt8(Address + 2) << 16) |
-                (Bus.ReadUInt8(Address + 3) << 24));
+            return Bus.ReadUInt32(Address);
         }
 
         /// <summary>
@@ -91,24 +115,13 @@
         //Write
 
         /// <summary>
-        ///     Writes a 8-bits value to the Memory.
-        /// </summary>
-        /// <param name="Address">Address to write the data on</param>
-        /// <param name="Value">Value to be written</param>
-        public void WriteUInt8(uint Address, byte Value)
-        {
-            Bus.WriteUInt8(Address, Value);
-        }
-
-        /// <summary>
         ///     Writes a 16-bits Little Endian value to the Memory.
         /// </summary>
         /// <param name="Address">Address to write the data on</param>
         /// <param name="Value">Value to be written</param>
         public void WriteUInt16(uint Address, ushort Value)
         {
-            Bus.WriteUInt8(Address, (byte)Value);
-            Bus.WriteUInt8(Address + 1, (byte)(Value >> 8));
+            Bus.WriteUInt16(Address, Value);
         }
 
         /// <summary>
@@ -118,10 +131,7 @@
         /// <param name="Value">Value to be written</param>
         public void WriteUInt32(uint Address, uint Value)
         {
-            Bus.WriteUInt8(Address, (byte)Value);
-            Bus.WriteUInt8(Address + 1, (byte)(Value >> 8));
-            Bus.WriteUInt8(Address + 2, (byte)(Value >> 16));
-            Bus.WriteUInt8(Address + 3, (byte)(Value >> 24));
+            Bus.WriteUInt32(Address, Value);
         }
 
         /// <summary>

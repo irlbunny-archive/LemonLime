@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace LemonLime.CTR
 {
-    class Core
+    public class Core
     {
         public Interpreter CPU;
         public Memory Memory;
@@ -16,12 +16,13 @@ namespace LemonLime.CTR
 
             CPU = new Interpreter(Memory, true);
 
-            Memory.SetIO(CPU);
+            Memory.SetCPU(CPU);
         }
 
         public void Start()
         {
             Thread ExecutionThread = new Thread(Run);
+
             ExecutionThread.Start();
         }
 
