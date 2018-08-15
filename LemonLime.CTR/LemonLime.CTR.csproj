@@ -1,15 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <StartupObject>LemonLime.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LemonLime.ARM\LemonLime.ARM.csproj" />
     <ProjectReference Include="..\LemonLime.Common\LemonLime.Common.csproj" />
-    <ProjectReference Include="..\LemonLime.CTR\LemonLime.CTR.csproj" />
   </ItemGroup>
 
 </Project>
