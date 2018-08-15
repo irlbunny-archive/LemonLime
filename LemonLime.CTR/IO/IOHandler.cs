@@ -8,6 +8,7 @@ namespace LemonLime.CTR.IO
 {
     class IOHandler
     {
+        // IO Entries
         private List<IOEntry> Entries;
 
         public IOHandler()
@@ -15,8 +16,35 @@ namespace LemonLime.CTR.IO
             // Our IO entries
             Entries = new List<IOEntry>
             {
-                new IOEntry(CFG9.CFG9_RST11,      0x10000002, 1),
-                new IOEntry(TIMER.TIMER_1000300E, 0x1000300E, 1)
+                // CFG9
+                new IOEntry(CFG9.CFG9_RST11, 0x10000002, 1),
+
+                // IRQ
+                new IOEntry(IRQ.IRQ_IE, 0x10001000, 4),
+                new IOEntry(IRQ.IRQ_IF, 0x10001004, 4),
+
+                // NDMA
+                new IOEntry(NDMA.NDMA_GLOBAL_CNT, 0x10002000, 4),
+
+                new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (0 * 0x1C), 4), // Channel 1
+                new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (1 * 0x1C), 4), // Channel 2
+                new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (2 * 0x1C), 4), // Channel 3
+                new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (3 * 0x1C), 4), // Channel 4
+                new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (4 * 0x1C), 4), // Channel 5
+                new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (5 * 0x1C), 4), // Channel 6
+                new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (6 * 0x1C), 4), // Channel 7
+                new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (7 * 0x1C), 4), // Channel 8
+                
+                // TIMER
+                new IOEntry(TIMER.TIMER_VAL, 0x10003000 + 4 * 0, 2), // Timer 1
+                new IOEntry(TIMER.TIMER_VAL, 0x10003000 + 4 * 1, 2), // Timer 2
+                new IOEntry(TIMER.TIMER_VAL, 0x10003000 + 4 * 2, 2), // Timer 3
+                new IOEntry(TIMER.TIMER_VAL, 0x10003000 + 4 * 3, 2), // Timer 4
+
+                new IOEntry(TIMER.TIMER_CNT, 0x10003002 + 4 * 0, 2), // Timer 1
+                new IOEntry(TIMER.TIMER_CNT, 0x10003002 + 4 * 1, 2), // Timer 2
+                new IOEntry(TIMER.TIMER_CNT, 0x10003002 + 4 * 2, 2), // Timer 3
+                new IOEntry(TIMER.TIMER_CNT, 0x10003002 + 4 * 3, 2), // Timer 4
             };
         }
 
@@ -25,32 +53,34 @@ namespace LemonLime.CTR.IO
             // Log IO calls
             switch (Data.Type)
             {
+                // Read log
                 case IOType.Read:
                     switch (Data.Width)
                     {
                         case 1:
-                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}] (Called)");
+                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}]");
                             break;
                         case 2:
-                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}] (Called)");
+                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}]");
                             break;
                         case 4:
-                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}] (Called)");
+                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}]");
                             break;
                     }
                     break;
 
+                // Write log
                 case IOType.Write:
                     switch (Data.Width)
                     {
                         case 1:
-                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}] (Called), Data = {Data.Data8.ToString("X2")}");
+                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}], Data = {Data.Data8.ToString("X2")}");
                             break;
                         case 2:
-                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}] (Called), Data = {Data.Data8.ToString("X4")}");
+                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}], Data = {Data.Data8.ToString("X4")}");
                             break;
                         case 4:
-                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}] (Called), Data = {Data.Data8.ToString("X8")}");
+                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}], Data = {Data.Data8.ToString("X8")}");
                             break;
                     }
                     break;
@@ -86,10 +116,10 @@ namespace LemonLime.CTR.IO
                 // Write doesn't return anything from register
                 case IOType.Write:
                     EntryForAddr.Register(Data);
-                    return 0;
+                    break;
             }
 
-            // This shouldn't happen(?)
+            // Return
             return 0;
         }
     }

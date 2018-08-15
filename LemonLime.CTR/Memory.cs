@@ -6,8 +6,6 @@ namespace LemonLime.CTR
 {
     public class Memory : IBus
     {
-        private Interpreter CPU;
-
         private IOHandler IO;
 
         private BootROM.ARM9 BootROM9;
@@ -19,11 +17,6 @@ namespace LemonLime.CTR
             BootROM9 = new BootROM.ARM9();
 
             IO = new IOHandler();
-        }
-
-        public void SetCPU(Interpreter CPU)
-        {
-            this.CPU = CPU;
         }
 
         public byte ReadUInt8(uint Address)
@@ -38,7 +31,7 @@ namespace LemonLime.CTR
             }
             else if (Address >= 0xFFFF0000)
             {
-                return BootROM9.ARM9_BootROM[Address - 0xFFFF0000];
+                return BootROM9.BootROM[Address - 0xFFFF0000];
             }
 
             Logger.WriteInfo($"Read @ 0x{Address.ToString("X")}");

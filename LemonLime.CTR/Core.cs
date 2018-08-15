@@ -5,8 +5,9 @@ namespace LemonLime.CTR
 {
     public class Core
     {
-        public Interpreter CPU;
-        public Memory Memory;
+        private Interpreter CPU;
+
+        private Memory Memory;
 
         private bool IsExecuting;
 
@@ -15,8 +16,6 @@ namespace LemonLime.CTR
             Memory = new Memory();
 
             CPU = new Interpreter(Memory, true);
-
-            Memory.SetCPU(CPU);
         }
 
         public void Start()

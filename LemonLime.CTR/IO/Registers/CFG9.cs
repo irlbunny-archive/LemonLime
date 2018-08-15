@@ -6,7 +6,9 @@ namespace LemonLime.CTR.IO.Registers
     {
         public static byte CFG9_RST11(IOData Data)
         {
-            Logger.WriteStub("Stubbed.");
+            bool Reset = (Data.Data8 << 31 != 1);
+
+            Logger.WriteStub($"Stubbed. Reset = {Reset}");
 
             return 0xFF;
         }

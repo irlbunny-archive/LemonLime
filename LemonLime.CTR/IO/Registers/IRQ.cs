@@ -2,16 +2,16 @@
 
 namespace LemonLime.CTR.IO.Registers
 {
-    class TIMER
+    class IRQ
     {
-        public static byte TIMER_VAL(IOData Data)
+        public static byte IRQ_IE(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
             return 0xFF;
         }
 
-        public static byte TIMER_CNT(IOData Data)
+        public static byte IRQ_IF(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 

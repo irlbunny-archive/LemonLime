@@ -4,13 +4,12 @@ namespace LemonLime.CTR.IO
 {
     class IOData
     {
-        public uint        Address;
-        public IOType      Type;
-        public int         Width;
-        public byte        Data8;
-        public ushort      Data16;
-        public uint        Data32;
-        public Interpreter CPU;
+        public uint   Address;
+        public IOType Type;
+        public int    Width;
+        public byte   Data8;
+        public ushort Data16;
+        public uint   Data32;
 
         public IOData(uint Address, IOType Type,
             int Width, byte Data8 = 0,

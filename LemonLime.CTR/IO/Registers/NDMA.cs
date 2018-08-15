@@ -2,16 +2,16 @@
 
 namespace LemonLime.CTR.IO.Registers
 {
-    class TIMER
+    class NDMA
     {
-        public static byte TIMER_VAL(IOData Data)
+        public static byte NDMA_GLOBAL_CNT(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
             return 0xFF;
         }
 
-        public static byte TIMER_CNT(IOData Data)
+        public static byte NDMA_CNT(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
