@@ -12,13 +12,23 @@ namespace LemonLime.CTR
 
         private BootROM.ARM9 BootROM9;
 
+        private BootROM.ARM11 BootROM11;
+
         private CPUType Type;
+
+        private byte[] InstructionTCM = new byte[0x08000000]; // TODO: Repeat each 0x8000 bytes?
+
+        private byte[] AXIWRAM = new byte[0x00080000];
+
+        private byte[] FCRAM = new byte[0x08000000];
 
         private byte[] DataTCM = new byte[0x00004000];
 
         public Memory()
         {
             BootROM9 = new BootROM.ARM9();
+
+            BootROM11 = new BootROM.ARM11();
 
             IO = new IOHandler();
         }
@@ -35,22 +45,66 @@ namespace LemonLime.CTR
 
         public byte ReadUInt8(uint Address)
         {
+            if (Type == CPUType.ARM9)
+            {
+                if (Address < 0x08000000)
+                {
+                    return InstructionTCM[Address];
+                }
+            }
+            else
+            {
+                if (Address < 0x00010000)
+                {
+                    return BootROM11.BootROM[Address];
+                }
+                else if (Address >= 0x00010000 && Address < 0x00010000 + 0x00010000)
+                {
+                    return BootROM11.BootROM[Address - 0x00010000];
+                }
+            }
+
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
+                if (Type == CPUType.ARM11)
+                {
+                    if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
+                    {
+                        return 0;
+                    }
+                    else if (Address >= 0x17E10000 && Address < 0xFFF00000 + 0x00001000)
+                    {
+                        return 0;
+                    }
+                }
+
                 IOData IOInfo = new IOData(CPU, Address, IOType.Read, 1);
                 IO.Call(IOInfo);
                 return IOInfo.Read8;
             }
-            else if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
+            else if (Address >= 0x1FF80000 && Address < 0x1FF80000 + 0x00080000)
             {
-                return DataTCM[Address - 0xFFF00000];
+                return AXIWRAM[Address - 0x1FF80000];
             }
-            else if (Address >= 0xFFFF0000)
+            else if (Address >= 0x20000000 && Address < 0x20000000 + 0x08000000)
+            {
+                return FCRAM[Address - 0x20000000];
+            }
+
+            if (Type == CPUType.ARM9)
+            {
+                if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
+                {
+                    return DataTCM[Address - 0xFFF00000];
+                }
+            }
+
+            if (Address >= 0xFFFF0000)
             {
                 return BootROM9.BootROM[Address - 0xFFFF0000];
             }
 
-            Logger.WriteInfo($"Read @ 0x{Address.ToString("X")}");
+            Logger.WriteInfo($"Read [{Type}] @ 0x{Address.ToString("X")}");
 
             return 0;
         }
@@ -59,6 +113,18 @@ namespace LemonLime.CTR
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
+                if (Type == CPUType.ARM11)
+                {
+                    if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
+                    {
+                        return 0;
+                    }
+                    else if (Address >= 0x17E10000 && Address < 0xFFF00000 + 0x00001000)
+                    {
+                        return 0;
+                    }
+                }
+
                 IOData IOInfo = new IOData(CPU, Address, IOType.Read, 2);
                 IO.Call(IOInfo);
                 return IOInfo.Read16;
@@ -72,6 +138,18 @@ namespace LemonLime.CTR
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
+                if (Type == CPUType.ARM11)
+                {
+                    if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
+                    {
+                        return 0;
+                    }
+                    else if (Address >= 0x17E10000 && Address < 0xFFF00000 + 0x00001000)
+                    {
+                        return 0;
+                    }
+                }
+
                 IOData IOInfo = new IOData(CPU, Address, IOType.Read, 4);
                 IO.Call(IOInfo);
                 return IOInfo.Read32;
@@ -85,24 +163,68 @@ namespace LemonLime.CTR
 
         public void WriteUInt8(uint Address, byte Value)
         {
+            if (Type == CPUType.ARM9)
+            {
+                if (Address < 0x08000000)
+                {
+                    InstructionTCM[Address] = Value;
+                }
+            }
+
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
+                if (Type == CPUType.ARM11)
+                {
+                    if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
+                    {
+                        return;
+                    }
+                    else if (Address >= 0x17E10000 && Address < 0xFFF00000 + 0x00001000)
+                    {
+                        return;
+                    }
+                }
+
                 IO.Call(new IOData(CPU, Address, IOType.Write, 1, Value));
                 return;
             }
-            else if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
+            else if (Address >= 0x1FF80000 && Address < 0x1FF80000 + 0x00080000)
             {
-                DataTCM[Address - 0xFFF00000] = Value;
-                return;
+                AXIWRAM[Address - 0x1FF80000] = Value;
+            }
+            else if (Address >= 0x20000000 && Address < 0x20000000 + 0x08000000)
+            {
+                FCRAM[Address - 0x20000000] = Value;
             }
 
-            Logger.WriteInfo($"Write @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
+            if (Type == CPUType.ARM9)
+            {
+                if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
+                {
+                    DataTCM[Address - 0xFFF00000] = Value;
+                    return;
+                }
+            }
+
+            Logger.WriteInfo($"Write [{Type}] @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
         }
 
         public void WriteUInt16(uint Address, ushort Value)
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
+                if (Type == CPUType.ARM11)
+                {
+                    if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
+                    {
+                        return;
+                    }
+                    else if (Address >= 0x17E10000 && Address < 0xFFF00000 + 0x00001000)
+                    {
+                        return;
+                    }
+                }
+
                 IO.Call(new IOData(CPU, Address, IOType.Write, 2, 0, Value));
                 return;
             }
@@ -115,6 +237,18 @@ namespace LemonLime.CTR
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
+                if (Type == CPUType.ARM11)
+                {
+                    if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
+                    {
+                        return;
+                    }
+                    else if (Address >= 0x17E10000 && Address < 0xFFF00000 + 0x00001000)
+                    {
+                        return;
+                    }
+                }
+
                 IO.Call(new IOData(CPU, Address, IOType.Write, 4, 0, 0, Value));
                 return;
             }

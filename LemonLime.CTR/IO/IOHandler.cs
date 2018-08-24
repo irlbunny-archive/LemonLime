@@ -34,6 +34,9 @@ namespace LemonLime.CTR.IO
                 new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (5 * 0x1C), 4), // Channel 6
                 new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (6 * 0x1C), 4), // Channel 7
                 new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (7 * 0x1C), 4), // Channel 8
+
+                // CDMA
+                new IOEntry(CDMA.CDMA_1000CD00, 0x1000CD00, 4),
                 
                 // TIMER
                 new IOEntry(TIMER.TIMER_VAL, 0x10003000 + 4 * 0, 2), // Timer 1

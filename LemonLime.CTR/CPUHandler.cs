@@ -1,4 +1,5 @@
 ﻿using LemonLime.ARM;
+using LemonLime.Common;
 using System.Threading;
 
 namespace LemonLime.CTR
@@ -13,9 +14,9 @@ namespace LemonLime.CTR
 
         private bool EnableAll = true;
 
-        private bool ARM9_Enabled;
+        private bool ARM9_Enabled = false;
 
-        private bool ARM11_Enabled;
+        private bool ARM11_Enabled = false;
 
         private Thread ARM9_Thread;
 
@@ -25,7 +26,11 @@ namespace LemonLime.CTR
         {
             this.Memory = Memory;
 
+            Memory.SetType(CPUType.ARM9);
+
             ARM9 = new Interpreter(Memory, true);
+
+            Memory.SetType(CPUType.ARM11);
 
             ARM11 = new Interpreter(Memory);
 
@@ -42,11 +47,13 @@ namespace LemonLime.CTR
             {
                 // ARM9
                 case CPUType.ARM9:
+                    Logger.WriteInfo("Enabling ARM9 CPU.");
                     ARM9_Enabled = Enabled;
                     break;
 
                 // ARM11
                 case CPUType.ARM11:
+                    Logger.WriteInfo("Enabling ARM11 CPU.");
                     ARM11_Enabled = Enabled;
                     break;
             }

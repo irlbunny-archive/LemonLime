@@ -8,7 +8,7 @@ namespace LemonLime.CTR.IO.Registers
         {
             bool Reset = (Data.Write8 << 31 != 1);
 
-            if (Reset) Data.CPU.EnableCPU(CPUType.ARM11, Reset);
+            if (Reset && Data.Write8 != 0) Data.CPU.EnableCPU(CPUType.ARM11, Reset);
 
             Data.Read8 = 0xFF;
         }
