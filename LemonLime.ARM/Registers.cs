@@ -235,7 +235,7 @@ namespace LemonLime.ARM
                             }
                             break;
 
-                        default: throw new Exception("SharpARM: Invalid CPSR ARM execution Mode!");
+                        default: throw new Exception("LemonLime.ARM: Invalid CPSR ARM execution Mode!");
                     }
 
                     return 0;
@@ -319,7 +319,7 @@ namespace LemonLime.ARM
                             }
                             break;
 
-                        default: throw new Exception("SharpARM: Invalid CPSR ARM execution Mode!");
+                        default: throw new Exception("LemonLime.ARM: Invalid CPSR ARM execution Mode!");
                     }
 
                     if (RegisterIndex == 15) PCChanged = true;

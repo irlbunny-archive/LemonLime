@@ -1,5 +1,6 @@
 ﻿using LemonLime.ARM;
 using LemonLime.Common;
+using System;
 using System.Threading;
 
 namespace LemonLime.CTR
@@ -17,6 +18,8 @@ namespace LemonLime.CTR
         private bool ARM9_Enabled = false;
 
         private bool ARM11_Enabled = false;
+
+        private bool Sync = false;
 
         private Thread ARM9_Thread;
 
@@ -43,6 +46,8 @@ namespace LemonLime.CTR
 
         public void EnableCPU(CPUType Type, bool Enabled)
         {
+            if (Enabled != true) throw new Exception("Disabling CPUs are not allowed.");
+
             switch (Type)
             {
                 // ARM9
@@ -71,8 +76,10 @@ namespace LemonLime.CTR
             {
                 if (ARM9_Enabled)
                 {
+                    if (Sync) continue;
                     Memory.SetType(CPUType.ARM9);
                     ARM9.Execute();
+                    if (ARM11_Enabled) Sync = true;
                 }
             }
         }
@@ -83,8 +90,10 @@ namespace LemonLime.CTR
             {
                 if (ARM11_Enabled)
                 {
+                    if (!Sync) continue;
                     Memory.SetType(CPUType.ARM11);
                     ARM11.Execute();
+                    Sync = false;
                 }
             }
         }

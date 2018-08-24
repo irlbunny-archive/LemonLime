@@ -72,10 +72,6 @@ namespace LemonLime.CTR
                     {
                         return 0;
                     }
-                    else if (Address >= 0x17E10000 && Address < 0xFFF00000 + 0x00001000)
-                    {
-                        return 0;
-                    }
                 }
 
                 IOData IOInfo = new IOData(CPU, Address, IOType.Read, 1);
@@ -99,9 +95,19 @@ namespace LemonLime.CTR
                 }
             }
 
-            if (Address >= 0xFFFF0000)
+            if (Type == CPUType.ARM9)
             {
-                return BootROM9.BootROM[Address - 0xFFFF0000];
+                if (Address >= 0xFFFF0000)
+                {
+                    return BootROM9.BootROM[Address - 0xFFFF0000];
+                }
+            }
+            else
+            {
+                if (Address >= 0xFFFF0000)
+                {
+                    return BootROM11.BootROM[Address - 0xFFFF0000];
+                }
             }
 
             Logger.WriteInfo($"Read [{Type}] @ 0x{Address.ToString("X")}");
@@ -116,10 +122,6 @@ namespace LemonLime.CTR
                 if (Type == CPUType.ARM11)
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
-                    {
-                        return 0;
-                    }
-                    else if (Address >= 0x17E10000 && Address < 0xFFF00000 + 0x00001000)
                     {
                         return 0;
                     }
@@ -144,10 +146,6 @@ namespace LemonLime.CTR
                     {
                         return 0;
                     }
-                    else if (Address >= 0x17E10000 && Address < 0xFFF00000 + 0x00001000)
-                    {
-                        return 0;
-                    }
                 }
 
                 IOData IOInfo = new IOData(CPU, Address, IOType.Read, 4);
@@ -168,6 +166,7 @@ namespace LemonLime.CTR
                 if (Address < 0x08000000)
                 {
                     InstructionTCM[Address] = Value;
+                    return;
                 }
             }
 
@@ -179,10 +178,6 @@ namespace LemonLime.CTR
                     {
                         return;
                     }
-                    else if (Address >= 0x17E10000 && Address < 0xFFF00000 + 0x00001000)
-                    {
-                        return;
-                    }
                 }
 
                 IO.Call(new IOData(CPU, Address, IOType.Write, 1, Value));
@@ -191,10 +186,12 @@ namespace LemonLime.CTR
             else if (Address >= 0x1FF80000 && Address < 0x1FF80000 + 0x00080000)
             {
                 AXIWRAM[Address - 0x1FF80000] = Value;
+                return;
             }
             else if (Address >= 0x20000000 && Address < 0x20000000 + 0x08000000)
             {
                 FCRAM[Address - 0x20000000] = Value;
+                return;
             }
 
             if (Type == CPUType.ARM9)
@@ -219,10 +216,6 @@ namespace LemonLime.CTR
                     {
                         return;
                     }
-                    else if (Address >= 0x17E10000 && Address < 0xFFF00000 + 0x00001000)
-                    {
-                        return;
-                    }
                 }
 
                 IO.Call(new IOData(CPU, Address, IOType.Write, 2, 0, Value));
@@ -240,10 +233,6 @@ namespace LemonLime.CTR
                 if (Type == CPUType.ARM11)
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
-                    {
-                        return;
-                    }
-                    else if (Address >= 0x17E10000 && Address < 0xFFF00000 + 0x00001000)
                     {
                         return;
                     }
