@@ -2,11 +2,12 @@
 {
     class IOEntry
     {
-        public delegate byte IOFunc(IOData Data);
+        public delegate void IOFunc(IOData Data);
 
         public IOFunc Register;
         public uint   Address;
         public int    Width;
+        public bool   Locked;
 
         public IOEntry(IOFunc Register, uint Address, int Width)
         {

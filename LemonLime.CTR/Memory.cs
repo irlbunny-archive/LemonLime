@@ -4,11 +4,13 @@ using LemonLime.CTR.IO;
 
 namespace LemonLime.CTR
 {
-    public class Memory : IBus
+    class Memory : IBus
     {
         private IOHandler IO;
 
         private BootROM.ARM9 BootROM9;
+
+        private CPUType Type;
 
         private byte[] DataTCM = new byte[0x00004000];
 
@@ -19,11 +21,18 @@ namespace LemonLime.CTR
             IO = new IOHandler();
         }
 
+        public void SetType(CPUType Type)
+        {
+            this.Type = Type;
+        }
+
         public byte ReadUInt8(uint Address)
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                return IO.Call(new IOData(Address, IOType.Read, 1));
+                IOData IOInfo = new IOData(Address, IOType.Read, 1);
+                IO.Call(IOInfo);
+                return IOInfo.Read8;
             }
             else if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
             {
@@ -43,7 +52,9 @@ namespace LemonLime.CTR
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                return IO.Call(new IOData(Address, IOType.Read, 2));
+                IOData IOInfo = new IOData(Address, IOType.Read, 2);
+                IO.Call(IOInfo);
+                return IOInfo.Read16;
             }
 
             return (ushort)(ReadUInt8(Address) |
@@ -54,7 +65,9 @@ namespace LemonLime.CTR
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                return IO.Call(new IOData(Address, IOType.Read, 4));
+                IOData IOInfo = new IOData(Address, IOType.Read, 4);
+                IO.Call(IOInfo);
+                return IOInfo.Read32;
             }
 
             return (uint)(ReadUInt8(Address)   |

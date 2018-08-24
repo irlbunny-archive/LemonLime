@@ -48,7 +48,7 @@ namespace LemonLime.CTR.IO
             };
         }
 
-        public byte Call(IOData Data)
+        public void Call(IOData Data)
         {
             // Log IO calls
             switch (Data.Type)
@@ -57,12 +57,17 @@ namespace LemonLime.CTR.IO
                 case IOType.Read:
                     switch (Data.Width)
                     {
+                        // Width 1
                         case 1:
                             Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}]");
                             break;
+
+                        // Width 2
                         case 2:
                             Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}]");
                             break;
+
+                        // Width 4
                         case 4:
                             Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}]");
                             break;
@@ -73,14 +78,19 @@ namespace LemonLime.CTR.IO
                 case IOType.Write:
                     switch (Data.Width)
                     {
+                        // Width 1
                         case 1:
-                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}], Data = {Data.Data8.ToString("X2")}");
+                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}], Data = {Data.Write8.ToString("X2")}");
                             break;
+
+                        // Width 2
                         case 2:
-                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}], Data = {Data.Data8.ToString("X4")}");
+                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}], Data = {Data.Write8.ToString("X4")}");
                             break;
+
+                        // Width 4
                         case 4:
-                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}], Data = {Data.Data8.ToString("X8")}");
+                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}], Data = {Data.Write8.ToString("X8")}");
                             break;
                     }
                     break;
@@ -95,32 +105,25 @@ namespace LemonLime.CTR.IO
                 // Format address hex
                 switch (Data.Width)
                 {
+                    // Width 1
                     case 1:
                         throw new Exception(Data.Address.ToString("X"));
+
+                    // Width 2
                     case 2:
                         throw new Exception(Data.Address.ToString("X"));
+
+                    // Width 4
                     case 4:
                         throw new Exception(Data.Address.ToString("X"));
                 }
             }
 
             // Check width
-            if (Data.Width != EntryForAddr.Width) return 1;
+            if (Data.Width != EntryForAddr.Width) return;
 
-            switch (Data.Type)
-            {
-                // Return data from register
-                case IOType.Read:
-                    return EntryForAddr.Register(Data);
-
-                // Write doesn't return anything from register
-                case IOType.Write:
-                    EntryForAddr.Register(Data);
-                    break;
-            }
-
-            // Return
-            return 0;
+            // Execute register
+            EntryForAddr.Register(Data);
         }
     }
 }

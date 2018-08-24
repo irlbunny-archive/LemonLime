@@ -1,26 +1,30 @@
-﻿using LemonLime.ARM;
-
-namespace LemonLime.CTR.IO
+﻿namespace LemonLime.CTR.IO
 {
     class IOData
     {
         public uint   Address;
         public IOType Type;
         public int    Width;
-        public byte   Data8;
-        public ushort Data16;
-        public uint   Data32;
+        public byte   Write8;
+        public ushort Write16;
+        public uint   Write32;
+        public byte   Read8;
+        public ushort Read16;
+        public uint   Read32;
 
         public IOData(uint Address, IOType Type,
-            int Width, byte Data8 = 0,
-            ushort Data16 = 0, uint Data32 = 0)
+            int Width, byte Write8 = 0,
+            ushort Write16 = 0, uint Write32 = 0)
         {
             this.Address = Address;
             this.Type    = Type;
             this.Width   = Width;
-            this.Data8   = Data8;
-            this.Data16  = Data16;
-            this.Data32  = Data32;
+            this.Write8  = Write8;
+            this.Write16 = Write16;
+            this.Write32 = Write32;
+            this.Read8   = 0;
+            this.Read16  = 0;
+            this.Read32  = 0;
         }
     }
 }

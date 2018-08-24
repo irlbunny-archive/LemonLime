@@ -4,18 +4,14 @@ namespace LemonLime.CTR.IO.Registers
 {
     class NDMA
     {
-        public static byte NDMA_GLOBAL_CNT(IOData Data)
+        public static void NDMA_GLOBAL_CNT(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
-
-            return 0xFF;
         }
 
-        public static byte NDMA_CNT(IOData Data)
+        public static void NDMA_CNT(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
-
-            return 0xFF;
         }
     }
 }

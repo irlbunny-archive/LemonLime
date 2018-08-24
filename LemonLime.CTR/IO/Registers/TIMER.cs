@@ -4,18 +4,18 @@ namespace LemonLime.CTR.IO.Registers
 {
     class TIMER
     {
-        public static byte TIMER_VAL(IOData Data)
+        public static void TIMER_VAL(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
-            return 0xFF;
+            Data.Read16 = 0xFF;
         }
 
-        public static byte TIMER_CNT(IOData Data)
+        public static void TIMER_CNT(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
-            return 0xFF;
+            Data.Read16 = 0xFF;
         }
     }
 }

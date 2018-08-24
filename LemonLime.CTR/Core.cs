@@ -5,39 +5,22 @@ namespace LemonLime.CTR
 {
     public class Core
     {
-        private Interpreter CPU;
+        private CPUHandler CPU;
 
         private Memory Memory;
-
-        private bool IsExecuting;
 
         public Core()
         {
             Memory = new Memory();
 
-            CPU = new Interpreter(Memory, true);
+            CPU = new CPUHandler(Memory);
+
+            CPU.EnableCPU(CPUType.ARM9, true); // Enable ARM9 CPU
         }
 
         public void Start()
         {
-            Thread ExecutionThread = new Thread(Run);
-
-            ExecutionThread.Start();
-        }
-
-        private void Run()
-        {
-            IsExecuting = true;
-
-            while (IsExecuting)
-            {
-                CPU.Execute();
-            }
-        }
-
-        public void Stop()
-        {
-            IsExecuting = false;
+            CPU.Start();
         }
     }
 }

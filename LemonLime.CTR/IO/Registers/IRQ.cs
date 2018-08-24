@@ -4,18 +4,18 @@ namespace LemonLime.CTR.IO.Registers
 {
     class IRQ
     {
-        public static byte IRQ_IE(IOData Data)
+        public static void IRQ_IE(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
-            return 0xFF;
+            Data.Read32 = 0xFF;
         }
 
-        public static byte IRQ_IF(IOData Data)
+        public static void IRQ_IF(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
-            return 0xFF;
+            Data.Read32 = 0xFF;
         }
     }
 }
