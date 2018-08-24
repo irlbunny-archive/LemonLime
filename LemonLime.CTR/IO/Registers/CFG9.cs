@@ -10,5 +10,10 @@
 
             Data.Read8 = 0xFF;
         }
+
+        public static void CFG9_UNITINFO(IOData Data)
+        {
+            Data.Read8 = 0x00; // Retail
+        }
     }
 }

@@ -17,7 +17,8 @@ namespace LemonLime.CTR.IO
             Entries = new List<IOEntry>
             {
                 // CFG9
-                new IOEntry(CFG9.CFG9_RST11, 0x10000002, 1),
+                new IOEntry(CFG9.CFG9_RST11,    0x10000002, 1),
+                new IOEntry(CFG9.CFG9_UNITINFO, 0x10010010, 1),
 
                 // IRQ
                 new IOEntry(IRQ.IRQ_IE, 0x10001000, 4),
