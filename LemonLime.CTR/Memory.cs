@@ -110,7 +110,7 @@ namespace LemonLime.CTR
                 }
             }
 
-            Logger.WriteInfo($"Read [{Type}] @ 0x{Address.ToString("X")}");
+            Logger.WriteInfo($"Read [{Type}] @ 0x{Address.ToString("X8")}");
 
             return 0;
         }
@@ -203,7 +203,7 @@ namespace LemonLime.CTR
                 }
             }
 
-            Logger.WriteInfo($"Write [{Type}] @ 0x{Address.ToString("X")}, Value = {Value.ToString("X")}");
+            Logger.WriteInfo($"Write [{Type}] @ 0x{Address.ToString("X8")}, Value = {Value.ToString("X")}");
         }
 
         public void WriteUInt16(uint Address, ushort Value)

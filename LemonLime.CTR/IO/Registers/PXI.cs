@@ -2,20 +2,20 @@
 
 namespace LemonLime.CTR.IO.Registers
 {
-    class NDMA
+    class PXI
     {
-        public static void NDMA_GLOBAL_CNT(IOData Data)
+        public static void PXI_SYNC(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
             Data.Read32 = 0xFF;
         }
 
-        public static void NDMA_CNT(IOData Data)
+        public static void PXI_CNT(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
-            Data.Read32 = 0xFF;
+            Data.Read16 = 0xFF;
         }
     }
 }

@@ -50,13 +50,11 @@ namespace LemonLime.CTR
 
             switch (Type)
             {
-                // ARM9
                 case CPUType.ARM9:
                     Logger.WriteInfo("Enabling ARM9 CPU.");
                     ARM9_Enabled = Enabled;
                     break;
 
-                // ARM11
                 case CPUType.ARM11:
                     Logger.WriteInfo("Enabling ARM11 CPU.");
                     ARM11_Enabled = Enabled;

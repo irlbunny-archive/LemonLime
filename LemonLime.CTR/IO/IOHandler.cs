@@ -35,6 +35,10 @@ namespace LemonLime.CTR.IO
                 new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (6 * 0x1C), 4), // Channel 7
                 new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (7 * 0x1C), 4), // Channel 8
 
+                // PXI
+                new IOEntry(PXI.PXI_SYNC, 0x10008000, 4),
+                new IOEntry(PXI.PXI_CNT,  0x10008004, 2),
+
                 // CDMA
                 new IOEntry(CDMA.CDMA_UNKNOWN, 0x1000CD00 + (0 * 4), 4),
                 new IOEntry(CDMA.CDMA_UNKNOWN, 0x1000CD00 + (1 * 4), 4),
