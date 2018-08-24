@@ -16,6 +16,8 @@ namespace LemonLime.CTR
             CPU = new CPUHandler(Memory);
 
             CPU.EnableCPU(CPUType.ARM9, true); // Enable ARM9 CPU
+
+            CPU.EnableCPU(CPUType.ARM11, true); // Enable ARM9 CPU
         }
 
         public void Start()

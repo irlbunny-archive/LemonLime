@@ -2,20 +2,23 @@
 {
     class IOData
     {
-        public uint   Address;
-        public IOType Type;
-        public int    Width;
-        public byte   Write8;
-        public ushort Write16;
-        public uint   Write32;
-        public byte   Read8;
-        public ushort Read16;
-        public uint   Read32;
+        public CPUHandler CPU;
+        public uint       Address;
+        public IOType     Type;
+        public int        Width;
+        public byte       Write8;
+        public ushort     Write16;
+        public uint       Write32;
+        public byte       Read8;
+        public ushort     Read16;
+        public uint       Read32;
 
-        public IOData(uint Address, IOType Type,
-            int Width, byte Write8 = 0,
-            ushort Write16 = 0, uint Write32 = 0)
+        public IOData(CPUHandler CPU, uint Address,
+            IOType Type, int Width,
+            byte Write8 = 0, ushort Write16 = 0,
+            uint Write32 = 0)
         {
+            this.CPU     = CPU;
             this.Address = Address;
             this.Type    = Type;
             this.Width   = Width;

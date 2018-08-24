@@ -6,6 +6,8 @@ namespace LemonLime.CTR
 {
     class Memory : IBus
     {
+        private CPUHandler CPU;
+
         private IOHandler IO;
 
         private BootROM.ARM9 BootROM9;
@@ -26,11 +28,16 @@ namespace LemonLime.CTR
             this.Type = Type;
         }
 
+        public void SetHandler(CPUHandler CPU)
+        {
+            this.CPU = CPU;
+        }
+
         public byte ReadUInt8(uint Address)
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                IOData IOInfo = new IOData(Address, IOType.Read, 1);
+                IOData IOInfo = new IOData(CPU, Address, IOType.Read, 1);
                 IO.Call(IOInfo);
                 return IOInfo.Read8;
             }
@@ -52,7 +59,7 @@ namespace LemonLime.CTR
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                IOData IOInfo = new IOData(Address, IOType.Read, 2);
+                IOData IOInfo = new IOData(CPU, Address, IOType.Read, 2);
                 IO.Call(IOInfo);
                 return IOInfo.Read16;
             }
@@ -65,7 +72,7 @@ namespace LemonLime.CTR
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                IOData IOInfo = new IOData(Address, IOType.Read, 4);
+                IOData IOInfo = new IOData(CPU, Address, IOType.Read, 4);
                 IO.Call(IOInfo);
                 return IOInfo.Read32;
             }
@@ -80,7 +87,7 @@ namespace LemonLime.CTR
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                IO.Call(new IOData(Address, IOType.Write, 1, Value));
+                IO.Call(new IOData(CPU, Address, IOType.Write, 1, Value));
                 return;
             }
             else if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
@@ -96,7 +103,7 @@ namespace LemonLime.CTR
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                IO.Call(new IOData(Address, IOType.Write, 2, 0, Value));
+                IO.Call(new IOData(CPU, Address, IOType.Write, 2, 0, Value));
                 return;
             }
 
@@ -108,7 +115,7 @@ namespace LemonLime.CTR
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                IO.Call(new IOData(Address, IOType.Write, 4, 0, 0, Value));
+                IO.Call(new IOData(CPU, Address, IOType.Write, 4, 0, 0, Value));
                 return;
             }
 

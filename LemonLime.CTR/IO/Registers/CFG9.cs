@@ -8,7 +8,7 @@ namespace LemonLime.CTR.IO.Registers
         {
             bool Reset = (Data.Write8 << 31 != 1);
 
-            Logger.WriteStub($"Stubbed. Reset = {Reset}");
+            if (Reset) Data.CPU.EnableCPU(CPUType.ARM11, Reset);
 
             Data.Read8 = 0xFF;
         }

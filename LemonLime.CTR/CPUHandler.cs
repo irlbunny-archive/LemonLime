@@ -32,6 +32,8 @@ namespace LemonLime.CTR
             ARM9_Thread = new Thread(Run9);
 
             ARM11_Thread = new Thread(Run11);
+
+            Memory.SetHandler(this);
         }
 
         public void EnableCPU(CPUType Type, bool Enabled)
