@@ -18,6 +18,8 @@ namespace LemonLime.CTR
 
         private byte[] InstructionTCM = new byte[0x08000000]; // TODO: Repeat each 0x8000 bytes?
 
+        private byte[] ARM9_InternalMemory = new byte[0x00100000];
+
         private byte[] AXIWRAM = new byte[0x00080000];
 
         private byte[] FCRAM = new byte[0x08000000];
@@ -50,6 +52,10 @@ namespace LemonLime.CTR
                 if (Address < 0x08000000)
                 {
                     return InstructionTCM[Address];
+                }
+                else if (Address >= 0x08000000 && Address < 0x08000000 + 0x00100000)
+                {
+                    return ARM9_InternalMemory[Address - 0x08000000];
                 }
             }
             else
@@ -166,6 +172,11 @@ namespace LemonLime.CTR
                 if (Address < 0x08000000)
                 {
                     InstructionTCM[Address] = Value;
+                    return;
+                }
+                else if (Address >= 0x08000000 && Address < 0x08000000 + 0x00100000)
+                {
+                    ARM9_InternalMemory[Address - 0x08000000] = Value;
                     return;
                 }
             }
