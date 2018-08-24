@@ -1,6 +1,4 @@
-﻿using LemonLime.Common;
-
-namespace LemonLime.CTR.IO.Registers
+﻿namespace LemonLime.CTR.IO.Registers
 {
     class CFG9
     {

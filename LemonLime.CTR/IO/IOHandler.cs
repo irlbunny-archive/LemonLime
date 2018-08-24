@@ -36,7 +36,19 @@ namespace LemonLime.CTR.IO
                 new IOEntry(NDMA.NDMA_CNT, 0x1000201C + (7 * 0x1C), 4), // Channel 8
 
                 // CDMA
-                new IOEntry(CDMA.CDMA_1000CD00, 0x1000CD00, 4),
+                new IOEntry(CDMA.CDMA_UNKNOWN, 0x1000CD00 + (0 * 4), 4),
+                new IOEntry(CDMA.CDMA_UNKNOWN, 0x1000CD00 + (1 * 4), 4),
+                new IOEntry(CDMA.CDMA_UNKNOWN, 0x1000CD00 + (2 * 4), 4),
+                new IOEntry(CDMA.CDMA_UNKNOWN, 0x1000CD00 + (3 * 4), 4),
+                new IOEntry(CDMA.CDMA_UNKNOWN, 0x1000CD00 + (4 * 4), 4),
+
+                // XDMA
+                new IOEntry(XDMA.XDMA_UNKNOWN, 0x1000C020 + (0 * 4), 4),
+                new IOEntry(XDMA.XDMA_UNKNOWN, 0x1000C020 + (1 * 4), 4),
+                new IOEntry(XDMA.XDMA_UNKNOWN, 0x1000C020 + (2 * 4), 4),
+                new IOEntry(XDMA.XDMA_UNKNOWN, 0x1000C020 + (3 * 4), 4),
+                new IOEntry(XDMA.XDMA_UNKNOWN, 0x1000C020 + (4 * 4), 4),
+                new IOEntry(XDMA.XDMA_UNKNOWN, 0x1000C100, 4),
                 
                 // TIMER
                 new IOEntry(TIMER.TIMER_VAL, 0x10003000 + 4 * 0, 2), // Timer 1
@@ -48,6 +60,9 @@ namespace LemonLime.CTR.IO
                 new IOEntry(TIMER.TIMER_CNT, 0x10003002 + 4 * 1, 2), // Timer 2
                 new IOEntry(TIMER.TIMER_CNT, 0x10003002 + 4 * 2, 2), // Timer 3
                 new IOEntry(TIMER.TIMER_CNT, 0x10003002 + 4 * 3, 2), // Timer 4
+
+                // HID
+                new IOEntry(HID.HID_PAD, 0x10146000, 2),
             };
         }
 
