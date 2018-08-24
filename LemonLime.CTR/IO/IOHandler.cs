@@ -107,12 +107,12 @@ namespace LemonLime.CTR.IO
 
                         // Width 2
                         case 2:
-                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}], Data = {Data.Write8.ToString("X4")}");
+                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}], Data = {Data.Write16.ToString("X4")}");
                             break;
 
                         // Width 4
                         case 4:
-                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}], Data = {Data.Write8.ToString("X8")}");
+                            Logger.WriteInfo($"IO ({Data.Width}) [{Data.Address.ToString("X")}], Data = {Data.Write32.ToString("X8")}");
                             break;
                     }
                     break;
