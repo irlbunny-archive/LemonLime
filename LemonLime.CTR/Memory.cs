@@ -80,7 +80,7 @@ namespace LemonLime.CTR
                     }
                 }
 
-                IOData IOInfo = new IOData(CPU, Address, IOType.Read, 1);
+                IOData IOInfo = new IOData(CPU, Address, IOType.Read, IOWidth.Width1);
                 IO.Call(IOInfo);
                 return IOInfo.Read8;
             }
@@ -133,7 +133,7 @@ namespace LemonLime.CTR
                     }
                 }
 
-                IOData IOInfo = new IOData(CPU, Address, IOType.Read, 2);
+                IOData IOInfo = new IOData(CPU, Address, IOType.Read, IOWidth.Width2);
                 IO.Call(IOInfo);
                 return IOInfo.Read16;
             }
@@ -154,7 +154,7 @@ namespace LemonLime.CTR
                     }
                 }
 
-                IOData IOInfo = new IOData(CPU, Address, IOType.Read, 4);
+                IOData IOInfo = new IOData(CPU, Address, IOType.Read, IOWidth.Width4);
                 IO.Call(IOInfo);
                 return IOInfo.Read32;
             }
@@ -191,7 +191,7 @@ namespace LemonLime.CTR
                     }
                 }
 
-                IO.Call(new IOData(CPU, Address, IOType.Write, 1, Value));
+                IO.Call(new IOData(CPU, Address, IOType.Write, IOWidth.Width1, Value));
                 return;
             }
             else if (Address >= 0x1FF80000 && Address < 0x1FF80000 + 0x00080000)
@@ -229,7 +229,7 @@ namespace LemonLime.CTR
                     }
                 }
 
-                IO.Call(new IOData(CPU, Address, IOType.Write, 2, 0, Value));
+                IO.Call(new IOData(CPU, Address, IOType.Write, IOWidth.Width2, 0, Value));
                 return;
             }
 
@@ -249,7 +249,7 @@ namespace LemonLime.CTR
                     }
                 }
 
-                IO.Call(new IOData(CPU, Address, IOType.Write, 4, 0, 0, Value));
+                IO.Call(new IOData(CPU, Address, IOType.Write, IOWidth.Width4, 0, 0, Value));
                 return;
             }
 

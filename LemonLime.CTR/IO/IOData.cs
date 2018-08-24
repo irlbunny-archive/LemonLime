@@ -5,7 +5,7 @@
         public CPUHandler CPU;
         public uint       Address;
         public IOType     Type;
-        public int        Width;
+        public IOWidth    Width;
         public byte       Write8;
         public ushort     Write16;
         public uint       Write32;
@@ -14,7 +14,7 @@
         public uint       Read32;
 
         public IOData(CPUHandler CPU, uint Address,
-            IOType Type, int Width,
+            IOType Type, IOWidth Width,
             byte Write8 = 0, ushort Write16 = 0,
             uint Write32 = 0)
         {
