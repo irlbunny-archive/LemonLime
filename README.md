@@ -8,4 +8,6 @@ We also have an official Discord server for development: https://discord.gg/aKjJ
 # Credits
 [gdkchan](https://github.com/gdkchan) - For [ChocolateARM](https://github.com/gdkchan/ChocolateARM)
 
-[Sono](https://github.com/SonoSooS) - For helping with this
+[Sono](https://github.com/SonoSooS) - For helping with this.
+
+[3dbrew](https://www.3dbrew.org/wiki/Main_Page)
