@@ -8,12 +8,10 @@ namespace LemonLime.CTR.IO
 {
     class IOHandler
     {
-        // IO Entries
         private List<IOEntry> Entries;
 
         public IOHandler()
         {
-            // Our IO entries
             Entries = new List<IOEntry>
             {
                 // CFG9

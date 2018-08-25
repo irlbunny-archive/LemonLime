@@ -3,6 +3,7 @@
     class IOData
     {
         public CPUHandler CPU;
+        public CPUType    CPUType;
         public uint       Address;
         public IOType     Type;
         public IOWidth    Width;
@@ -13,12 +14,13 @@
         public ushort     Read16;
         public uint       Read32;
 
-        public IOData(CPUHandler CPU, uint Address,
-            IOType Type, IOWidth Width,
-            byte Write8 = 0, ushort Write16 = 0,
-            uint Write32 = 0)
+        public IOData(CPUHandler CPU, CPUType CPUType,
+            uint Address, IOType Type,
+            IOWidth Width, byte Write8 = 0,
+            ushort Write16 = 0, uint Write32 = 0)
         {
             this.CPU     = CPU;
+            this.CPUType = CPUType;
             this.Address = Address;
             this.Type    = Type;
             this.Width   = Width;

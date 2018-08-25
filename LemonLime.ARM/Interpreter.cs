@@ -40,6 +40,11 @@ namespace LemonLime.ARM
         public event EventHandler<SoftwareInterruptEventArgs> OnSoftwareInterrupt;
 
         /// <summary>
+        ///     Whether to do a Hardware Interrupt or not
+        /// </summary>
+        public bool IRQ = false;
+
+        /// <summary>
         ///     Resets the CPU, and sets the Registers to the initial state.
         /// </summary>
         public void Reset()
@@ -80,6 +85,21 @@ namespace LemonLime.ARM
         /// </summary>
         public void Execute()
         {
+            if (IRQ)
+            {
+                uint SPSR = Registers.CPSR;
+                Registers.Mode = ARMMode.IRQ;
+                Registers[14] = Registers[15] - (uint)(Registers.IsFlagSet(ARMFlag.Thumb) ? 0 : 4);
+                Registers.SPSR = SPSR;
+                Registers.SetFlag(ARMFlag.Thumb, false);
+                Registers.SetFlag(ARMFlag.IRQDisable, true);
+                Registers.SetFlag(ARMFlag.Endianness, false);
+
+                Registers[15] = HighVectors ? 0xffff0000 + 24 : 24;
+
+                IRQ = false;
+            }
+
             uint TruePC = Registers[15] - 4;
 
             if (Registers.IsFlagSet(ARMFlag.Thumb))

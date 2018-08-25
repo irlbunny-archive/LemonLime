@@ -62,6 +62,24 @@ namespace LemonLime.CTR
             }
         }
 
+        public void EnableIRQ(CPUType Type)
+        {
+            switch (Type)
+            {
+                case CPUType.ARM9:
+                    if (ARM9_Enabled != true) throw new Exception("ARM9 is not enabled.");
+                    Logger.WriteInfo("Enabling ARM9 IRQ.");
+                    ARM9.IRQ = true;
+                    break;
+
+                case CPUType.ARM11:
+                    if (ARM11_Enabled != true) throw new Exception("ARM11 is not enabled.");
+                    Logger.WriteInfo("Enabling ARM11 IRQ.");
+                    ARM11.IRQ = true;
+                    break;
+            }
+        }
+
         public void Start()
         {
             ARM9_Thread.Start();
