@@ -20,6 +20,8 @@ namespace LemonLime.LLE
 
         private byte[] ARM9_InternalMemory = new byte[0x00100000];
 
+        private byte[] MPCore_PrivateMemory = new byte[0x00002000];
+
         private byte[] AXIWRAM = new byte[0x00080000];
 
         private byte[] FCRAM = new byte[0x08000000];
@@ -76,7 +78,7 @@ namespace LemonLime.LLE
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
-                        return 0;
+                        return MPCore_PrivateMemory[Address - 0x17E00000];
                     }
                 }
 
@@ -129,7 +131,8 @@ namespace LemonLime.LLE
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
-                        return 0;
+                        return (ushort)(ReadUInt8(Address) |
+                            (ReadUInt8(Address + 1) << 8));
                     }
                 }
 
@@ -150,7 +153,10 @@ namespace LemonLime.LLE
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
-                        return 0;
+                        return (uint)(ReadUInt8(Address)   |
+                            (ReadUInt8(Address + 1) << 8)  |
+                            (ReadUInt8(Address + 2) << 16) |
+                            (ReadUInt8(Address + 3) << 24));
                     }
                 }
 
@@ -187,6 +193,7 @@ namespace LemonLime.LLE
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
+                        MPCore_PrivateMemory[Address - 0x17E00000] = Value;
                         return;
                     }
                 }
@@ -225,6 +232,8 @@ namespace LemonLime.LLE
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
+                        WriteUInt8(Address,     (byte)Value);
+                        WriteUInt8(Address + 1, (byte)(Value >> 8));
                         return;
                     }
                 }
@@ -245,6 +254,10 @@ namespace LemonLime.LLE
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
+                        WriteUInt8(Address,     (byte)Value);
+                        WriteUInt8(Address + 1, (byte)(Value >> 8));
+                        WriteUInt8(Address + 2, (byte)(Value >> 16));
+                        WriteUInt8(Address + 3, (byte)(Value >> 24));
                         return;
                     }
                 }
