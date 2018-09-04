@@ -1,4 +1,4 @@
-﻿namespace LemonLime.CTR.IO.Registers
+﻿namespace LemonLime.LLE.IO.Registers
 {
     class CFG9
     {

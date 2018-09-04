@@ -1,4 +1,4 @@
-﻿namespace LemonLime.CTR.IO
+﻿namespace LemonLime.LLE.IO
 {
     enum IOWidth
     {

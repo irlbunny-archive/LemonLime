@@ -1,8 +1,8 @@
 ﻿using LemonLime.ARM;
 using LemonLime.Common;
-using LemonLime.CTR.IO;
+using LemonLime.LLE.IO;
 
-namespace LemonLime.CTR
+namespace LemonLime.LLE
 {
     class Memory : IBus
     {

@@ -3,7 +3,7 @@ using LemonLime.Common;
 using System;
 using System.Threading;
 
-namespace LemonLime.CTR
+namespace LemonLime.LLE
 {
     class CPUHandler
     {

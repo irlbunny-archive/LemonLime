@@ -1,10 +1,10 @@
 ﻿using LemonLime.Common;
-using LemonLime.CTR.IO.Registers;
+using LemonLime.LLE.IO.Registers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LemonLime.CTR.IO
+namespace LemonLime.LLE.IO
 {
     class IOHandler
     {

@@ -1,10 +1,10 @@
 ﻿using LemonLime.Common;
 
-namespace LemonLime.CTR.IO.Registers
+namespace LemonLime.LLE.IO.Registers
 {
-    class XDMA
+    class CDMA
     {
-        public static void XDMA_UNKNOWN(IOData Data)
+        public static void CDMA_UNKNOWN(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 

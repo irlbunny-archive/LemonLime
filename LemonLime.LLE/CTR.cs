@@ -1,15 +1,15 @@
 ﻿using LemonLime.ARM;
 using System.Threading;
 
-namespace LemonLime.CTR
+namespace LemonLime.LLE
 {
-    public class Core
+    public class CTR
     {
         private CPUHandler CPU;
 
         private Memory Memory;
 
-        public Core()
+        public CTR()
         {
             Memory = new Memory();
 

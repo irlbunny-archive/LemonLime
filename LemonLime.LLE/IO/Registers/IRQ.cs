@@ -1,21 +1,21 @@
 ﻿using LemonLime.Common;
 
-namespace LemonLime.CTR.IO.Registers
+namespace LemonLime.LLE.IO.Registers
 {
-    class PXI
+    class IRQ
     {
-        public static void PXI_SYNC(IOData Data)
+        public static void IRQ_IE(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
             Data.Read32 = 0xFF;
         }
 
-        public static void PXI_CNT(IOData Data)
+        public static void IRQ_IF(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
-            Data.Read16 = 0xFF;
+            Data.Read32 = 0xFF;
         }
     }
 }

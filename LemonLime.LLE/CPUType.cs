@@ -1,4 +1,4 @@
-﻿namespace LemonLime.CTR
+﻿namespace LemonLime.LLE
 {
     enum CPUType
     {

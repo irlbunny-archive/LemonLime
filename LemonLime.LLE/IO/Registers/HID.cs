@@ -1,6 +1,6 @@
 ﻿using LemonLime.Common;
 
-namespace LemonLime.CTR.IO.Registers
+namespace LemonLime.LLE.IO.Registers
 {
     class HID
     {

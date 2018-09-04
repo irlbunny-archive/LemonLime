@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace LemonLime.CTR.BootROM
+namespace LemonLime.LLE.BootROM
 {
     class ARM9
     {

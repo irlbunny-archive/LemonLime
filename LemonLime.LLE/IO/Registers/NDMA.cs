@@ -1,17 +1,17 @@
 ﻿using LemonLime.Common;
 
-namespace LemonLime.CTR.IO.Registers
+namespace LemonLime.LLE.IO.Registers
 {
-    class IRQ
+    class NDMA
     {
-        public static void IRQ_IE(IOData Data)
+        public static void NDMA_GLOBAL_CNT(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
             Data.Read32 = 0xFF;
         }
 
-        public static void IRQ_IF(IOData Data)
+        public static void NDMA_CNT(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 

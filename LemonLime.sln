@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LemonLime", "LemonLime\Lemo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LemonLime.ARM", "LemonLime.ARM\LemonLime.ARM.csproj", "{65067963-DDB5-4429-9DBE-CCAFBB3FAF56}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LemonLime.CTR", "LemonLime.CTR\LemonLime.CTR.csproj", "{FC9028B7-8D05-4C98-906D-71273FC86979}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LemonLime.LLE", "LemonLime.LLE\LemonLime.LLE.csproj", "{FC9028B7-8D05-4C98-906D-71273FC86979}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LemonLime.Common", "LemonLime.Common\LemonLime.Common.csproj", "{7E6C8E19-7EEF-4901-87A7-553F5B2B56C3}"
 EndProject

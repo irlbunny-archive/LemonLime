@@ -9,7 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LemonLime.ARM\LemonLime.ARM.csproj" />
     <ProjectReference Include="..\LemonLime.Common\LemonLime.Common.csproj" />
-    <ProjectReference Include="..\LemonLime.CTR\LemonLime.CTR.csproj" />
+    <ProjectReference Include="..\LemonLime.LLE\LemonLime.LLE.csproj" />
   </ItemGroup>
 
 </Project>

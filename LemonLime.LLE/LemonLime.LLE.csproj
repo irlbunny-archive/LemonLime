@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="IO\ochbfgbs.udx~" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\LemonLime.ARM\LemonLime.ARM.csproj" />
     <ProjectReference Include="..\LemonLime.Common\LemonLime.Common.csproj" />
   </ItemGroup>
