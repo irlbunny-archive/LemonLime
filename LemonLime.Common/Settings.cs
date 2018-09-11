@@ -10,21 +10,19 @@ namespace LemonLime.Common
         public static string SettingsFile;
 
         // The default settings.
-        private static Dictionary<string, string> DefaultSettings = new Dictionary<string, string>
-        {
-        };
+        private static Dictionary<string, string> DefaultSettings = new Dictionary<string, string> { };
 
         // The current settings.
         private static Dictionary<string, string> Values = new Dictionary<string, string>();
 
         /// <summary>
-        /// Loads the settings from the file
+        /// Loads the settings from the file.
         /// </summary>
         public static void Load()
         {
-            if (System.IO.File.Exists(SettingsFile))
+            if (File.Exists(SettingsFile))
             {
-                string[] lines = System.IO.File.ReadAllLines(SettingsFile);
+                string[] lines = File.ReadAllLines(SettingsFile);
                 foreach (var line in lines)
                 {
                     var arr = line.Split('=');
@@ -58,7 +56,7 @@ namespace LemonLime.Common
             {
                 str += $"{setting.Key}={setting.Value}\n";
             }
-            System.IO.File.WriteAllText(SettingsFile, str);
+            File.WriteAllText(SettingsFile, str);
         }
 
         public static string Get(string key)
