@@ -259,3 +259,9 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+# Visual Studio Code JSON files
+.vscode/
+
+# The settings file of the emulator
+LemonLime/settings.txt
