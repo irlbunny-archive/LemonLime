@@ -36,7 +36,7 @@ namespace LemonLime.Common
                         // Remove the trailing space
                         value = value.Substring(0, value.Length - 1);
                         // Add the setting
-                        Settings.Values.Add(arr[0], value);
+                        Values.Add(arr[0], value);
                     }
                 }
             }
