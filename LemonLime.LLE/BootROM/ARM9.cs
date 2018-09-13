@@ -8,7 +8,10 @@ namespace LemonLime.LLE.BootROM
 
         public ARM9()
         {
-            BootROM = File.ReadAllBytes("boot9.bin");
+            if (File.Exists("boot9.bin"))
+            {
+                BootROM = File.ReadAllBytes("boot9.bin");
+            }
         }
     }
 }

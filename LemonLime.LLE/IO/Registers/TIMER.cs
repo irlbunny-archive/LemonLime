@@ -8,14 +8,14 @@ namespace LemonLime.LLE.IO.Registers
         {
             Logger.WriteStub("Stubbed.");
 
-            Data.Read16 = 0xFF;
+            Data.Read16 = 0x0000;
         }
 
         public static void TIMER_CNT(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
-            Data.Read16 = 0xFF;
+            Data.Read16 = 0x0000;
         }
     }
 }

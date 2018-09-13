@@ -1,4 +1,6 @@
-﻿namespace LemonLime.LLE.IO.Registers
+﻿using LemonLime.Common;
+
+namespace LemonLime.LLE.IO.Registers
 {
     class CFG9
     {
@@ -9,6 +11,13 @@
             if (Reset && Data.Write8 != 0) Data.CPU.EnableCPU(CPUType.ARM11, Reset);
 
             Data.Read8 = 0xFF;
+        }
+
+        public static void CFG9_SDMMCCTL(IOData Data)
+        {
+            Logger.WriteStub("Stubbed.");
+
+            Data.Read32 = 0x00000340;
         }
 
         public static void CFG9_UNITINFO(IOData Data)

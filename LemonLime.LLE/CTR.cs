@@ -7,7 +7,7 @@ namespace LemonLime.LLE
     {
         private CPUHandler CPU;
 
-        private Memory Memory;
+        public Memory Memory;
 
         public CTR()
         {

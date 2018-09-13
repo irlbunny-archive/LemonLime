@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="OpenTK.NETCore" Version="1.1.2749.6433" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LemonLime.ARM\LemonLime.ARM.csproj" />
     <ProjectReference Include="..\LemonLime.Common\LemonLime.Common.csproj" />
     <ProjectReference Include="..\LemonLime.LLE\LemonLime.LLE.csproj" />

@@ -1,11 +1,13 @@
 ﻿using LemonLime.ARM;
 using LemonLime.Common;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Threading;
 
 namespace LemonLime.LLE
 {
-    class CPUHandler
+    public class CPUHandler
     {
         private Memory Memory;
 
@@ -31,17 +33,25 @@ namespace LemonLime.LLE
 
             Memory.SetType(CPUType.ARM9);
 
-            ARM9 = new Interpreter(Memory, true);
+            ARM9 = new Interpreter(Memory, true, 0x23F00000);
 
-            Memory.SetType(CPUType.ARM11);
+            // Memory.SetType(CPUType.ARM11);
 
-            ARM11 = new Interpreter(Memory);
+            // ARM11 = new Interpreter(Memory);
 
             ARM9_Thread = new Thread(Run9);
 
             ARM11_Thread = new Thread(Run11);
 
             Memory.SetHandler(this);
+
+            Memory.WriteUInt32(0xFFF00000, 0x23FFFE00);
+            Memory.WriteUInt32(0xFFF00004, 0x23FFFE00);
+            Memory.WriteUInt32(0x23FFFE00, 0x20000000);
+            Memory.WriteUInt32(0x23FFFE08, 0x2008CA00);
+
+            ARM9.Registers[0] = 2;
+            ARM9.Registers[1] = 0xFFF00000;
         }
 
         public void EnableCPU(CPUType Type, bool Enabled)
@@ -57,7 +67,7 @@ namespace LemonLime.LLE
 
                 case CPUType.ARM11:
                     Logger.WriteInfo("Enabling ARM11 CPU.");
-                    ARM11_Enabled = Enabled;
+                    // ARM11_Enabled = Enabled;
                     break;
             }
         }
@@ -75,7 +85,7 @@ namespace LemonLime.LLE
                 case CPUType.ARM11:
                     if (ARM11_Enabled != true) throw new Exception("ARM11 is not enabled.");
                     Logger.WriteInfo("Enabling ARM11 IRQ.");
-                    ARM11.IRQ = true;
+                    // ARM11.IRQ = true;
                     break;
             }
         }

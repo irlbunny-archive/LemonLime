@@ -16,6 +16,7 @@ namespace LemonLime.LLE.IO
             {
                 // CFG9
                 new IOEntry(CFG9.CFG9_RST11,    0x10000002),
+                new IOEntry(CFG9.CFG9_SDMMCCTL, 0x10000020),
                 new IOEntry(CFG9.CFG9_UNITINFO, 0x10010010),
 
                 // IRQ
@@ -37,21 +38,6 @@ namespace LemonLime.LLE.IO
                 // PXI
                 new IOEntry(PXI.PXI_SYNC, 0x10008000),
                 new IOEntry(PXI.PXI_CNT,  0x10008004),
-
-                // CDMA
-                new IOEntry(CDMA.CDMA_UNKNOWN, 0x1000CD00 + (0 * 4)),
-                new IOEntry(CDMA.CDMA_UNKNOWN, 0x1000CD00 + (1 * 4)),
-                new IOEntry(CDMA.CDMA_UNKNOWN, 0x1000CD00 + (2 * 4)),
-                new IOEntry(CDMA.CDMA_UNKNOWN, 0x1000CD00 + (3 * 4)),
-                new IOEntry(CDMA.CDMA_UNKNOWN, 0x1000CD00 + (4 * 4)),
-
-                // XDMA
-                new IOEntry(XDMA.XDMA_UNKNOWN, 0x1000C020 + (0 * 4)),
-                new IOEntry(XDMA.XDMA_UNKNOWN, 0x1000C020 + (1 * 4)),
-                new IOEntry(XDMA.XDMA_UNKNOWN, 0x1000C020 + (2 * 4)),
-                new IOEntry(XDMA.XDMA_UNKNOWN, 0x1000C020 + (3 * 4)),
-                new IOEntry(XDMA.XDMA_UNKNOWN, 0x1000C020 + (4 * 4)),
-                new IOEntry(XDMA.XDMA_UNKNOWN, 0x1000C100),
                 
                 // TIMER
                 new IOEntry(TIMER.TIMER_VAL, 0x10003000 + 4 * 0), // Timer 1
@@ -63,6 +49,14 @@ namespace LemonLime.LLE.IO
                 new IOEntry(TIMER.TIMER_CNT, 0x10003002 + 4 * 1), // Timer 2
                 new IOEntry(TIMER.TIMER_CNT, 0x10003002 + 4 * 2), // Timer 3
                 new IOEntry(TIMER.TIMER_CNT, 0x10003002 + 4 * 3), // Timer 4
+
+                // EMMC
+                new IOEntry(EMMC.EMMC_STOP,     0x10006008),
+                new IOEntry(EMMC.EMMC_BLKCOUNT, 0x1000600A),
+                new IOEntry(EMMC.EMMC_STATUS0,  0x1000601C),
+                new IOEntry(EMMC.EMMC_STATUS1,  0x1000601E),
+                new IOEntry(EMMC.EMMC_CLKCTL,   0x10006024),
+                new IOEntry(EMMC.EMMC_OPT,      0x10006028),
 
                 // HID
                 new IOEntry(HID.HID_PAD, 0x10146000),
@@ -77,13 +71,13 @@ namespace LemonLime.LLE.IO
                     switch (Data.Width)
                     {
                         case IOWidth.Width1:
-                            Logger.WriteInfo($"IO [{Data.Address.ToString("X")}]");
+                            Logger.WriteInfo($"IO ({Data.CPUType}) [{Data.Address.ToString("X")}]");
                             break;
                         case IOWidth.Width2:
-                            Logger.WriteInfo($"IO [{Data.Address.ToString("X")}]");
+                            Logger.WriteInfo($"IO ({Data.CPUType}) [{Data.Address.ToString("X")}]");
                             break;
                         case IOWidth.Width4:
-                            Logger.WriteInfo($"IO [{Data.Address.ToString("X")}]");
+                            Logger.WriteInfo($"IO ({Data.CPUType}) [{Data.Address.ToString("X")}]");
                             break;
                     }
                     break;
@@ -92,13 +86,13 @@ namespace LemonLime.LLE.IO
                     switch (Data.Width)
                     {
                         case IOWidth.Width1:
-                            Logger.WriteInfo($"IO [{Data.Address.ToString("X")}], Data = {Data.Write8.ToString("X2")}");
+                            Logger.WriteInfo($"IO ({Data.CPUType}) [{Data.Address.ToString("X")}], Data = {Data.Write8.ToString("X2")}");
                             break;
                         case IOWidth.Width2:
-                            Logger.WriteInfo($"IO [{Data.Address.ToString("X")}], Data = {Data.Write16.ToString("X4")}");
+                            Logger.WriteInfo($"IO ({Data.CPUType}) [{Data.Address.ToString("X")}], Data = {Data.Write16.ToString("X4")}");
                             break;
                         case IOWidth.Width4:
-                            Logger.WriteInfo($"IO [{Data.Address.ToString("X")}], Data = {Data.Write32.ToString("X8")}");
+                            Logger.WriteInfo($"IO ({Data.CPUType}) [{Data.Address.ToString("X")}], Data = {Data.Write32.ToString("X8")}");
                             break;
                     }
                     break;
@@ -106,7 +100,15 @@ namespace LemonLime.LLE.IO
 
             IOEntry EntryForAddr = Entries.Where(Entry => Entry.Address == Data.Address).FirstOrDefault();
 
-            if (EntryForAddr == null) throw new Exception($"Unhandled {Data.Type} ({Data.Width}) @ {Data.Address.ToString($"X")}");
+            if (EntryForAddr == null)
+            {
+                // throw new Exception($"Unhandled {Data.Type} ({Data.Width}) @ {Data.Address.ToString($"X")}");
+
+                Data.Read32 = 0x00000000;
+                Data.Read16 = 0x0000;
+                Data.Read8 = 0x00;
+                return;
+            }
 
             EntryForAddr.Register(Data);
         }

@@ -12,6 +12,7 @@ namespace LemonLime.ARM
         public ARMRegisters Registers;
 
         private bool HighVectors;
+        private uint StartPC;
         private uint Opcode;
         private uint NextOpcode;
 
@@ -22,10 +23,11 @@ namespace LemonLime.ARM
         /// </summary>
         /// <param name="Bus">Bus used to read and write data</param>
         /// <param name="HighVectors">True if the Vector Table starts at 0xFFFF0000 instead of 0x0, false otherwise</param>
-        public Interpreter(IBus Bus, bool HighVectors = false)
+        public Interpreter(IBus Bus, bool HighVectors = false, uint StartPC = 0)
         {
             this.Bus = Bus;
             this.HighVectors = HighVectors;
+            this.StartPC = StartPC;
             Reset();
         }
 
@@ -56,7 +58,15 @@ namespace LemonLime.ARM
             Registers.SetFlag(ARMFlag.AbortDisable, true);
             Registers.SetFlag(ARMFlag.Zero, true);
             Registers.Mode = ARMMode.Supervisor;
-            Registers[15] = HighVectors ? 0xffff0000 : 0;
+
+            if (StartPC != 0)
+            {
+                Registers[15] = StartPC;
+            }
+            else
+            {
+                Registers[15] = HighVectors ? 0xffff0000 : 0;
+            }
 
             Opcode = 0;
             ReloadPipeline();

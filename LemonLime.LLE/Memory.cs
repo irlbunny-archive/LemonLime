@@ -1,10 +1,11 @@
 ﻿using LemonLime.ARM;
 using LemonLime.Common;
 using LemonLime.LLE.IO;
+using System.IO;
 
 namespace LemonLime.LLE
 {
-    class Memory : IBus
+    public class Memory : IBus
     {
         private CPUHandler CPU;
 
@@ -27,6 +28,10 @@ namespace LemonLime.LLE
         private byte[] FCRAM = new byte[0x08000000];
 
         private byte[] DataTCM = new byte[0x00004000];
+
+        public byte[] TopScreenVRAM = new byte[0x0008CA00];
+
+        private byte[] ARM9_Payload = File.ReadAllBytes("arm9loaderhax.bin");
 
         public Memory()
         {
@@ -53,10 +58,12 @@ namespace LemonLime.LLE
             {
                 if (Address < 0x08000000)
                 {
+                    // Logger.WriteInfo($"InstructionTCM - Read [{Type}] @ 0x{Address.ToString("X8")}");
                     return InstructionTCM[Address];
                 }
                 else if (Address >= 0x08000000 && Address < 0x08000000 + 0x00100000)
                 {
+                    // Logger.WriteInfo($"ARM9_InternalMemory - Read [{Type}] @ 0x{Address.ToString("X8")}");
                     return ARM9_InternalMemory[Address - 0x08000000];
                 }
             }
@@ -78,6 +85,7 @@ namespace LemonLime.LLE
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
+                        // Logger.WriteInfo($"MPCore_PrivateMemory - Read [{Type}] @ 0x{Address.ToString("X8")}");
                         return MPCore_PrivateMemory[Address - 0x17E00000];
                     }
                 }
@@ -88,10 +96,24 @@ namespace LemonLime.LLE
             }
             else if (Address >= 0x1FF80000 && Address < 0x1FF80000 + 0x00080000)
             {
+                // Logger.WriteInfo($"AXIWRAM - Read [{Type}] @ 0x{Address.ToString("X8")}");
                 return AXIWRAM[Address - 0x1FF80000];
             }
             else if (Address >= 0x20000000 && Address < 0x20000000 + 0x08000000)
             {
+                if (Address >= 0x23F00000 && Address < 0x23F00000 + ARM9_Payload.Length)
+                {
+                    // Logger.WriteInfo($"ARM9_Payload - Read [{Type}] @ 0x{Address.ToString("X8")}");
+                    return ARM9_Payload[Address - 0x23F00000];
+                }
+
+                if (Address >= 0x20000000 && Address < 0x20000000 + 0x0008CA00)
+                {
+                    // Logger.WriteInfo($"VRAM [Top Screen] - Read [{Type}] @ 0x{Address.ToString("X8")}");
+                    return TopScreenVRAM[Address - 0x20000000];
+                }
+
+                // Logger.WriteInfo($"FCRAM - Read [{Type}] @ 0x{Address.ToString("X8")}");
                 return FCRAM[Address - 0x20000000];
             }
 
@@ -99,6 +121,7 @@ namespace LemonLime.LLE
             {
                 if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
                 {
+                    // Logger.WriteInfo($"DataTCM - Read [{Type}] @ 0x{Address.ToString("X8")}");
                     return DataTCM[Address - 0xFFF00000];
                 }
             }
@@ -177,11 +200,13 @@ namespace LemonLime.LLE
             {
                 if (Address < 0x08000000)
                 {
+                    // Logger.WriteInfo($"InstructionTCM - Write [{Type}] @ 0x{Address.ToString("X8")}, Value = {Value.ToString("X")}");
                     InstructionTCM[Address] = Value;
                     return;
                 }
                 else if (Address >= 0x08000000 && Address < 0x08000000 + 0x00100000)
                 {
+                    // Logger.WriteInfo($"ARM9_InternalMemory - Write [{Type}] @ 0x{Address.ToString("X8")}, Value = {Value.ToString("X")}");
                     ARM9_InternalMemory[Address - 0x08000000] = Value;
                     return;
                 }
@@ -193,6 +218,7 @@ namespace LemonLime.LLE
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
+                        // Logger.WriteInfo($"MPCore_PrivateMemory- Write [{Type}] @ 0x{Address.ToString("X8")}, Value = {Value.ToString("X")}");
                         MPCore_PrivateMemory[Address - 0x17E00000] = Value;
                         return;
                     }
@@ -203,11 +229,27 @@ namespace LemonLime.LLE
             }
             else if (Address >= 0x1FF80000 && Address < 0x1FF80000 + 0x00080000)
             {
+                // Logger.WriteInfo($"AXIWRAM - Write [{Type}] @ 0x{Address.ToString("X8")}, Value = {Value.ToString("X")}");
                 AXIWRAM[Address - 0x1FF80000] = Value;
                 return;
             }
             else if (Address >= 0x20000000 && Address < 0x20000000 + 0x08000000)
             {
+                if (Address >= 0x23F00000 && Address < 0x23F00000 + ARM9_Payload.Length)
+                {
+                    // Logger.WriteInfo($"ARM9_Payload - Write [{Type}] @ 0x{Address.ToString("X8")}, Value = {Value.ToString("X")}");
+                    ARM9_Payload[Address - 0x23F00000] = Value;
+                    return;
+                }
+
+                if (Address >= 0x20000000 && Address < 0x20000000 + 0x0008CA00)
+                {
+                    // Logger.WriteInfo($"VRAM [Top Screen] - Write [{Type}] @ 0x{Address.ToString("X8")}");
+                    TopScreenVRAM[Address - 0x20000000] = Value;
+                    return;
+                }
+
+                // Logger.WriteInfo($"FCRAM - Write [{Type}] @ 0x{Address.ToString("X8")}, Value = {Value.ToString("X")}");
                 FCRAM[Address - 0x20000000] = Value;
                 return;
             }
@@ -216,6 +258,7 @@ namespace LemonLime.LLE
             {
                 if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
                 {
+                    // Logger.WriteInfo($"DataTCM - Write [{Type}] @ 0x{Address.ToString("X8")}, Value = {Value.ToString("X")}");
                     DataTCM[Address - 0xFFF00000] = Value;
                     return;
                 }

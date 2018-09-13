@@ -8,14 +8,14 @@ namespace LemonLime.LLE.IO.Registers
         {
             Logger.WriteStub("Stubbed.");
 
-            Data.Read32 = 0xFF;
+            Data.Read32 = 0x00000000;
         }
 
         public static void NDMA_CNT(IOData Data)
         {
             Logger.WriteStub("Stubbed.");
 
-            Data.Read32 = 0xFF;
+            Data.Read32 = 0x00000000;
         }
     }
 }

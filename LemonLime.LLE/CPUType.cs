@@ -1,6 +1,6 @@
 ﻿namespace LemonLime.LLE
 {
-    enum CPUType
+    public enum CPUType
     {
         ARM9,
         ARM11,
