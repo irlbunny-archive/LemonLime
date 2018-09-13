@@ -8,7 +8,9 @@ namespace LemonLime
 {
     class GLScreen : GameWindow
     {
-        LLE.CTR CTR = new LLE.CTR();
+        private LLE.CTR CTR = new LLE.CTR();
+
+        private int FbTexture;
 
         public GLScreen()
             : base(400, 240, GraphicsMode.Default, "LemonLime Screen")
@@ -22,12 +24,16 @@ namespace LemonLime
         {
             base.OnLoad(e);
 
+            FbTexture = GL.GenTexture();
+
+            GL.BindTexture(TextureTarget.Texture2D, FbTexture);
+
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, 240, 400, 0, PixelFormat.Rgb, PixelType.UnsignedByte, IntPtr.Zero);
 
             GL.Rotate(90, 0, 0, 1);
 
-            // GL.TexParameterI(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, new int[] { (int)TextureMagFilter.Nearest });
-            GL.TexParameterI(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, new int[] { (int)TextureMinFilter.Nearest });
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
 
             GL.Enable(EnableCap.Texture2D);
         }
@@ -53,14 +59,16 @@ namespace LemonLime
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
+            GL.BindTexture(TextureTarget.Texture2D, FbTexture);
+
             GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, 240, 400, PixelFormat.Bgr, PixelType.UnsignedByte, CTR.Memory.TopScreenVRAM);
 
             GL.Begin(PrimitiveType.Quads);
 
-            GL.TexCoord2(0.0, 1.0); GL.Vertex2(0.0, 0.0);
-            GL.TexCoord2(1.0, 1.0); GL.Vertex2(1.0, 0.0);
+            GL.TexCoord2(0.0, 1.0); GL.Vertex2(-1.0, -1.0);
+            GL.TexCoord2(1.0, 1.0); GL.Vertex2(1.0, -1.0);
             GL.TexCoord2(1.0, 0.0); GL.Vertex2(1.0, 1.0);
-            GL.TexCoord2(0.0, 0.0); GL.Vertex2(0.0, 1.0);
+            GL.TexCoord2(0.0, 0.0); GL.Vertex2(-1.0, 1.0);
 
             GL.End();
 
