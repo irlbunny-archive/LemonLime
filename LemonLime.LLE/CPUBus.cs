@@ -73,24 +73,30 @@ namespace LemonLime.LLE
 
         public void WriteUInt16(uint Address, ushort Value)
         {
-            /*uint Word = ReadUInt32(Address);
-            int Shift = (Address & 2) * 8;
+            int Shift = (int)Address & 2;
+            int BitMask = 0xFFFF << (Shift * 8);
 
-            Word &= ~(0xFFFF << Shift);
-            Word |= Value << Shift;
+            uint WordAddress = Address - (uint)Shift;
+            uint Word = this.ReadUInt32(WordAddress);
 
-            dev.WriteUInt32(Word);*/
+            Word &= (uint)(~BitMask);
+            Word |= (uint)Value << Shift;
+
+            this.WriteUInt32(WordAddress, Word);
         }
 
         public void WriteUInt8(uint Address, byte Value)
         {
-            /*uint Word = ReadUInt32(Address);
-            int Shift = (Address & 3) * 8;
+            int Shift = (int)Address & 3;
+            int BitMask = 0xFF << (Shift * 8);
 
-            Word &= ~(0xFF << Shift);
-            Word |= Value << Shift;
+            uint WordAddress = Address - (uint)Shift;
+            uint Word = this.ReadUInt32(WordAddress);
 
-            dev.WriteUInt32(Word);*/
+            Word &= (uint)(~BitMask);
+            Word |= (uint)Value << Shift;
+
+            this.WriteUInt32(WordAddress, Word);
         }
     }
 }
