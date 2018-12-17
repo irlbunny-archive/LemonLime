@@ -56,7 +56,7 @@ namespace LemonLime.LLE.CPU
             }
         }
 
-        public void EnableIRQ(Type Type)
+        public void EnableIrq(Type Type)
         {
             switch (Type)
             {
