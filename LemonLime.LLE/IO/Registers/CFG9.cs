@@ -2,18 +2,18 @@
 {
     class CFG9
     {
-        public static void CFG9_RST11(IOData Data)
+        public static void CFG9_RST11(Context Ctx)
         {
-            bool Reset = (Data.Write8 << 31 != 1);
+            bool Reset = Ctx.GetInputUInt8() << 31 != 1;
 
-            if (Reset && Data.Write8 != 0) Data.CPU.EnableCPU(CPUType.ARM11, Reset);
+            if (Reset && Ctx.GetInputUInt8() != 0) Ctx.ProcHandler.EnableCpu(CPU.Type.Arm11, Reset);
 
-            Data.Read8 = 0xFF;
+            Ctx.SetOutput(0xFF);
         }
 
-        public static void CFG9_UNITINFO(IOData Data)
+        public static void CFG9_UNITINFO(Context Ctx)
         {
-            Data.Read8 = 0x00; // Retail
+            Ctx.SetOutput(0x00); // Retail
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace LemonLime.LLE.IO
 {
-    enum IOType
+    enum Type
     {
         Read,
         Write

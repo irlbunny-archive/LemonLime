@@ -4,11 +4,11 @@ namespace LemonLime.LLE.IO.Registers
 {
     class CDMA
     {
-        public static void CDMA_UNKNOWN(IOData Data)
+        public static void CDMA_UNKNOWN(Context Ctx)
         {
             Logger.WriteStub("Stubbed.");
 
-            Data.Read32 = 0x00;
+            Ctx.SetOutput(0x00000000);
         }
     }
 }

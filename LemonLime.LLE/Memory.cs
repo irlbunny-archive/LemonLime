@@ -1,20 +1,16 @@
 ﻿using LemonLime.ARM;
 using LemonLime.Common;
-using LemonLime.LLE.IO;
+using LemonLime.LLE;
 
 namespace LemonLime.LLE
 {
     class Memory : IBus
     {
-        private CPUHandler CPU;
+        private CPU.Handler Handler;
 
-        private IOHandler IO;
+        private CPU.Type Type;
 
-        private BootROM.ARM9 BootROM9;
-
-        private BootROM.ARM11 BootROM11;
-
-        private CPUType Type;
+        private IO.Handler IO;
 
         private byte[] InstructionTCM = new byte[0x08000000]; // TODO: Repeat each 0x8000 bytes?
 
@@ -30,26 +26,22 @@ namespace LemonLime.LLE
 
         public Memory()
         {
-            BootROM9 = new BootROM.ARM9();
-
-            BootROM11 = new BootROM.ARM11();
-
-            IO = new IOHandler();
+            IO = new IO.Handler();
         }
 
-        public void SetType(CPUType Type)
+        public void SetType(CPU.Type Type)
         {
             this.Type = Type;
         }
 
-        public void SetHandler(CPUHandler CPU)
+        public void SetHandler(CPU.Handler CPU)
         {
-            this.CPU = CPU;
+            this.Handler = CPU;
         }
 
         public byte ReadUInt8(uint Address)
         {
-            if (Type == CPUType.ARM9)
+            if (Type == CPU.Type.Arm9)
             {
                 if (Address < 0x08000000)
                 {
@@ -74,7 +66,7 @@ namespace LemonLime.LLE
 
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                if (Type == CPUType.ARM11)
+                if (Type == CPU.Type.Arm11)
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
@@ -82,9 +74,7 @@ namespace LemonLime.LLE
                     }
                 }
 
-                IOData IOInfo = new IOData(CPU, Type, Address, IOType.Read, IOWidth.Width1);
-                IO.Call(IOInfo);
-                return IOInfo.Read8;
+                return (byte) IO.Call(new IO.Context(Handler, Type, Address, LLE.IO.Type.Read, LLE.IO.Width.Width1));
             }
             else if (Address >= 0x1FF80000 && Address < 0x1FF80000 + 0x00080000)
             {
@@ -95,7 +85,7 @@ namespace LemonLime.LLE
                 return FCRAM[Address - 0x20000000];
             }
 
-            if (Type == CPUType.ARM9)
+            if (Type == CPU.Type.Arm9)
             {
                 if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
                 {
@@ -103,7 +93,7 @@ namespace LemonLime.LLE
                 }
             }
 
-            if (Type == CPUType.ARM9)
+            if (Type == CPU.Type.Arm9)
             {
                 if (Address >= 0xFFFF0000)
                 {
@@ -127,7 +117,7 @@ namespace LemonLime.LLE
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                if (Type == CPUType.ARM11)
+                if (Type == Type.Arm11)
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
@@ -136,7 +126,7 @@ namespace LemonLime.LLE
                     }
                 }
 
-                IOData IOInfo = new IOData(CPU, Type, Address, IOType.Read, IOWidth.Width2);
+                Context IOInfo = new Context(Handler, Type, Address, LLE.IO.Type.Read, Width.Width2);
                 IO.Call(IOInfo);
                 return IOInfo.Read16;
             }
@@ -149,7 +139,7 @@ namespace LemonLime.LLE
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                if (Type == CPUType.ARM11)
+                if (Type == CPU.Type.Arm11)
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
@@ -160,7 +150,7 @@ namespace LemonLime.LLE
                     }
                 }
 
-                IOData IOInfo = new IOData(CPU, Type, Address, IOType.Read, IOWidth.Width4);
+                Context IOInfo = new Context(Handler, Type, Address, LLE.IO.Type.Read, LLE.IO.Width.Width4);
                 IO.Call(IOInfo);
                 return IOInfo.Read32;
             }
@@ -173,7 +163,7 @@ namespace LemonLime.LLE
 
         public void WriteUInt8(uint Address, byte Value)
         {
-            if (Type == CPUType.ARM9)
+            if (Type == Type.Arm9)
             {
                 if (Address < 0x08000000)
                 {
@@ -189,7 +179,7 @@ namespace LemonLime.LLE
 
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                if (Type == CPUType.ARM11)
+                if (Type == Type.Arm11)
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
@@ -198,7 +188,7 @@ namespace LemonLime.LLE
                     }
                 }
 
-                IO.Call(new IOData(CPU, Type, Address, IOType.Write, IOWidth.Width1, Value));
+                IO.Call(new Context(Handler, Type, Address, LLE.IO.Type.Write, Width.Width1, Value));
                 return;
             }
             else if (Address >= 0x1FF80000 && Address < 0x1FF80000 + 0x00080000)
@@ -212,7 +202,7 @@ namespace LemonLime.LLE
                 return;
             }
 
-            if (Type == CPUType.ARM9)
+            if (Type == Type.Arm9)
             {
                 if (Address >= 0xFFF00000 && Address < 0xFFF00000 + 0x00004000)
                 {
@@ -228,7 +218,7 @@ namespace LemonLime.LLE
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                if (Type == CPUType.ARM11)
+                if (Type == Type.Arm11)
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
@@ -238,7 +228,7 @@ namespace LemonLime.LLE
                     }
                 }
 
-                IO.Call(new IOData(CPU, Type, Address, IOType.Write, IOWidth.Width2, 0, Value));
+                IO.Call(new Context(Handler, Type, Address, LLE.IO.Type.Write, Width.Width2, 0, Value));
                 return;
             }
 
@@ -250,7 +240,7 @@ namespace LemonLime.LLE
         {
             if (Address >= 0x10000000 && Address < 0x10000000 + 0x08000000)
             {
-                if (Type == CPUType.ARM11)
+                if (Type == Type.Arm11)
                 {
                     if (Address >= 0x17E00000 && Address < 0x17E00000 + 0x00002000)
                     {
@@ -262,7 +252,7 @@ namespace LemonLime.LLE
                     }
                 }
 
-                IO.Call(new IOData(CPU, Type, Address, IOType.Write, IOWidth.Width4, 0, 0, Value));
+                IO.Call(new Context(Handler, Type, Address, LLE.IO.Type.Write, Width.Width4, 0, 0, Value));
                 return;
             }
 

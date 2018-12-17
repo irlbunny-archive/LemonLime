@@ -4,18 +4,18 @@ namespace LemonLime.LLE.IO.Registers
 {
     class PXI
     {
-        public static void PXI_SYNC(IOData Data)
+        public static void PXI_SYNC(Context Ctx)
         {
             Logger.WriteStub("Stubbed.");
 
-            Data.Read32 = 0xFF;
+            Ctx.SetOutput(0xFFFF);
         }
 
-        public static void PXI_CNT(IOData Data)
+        public static void PXI_CNT(Context Ctx)
         {
             Logger.WriteStub("Stubbed.");
 
-            Data.Read16 = 0xFF;
+            Ctx.SetOutput(0xFFFF);
         }
     }
 }

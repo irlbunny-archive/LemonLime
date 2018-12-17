@@ -1,6 +1,6 @@
 ﻿namespace LemonLime.LLE.IO
 {
-    enum IOWidth
+    enum Width
     {
         Width1 = 1,
         Width2 = 2,

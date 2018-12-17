@@ -5,7 +5,7 @@ namespace LemonLime.LLE
 {
     public class CTR
     {
-        private CPUHandler CPU;
+        private CPU.Handler Handler;
 
         private Memory Memory;
 
@@ -13,14 +13,14 @@ namespace LemonLime.LLE
         {
             Memory = new Memory();
 
-            CPU = new CPUHandler(Memory);
+            Handler = new CPU.Handler(Memory);
 
-            CPU.EnableCPU(CPUType.ARM9, true); // Enable ARM9 CPU
+            Handler.EnableCpu(CPU.Type.Arm9, true); // Enable ARM9 CPU
         }
 
-        public void Start()
+        public void Run()
         {
-            CPU.Start();
+            Handler.Run();
         }
     }
 }

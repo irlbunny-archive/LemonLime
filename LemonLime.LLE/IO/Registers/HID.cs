@@ -4,11 +4,11 @@ namespace LemonLime.LLE.IO.Registers
 {
     class HID
     {
-        public static void HID_PAD(IOData Data)
+        public static void HID_PAD(Context Ctx)
         {
             Logger.WriteStub("Stubbed.");
 
-            Data.Read16 = 0xFFF;
+            Ctx.SetOutput(0xFFF);
         }
     }
 }

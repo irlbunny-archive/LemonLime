@@ -4,11 +4,11 @@ namespace LemonLime.LLE.IO.Registers
 {
     class XDMA
     {
-        public static void XDMA_UNKNOWN(IOData Data)
+        public static void XDMA_UNKNOWN(Context Ctx)
         {
             Logger.WriteStub("Stubbed.");
 
-            Data.Read32 = 0x00;
+            Ctx.SetOutput(0xFFFFFFFF);
         }
     }
 }
