@@ -79,9 +79,11 @@ namespace LemonLime.LLE.IO
                         case Width.Width1:
                             Logger.WriteInfo($"IO [{Ctx.Address.ToString("X")}]");
                             break;
+
                         case Width.Width2:
                             Logger.WriteInfo($"IO [{Ctx.Address.ToString("X")}]");
                             break;
+
                         case Width.Width4:
                             Logger.WriteInfo($"IO [{Ctx.Address.ToString("X")}]");
                             break;
@@ -94,9 +96,11 @@ namespace LemonLime.LLE.IO
                         case Width.Width1:
                             Logger.WriteInfo($"IO [{Ctx.Address.ToString("X")}], Data = {Ctx.GetInputUInt8().ToString("X2")}");
                             break;
+
                         case Width.Width2:
                             Logger.WriteInfo($"IO [{Ctx.Address.ToString("X")}], Data = {Ctx.GetInputUInt16().ToString("X4")}");
                             break;
+
                         case Width.Width4:
                             Logger.WriteInfo($"IO [{Ctx.Address.ToString("X")}], Data = {Ctx.GetInputUInt32().ToString("X8")}");
                             break;
