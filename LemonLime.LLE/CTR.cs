@@ -13,14 +13,14 @@ namespace LemonLime.LLE
         {
             Memory = new Memory();
 
-            Handler = new CPU.Handler(Memory);
+            Handler = new CPU.Handler(Memory, Memory);
 
             Handler.EnableCpu(CPU.Type.Arm9, true); // Enable ARM9 CPU
         }
 
         public void Run()
         {
-            Handler.Run();
+            Handler.Start();
         }
     }
 }

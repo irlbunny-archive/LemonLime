@@ -7,74 +7,65 @@ namespace LemonLime.LLE.CPU
 {
     class Handler
     {
-        private Memory Memory;
+        // ARM9 & ARM11 memory
+        private Memory Arm9Memory, Arm11Memory;
 
-        private Interpreter Arm9;
-        private Interpreter Arm11;
+        // ARM9 & ARM11 cores
+        private Interpreter Arm9, Arm11;
 
+        // Enable all cores
         private bool EnableAll = true;
 
-        private bool Arm9Enabled = false;
-        private bool Arm11Enabled = false;
+        // All cores are disabled by default
+        private bool Arm9Enabled, Arm11Enabled;
 
+        // CPU sync
         private bool Sync = false;
 
-        private Thread Arm9Thread;
-        private Thread Arm11Thread;
+        // ARM9 & ARM11 execution threads
+        private Thread Arm9Thread, Arm11Thread;
 
-        public Handler(Memory Memory)
+        public Handler(Memory Arm9Memory, Memory Arm11Memory)
         {
-            this.Memory = Memory;
+            this.Arm9Memory  = Arm9Memory;
+            this.Arm11Memory = Arm11Memory;
 
-            Memory.SetType(Type.Arm9);
-            Arm9 = new Interpreter(Memory, true);
+            Arm9  = new Interpreter(Arm9Memory, true);
+            Arm11 = new Interpreter(Arm11Memory);
 
-            Memory.SetType(Type.Arm11);
-            Arm11 = new Interpreter(Memory);
-
-            Arm9Thread = new Thread(Thread9);
+            Arm9Thread  = new Thread(Thread9);
             Arm11Thread = new Thread(Thread11);
 
-            Memory.SetHandler(this);
+            //Memory.SetHandler(this);
         }
 
         public void EnableCpu(Type Type, bool Enabled)
         {
-            if (Enabled != true) throw new Exception("Disabling CPUs are not allowed.");
+            if (Enabled)
+                Logger.WriteInfo($"Enabling processor ${Type}.");
+            else
+                Logger.WriteInfo($"Disabling processor ${Type}.");
 
             switch (Type)
             {
                 case Type.Arm9:
-                    Logger.WriteInfo("Enabling ARM9 CPU.");
                     Arm9Enabled = Enabled;
                     break;
 
                 case Type.Arm11:
-                    Logger.WriteInfo("Enabling ARM11 CPU.");
                     Arm11Enabled = Enabled;
                     break;
             }
         }
 
-        public void EnableIrq(Type Type)
+        public void SetIrq(Type Type)
         {
-            switch (Type)
-            {
-                case Type.Arm9:
-                    if (Arm9Enabled != true) throw new Exception("ARM9 is not enabled.");
-                    Logger.WriteInfo("Enabling ARM9 IRQ.");
-                    Arm9.IRQ = true;
-                    break;
-
-                case Type.Arm11:
-                    if (Arm11Enabled != true) throw new Exception("ARM11 is not enabled.");
-                    Logger.WriteInfo("Enabling ARM11 IRQ.");
-                    Arm11.IRQ = true;
-                    break;
-            }
+            Interpreter Proc = (Type == Type.Arm9) ? Arm9 : Arm11;
+            Logger.WriteInfo($"Triggering IRQ on processor ${Type}.");
+            Proc.IRQ = true;
         }
 
-        public void Run()
+        public void Start()
         {
             Arm9Thread.Start();
             Arm11Thread.Start();
@@ -87,7 +78,6 @@ namespace LemonLime.LLE.CPU
                 if (Arm9Enabled)
                 {
                     if (Sync) continue;
-                    Memory.SetType(Type.Arm9);
                     Arm9.Execute();
                     if (Arm11Enabled) Sync = true;
                 }
@@ -101,16 +91,23 @@ namespace LemonLime.LLE.CPU
                 if (Arm11Enabled)
                 {
                     if (!Sync) continue;
-                    Memory.SetType(Type.Arm11);
                     Arm11.Execute();
                     Sync = false;
                 }
             }
         }
 
+        // TODO: This may cause issues?
+        public void Pause()
+        {
+            EnableAll = false;
+        }
+
         public void Stop()
         {
             EnableAll = false;
+            Arm9Thread.Abort();
+            Arm11Thread.Abort();
         }
     }
 }
