@@ -1,6 +1,5 @@
 ﻿using LemonLime.ARM;
 using LemonLime.Common;
-using System;
 using System.Threading;
 
 namespace LemonLime.LLE.CPU

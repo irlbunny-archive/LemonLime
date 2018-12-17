@@ -1,7 +1,4 @@
-﻿using LemonLime.ARM;
-using System.Threading;
-
-namespace LemonLime.LLE
+﻿namespace LemonLime.LLE
 {
     public class CTR
     {
