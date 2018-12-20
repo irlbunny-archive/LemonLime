@@ -2,25 +2,20 @@
 {
     class Context
     {
-        public  CPU.Handler ProcHandler;
-        public  CPU.Type    ProcType;
-        public  uint        Address;
-        public  Type        Type;
-        public  Width       Width;
-        private uint        Input;
-        private uint        Output;
+        public  uint  Address;
+        public  Type  Type;
+        public  Width Width;
+        private uint  Input;
+        private uint  Output;
 
-        public Context(CPU.Handler ProcHandler, CPU.Type ProcType,
-            uint Address, Type Type,
+        public Context(uint Address, Type Type,
             Width Width, uint Input = 0)
         {
-            this.ProcHandler = ProcHandler;
-            this.ProcType    = ProcType;
-            this.Address     = Address;
-            this.Type        = Type;
-            this.Width       = Width;
-            this.Input       = Input;
-            this.Output      = 0;
+            this.Address = Address;
+            this.Type    = Type;
+            this.Width   = Width;
+            this.Input   = Input;
+            this.Output  = 0;
         }
 
         public byte   GetInputUInt8()  { return (byte)   Input; }

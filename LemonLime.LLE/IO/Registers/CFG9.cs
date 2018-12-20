@@ -5,7 +5,7 @@
         public static void CFG9_RST11(Context Ctx)
         {
             bool Reset = Ctx.GetInputUInt8() << 31 != 1;
-            if (Reset && Ctx.GetInputUInt8() != 0) Ctx.ProcHandler.EnableCpu(CPU.Type.Arm11, Reset);
+            if (Reset && Ctx.GetInputUInt8() != 0) CPU.Handler.EnableCpu(CPU.Type.Arm11, Reset);
 
             Ctx.SetOutput(0xFF);
         }

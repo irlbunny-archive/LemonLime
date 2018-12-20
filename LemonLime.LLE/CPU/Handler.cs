@@ -10,13 +10,13 @@ namespace LemonLime.LLE.CPU
         private Memory Arm9Memory, Arm11Memory;
 
         // ARM9 & ARM11 cores
-        private Interpreter Arm9, Arm11;
+        private static Interpreter Arm9, Arm11;
 
         // Enable all cores
         private bool EnableAll = true;
 
         // All cores are disabled by default
-        private bool Arm9Enabled, Arm11Enabled;
+        private static bool Arm9Enabled, Arm11Enabled;
 
         // CPU sync
         private bool Sync = false;
@@ -38,7 +38,7 @@ namespace LemonLime.LLE.CPU
             //Memory.SetHandler(this);
         }
 
-        public void EnableCpu(Type Type, bool Enabled)
+        public static void EnableCpu(Type Type, bool Enabled)
         {
             if (Enabled)
                 Logger.WriteInfo($"Enabling processor ${Type}.");
@@ -57,7 +57,7 @@ namespace LemonLime.LLE.CPU
             }
         }
 
-        public void SetIrq(Type Type)
+        public static void SetIrq(Type Type)
         {
             Interpreter Proc = (Type == Type.Arm9) ? Arm9 : Arm11;
             Logger.WriteInfo($"Triggering IRQ on processor ${Type}.");
