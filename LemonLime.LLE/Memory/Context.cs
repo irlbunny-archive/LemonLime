@@ -5,8 +5,7 @@
         public  uint  Address;
         public  Type  Type;
         public  Width Width;
-        private uint  Input;
-        private uint  Output;
+        private uint  Input, Output;
 
         public Context(uint Address, Type Type,
             Width Width, uint Input = 0)

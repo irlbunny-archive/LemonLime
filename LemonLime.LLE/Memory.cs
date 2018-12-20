@@ -8,35 +8,11 @@ namespace LemonLime.LLE
     {
         private CPU.Handler Handler;
 
-        private CPU.Type Type;
-
         private IO.Handler IO;
-
-        private byte[] InstructionTCM = new byte[0x08000000]; // TODO: Repeat each 0x8000 bytes?
-
-        private byte[] ARM9_InternalMemory = new byte[0x00100000];
-
-        private byte[] MPCore_PrivateMemory = new byte[0x00002000];
-
-        private byte[] AXIWRAM = new byte[0x00080000];
-
-        private byte[] FCRAM = new byte[0x08000000];
-
-        private byte[] DataTCM = new byte[0x00004000];
 
         public Memory()
         {
             IO = new IO.Handler();
-        }
-
-        public void SetType(CPU.Type Type)
-        {
-            this.Type = Type;
-        }
-
-        public void SetHandler(CPU.Handler CPU)
-        {
-            this.Handler = CPU;
         }
 
         public byte ReadUInt8(uint Address)
