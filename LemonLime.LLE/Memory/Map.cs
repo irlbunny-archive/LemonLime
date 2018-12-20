@@ -22,7 +22,7 @@ namespace LemonLime.LLE
             if (Phys != null)
             {
                 if (Phys.Length > Size)
-                    throw new Exception("Physical memory array in function parameter is bigger than size variable in function parameter.");
+                    throw new Exception("Physical memory length is bigger than size variable.");
 
                 this.Phys = Phys;
             }
