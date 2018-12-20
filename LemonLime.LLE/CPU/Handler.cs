@@ -6,22 +6,16 @@ namespace LemonLime.LLE.CPU
 {
     class Handler
     {
-        // ARM9 & ARM11 memory
         private Memory Arm9Memory, Arm11Memory;
 
-        // ARM9 & ARM11 cores
         private static Interpreter Arm9, Arm11;
 
-        // Enable all cores
         private bool EnableAll = true;
 
-        // All cores are disabled by default
         private static bool Arm9Enabled, Arm11Enabled;
 
-        // CPU sync
         private bool Sync = false;
 
-        // ARM9 & ARM11 execution threads
         private Thread Arm9Thread, Arm11Thread;
 
         public Handler(Memory Arm9Memory, Memory Arm11Memory)
@@ -34,8 +28,6 @@ namespace LemonLime.LLE.CPU
 
             Arm9Thread  = new Thread(Thread9);
             Arm11Thread = new Thread(Thread11);
-
-            //Memory.SetHandler(this);
         }
 
         public static void EnableCpu(Type Type, bool Enabled)
