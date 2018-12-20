@@ -1,4 +1,4 @@
-﻿namespace LemonLime.LLE
+﻿namespace LemonLime.LLE.Memory
 {
     enum Type
     {

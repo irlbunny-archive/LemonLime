@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace LemonLime.LLE
+namespace LemonLime.LLE.Memory
 {
     class Map
     {

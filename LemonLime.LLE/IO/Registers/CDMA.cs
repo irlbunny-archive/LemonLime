@@ -1,4 +1,5 @@
 ﻿using LemonLime.Common;
+using LemonLime.LLE.Memory;
 
 namespace LemonLime.LLE.IO.Registers
 {

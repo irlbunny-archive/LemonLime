@@ -1,4 +1,6 @@
-﻿namespace LemonLime.LLE.IO
+﻿using LemonLime.LLE.Memory;
+
+namespace LemonLime.LLE.IO
 {
     class Entry
     {

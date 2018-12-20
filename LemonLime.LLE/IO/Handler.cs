@@ -1,5 +1,6 @@
 ﻿using LemonLime.Common;
 using LemonLime.LLE.IO.Registers;
+using LemonLime.LLE.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,7 +74,7 @@ namespace LemonLime.LLE.IO
         {
             switch (Ctx.Type)
             {
-                case Type.Read:
+                case Memory.Type.Read:
                     switch (Ctx.Width)
                     {
                         case Width.Width1:
@@ -90,7 +91,7 @@ namespace LemonLime.LLE.IO
                     }
                     break;
 
-                case Type.Write:
+                case Memory.Type.Write:
                     switch (Ctx.Width)
                     {
                         case Width.Width1:

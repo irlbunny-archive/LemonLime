@@ -2,7 +2,7 @@
 {
     enum Type
     {
-        Arm9,
-        Arm11,
+        ARM9,
+        ARM11,
     }
 }

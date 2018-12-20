@@ -6,31 +6,31 @@ namespace LemonLime.LLE.CPU
 {
     class Handler
     {
-        private Memory Arm9Memory, Arm11Memory;
+        private Memory.Handler ARM9Memory, ARM11Memory;
 
-        private static Interpreter Arm9, Arm11;
+        private static Interpreter ARM9, ARM11;
 
         private bool EnableAll = true;
 
-        private static bool Arm9Enabled, Arm11Enabled;
+        private static bool ARM9Enabled, ARM11Enabled;
 
         private bool Sync = false;
 
-        private Thread Arm9Thread, Arm11Thread;
+        private Thread ARM9Thread, ARM11Thread;
 
-        public Handler(Memory Arm9Memory, Memory Arm11Memory)
+        public Handler(Memory.Handler ARM9Memory, Memory.Handler ARM11Memory)
         {
-            this.Arm9Memory  = Arm9Memory;
-            this.Arm11Memory = Arm11Memory;
+            this.ARM9Memory  = ARM9Memory;
+            this.ARM11Memory = ARM11Memory;
 
-            Arm9  = new Interpreter(Arm9Memory, true);
-            Arm11 = new Interpreter(Arm11Memory);
+            ARM9  = new Interpreter(ARM9Memory, true);
+            ARM11 = new Interpreter(ARM11Memory);
 
-            Arm9Thread  = new Thread(Thread9);
-            Arm11Thread = new Thread(Thread11);
+            ARM9Thread  = new Thread(Thread9);
+            ARM11Thread = new Thread(Thread11);
         }
 
-        public static void EnableCpu(Type Type, bool Enabled)
+        public static void EnableCPU(Type Type, bool Enabled)
         {
             if (Enabled)
                 Logger.WriteInfo($"Enabling processor ${Type}.");
@@ -39,38 +39,38 @@ namespace LemonLime.LLE.CPU
 
             switch (Type)
             {
-                case Type.Arm9:
-                    Arm9Enabled = Enabled;
+                case Type.ARM9:
+                    ARM9Enabled = Enabled;
                     break;
 
-                case Type.Arm11:
-                    Arm11Enabled = Enabled;
+                case Type.ARM11:
+                    ARM11Enabled = Enabled;
                     break;
             }
         }
 
         public static void SetIrq(Type Type)
         {
-            Interpreter Proc = (Type == Type.Arm9) ? Arm9 : Arm11;
+            Interpreter Proc = (Type == Type.ARM9) ? ARM9 : ARM11;
             Logger.WriteInfo($"Triggering IRQ on processor ${Type}.");
             Proc.IRQ = true;
         }
 
         public void Start()
         {
-            Arm9Thread.Start();
-            Arm11Thread.Start();
+            ARM9Thread.Start();
+            ARM11Thread.Start();
         }
 
         private void Thread9()
         {
             while (EnableAll)
             {
-                if (Arm9Enabled)
+                if (ARM9Enabled)
                 {
                     if (Sync) continue;
-                    Arm9.Execute();
-                    if (Arm11Enabled) Sync = true;
+                    ARM9.Execute();
+                    if (ARM11Enabled) Sync = true;
                 }
             }
         }
@@ -79,10 +79,10 @@ namespace LemonLime.LLE.CPU
         {
             while (EnableAll)
             {
-                if (Arm11Enabled)
+                if (ARM11Enabled)
                 {
                     if (!Sync) continue;
-                    Arm11.Execute();
+                    ARM11.Execute();
                     Sync = false;
                 }
             }
@@ -97,8 +97,8 @@ namespace LemonLime.LLE.CPU
         public void Stop()
         {
             EnableAll = false;
-            Arm9Thread.Abort();
-            Arm11Thread.Abort();
+            ARM9Thread.Abort();
+            ARM11Thread.Abort();
         }
     }
 }
