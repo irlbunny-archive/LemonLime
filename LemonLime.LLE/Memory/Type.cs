@@ -1,4 +1,4 @@
-﻿namespace LemonLime.LLE.IO
+﻿namespace LemonLime.LLE
 {
     enum Type
     {

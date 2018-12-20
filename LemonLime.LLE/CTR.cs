@@ -11,6 +11,10 @@
             Handler = new CPU.Handler(Memory, Memory);
 
             Handler.EnableCpu(CPU.Type.Arm9, true); // Enable ARM9 CPU
+
+            IO.Handler io = new IO.Handler();
+
+            Map memmap = new Map(0x0, 0x0, null, io.Call);
         }
 
         public void Run()

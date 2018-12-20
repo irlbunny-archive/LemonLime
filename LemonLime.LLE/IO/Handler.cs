@@ -69,7 +69,7 @@ namespace LemonLime.LLE.IO
             };
         }
 
-        public uint Call(Context Ctx)
+        public void Call(Context Ctx)
         {
             switch (Ctx.Type)
             {
@@ -112,7 +112,7 @@ namespace LemonLime.LLE.IO
             if (RegisterEntry != null)
             {
                 RegisterEntry.Register(Ctx);
-                return Ctx.GetOutputUInt32();
+                //return Ctx.GetOutputUInt32();
             }
 
             throw new Exception($"Unhandled {Ctx.Type} ({Ctx.Width}) @ {Ctx.Address.ToString($"X")}");
