@@ -8,9 +8,13 @@ namespace LemonLime.LLE.Memory
     {
         public List<Map> Maps;
 
+        public List<Map> Routes;
+
         public Handler()
         {
             Maps = new List<Map>();
+
+            Routes = new List<Map>();
         }
 
         public byte ReadUInt8(uint Address)

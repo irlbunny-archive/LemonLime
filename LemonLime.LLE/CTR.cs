@@ -6,9 +6,7 @@
 
         private Memory.Handler ARM11Memory;
 
-        private IO.Handler ARM9IO;
-
-        private IO.Handler ARM11IO;
+        private IO.Handler IO;
 
         private CPU.Handler Handler;
 
@@ -18,13 +16,13 @@
 
             ARM11Memory = new Memory.Handler();
 
-            ARM9IO = new IO.Handler();
+            IO = new IO.Handler();
 
-            ARM11IO = new IO.Handler();
+            ARM9Memory.Maps.Add(new Memory.Map(0x10000000, 0x08000000, null, IO.Call));
 
-            ARM9Memory.Maps.Add(new Memory.Map(0x10000000, 0x08000000, null, ARM9IO.Call));
+            ARM11Memory.Maps.Add(new Memory.Map(0x10000000, 0x08000000, null, IO.Call));
 
-            Handler = new CPU.Handler(ARM9Memory, ARM9Memory);
+            Handler = new CPU.Handler(ARM9Memory, ARM11Memory);
 
             CPU.Handler.EnableCPU(CPU.Type.ARM9, true); // Enable ARM9 CPU
         }
