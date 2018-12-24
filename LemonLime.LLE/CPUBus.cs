@@ -13,11 +13,12 @@ namespace LemonLime.LLE
         {
             public CPUDevice Device;
             public uint Start, End;
-            public CPUMap(CPUDevice Device, uint Start, uint End)
+
+            public CPUMap(CPUDevice Device, uint Start)
             {
                 this.Device = Device;
                 this.Start = Start;
-                this.End = End;
+                this.End = Start + Device.Size();
             }
         }
 
@@ -28,9 +29,9 @@ namespace LemonLime.LLE
             BusMap = new List<CPUMap>();
         }
 
-        public void Attach(CPUDevice Device, uint Start, uint End)
+        public void Attach(CPUDevice Device, uint Start)
         {
-            BusMap.Add(new CPUMap(Device, Start, End));
+            BusMap.Add(new CPUMap(Device, Start));
         }
 
         private CPUMap FindMap(uint Address)
@@ -97,6 +98,19 @@ namespace LemonLime.LLE
             Word |= (uint)Value << Shift;
 
             this.WriteUInt32(WordAddress, Word);
+        }
+
+        public string DumpMemoryMap()
+        {
+            string MapDump = "Memory map:\n";
+            foreach(CPUMap MapEntry in BusMap)
+            {
+                CPUDevice Dev = MapEntry.Device;
+                uint StartAddress = MapEntry.Start;
+
+                MapDump += $"{Dev.Name()}@{StartAddress.ToString("X8")}\n";
+            }
+            return MapDump;
         }
     }
 }
