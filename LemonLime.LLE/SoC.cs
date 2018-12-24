@@ -31,9 +31,9 @@ namespace LemonLime.LLE
                 ITCM9.WriteUInt32(i, 0xEAFFFFFE); // b .
 
             ARM9_Bus.Attach(Boot9, 0xFFFF0000);
-            ARM9_Bus.Attach(ITCM9, 0x00000000);
-            ARM9_Bus.Attach(ITCM9, 0x01FF8000);
-            ARM9_Bus.Attach(ITCM9, 0x07FF8000);
+            ARM9_Bus.Attach(ITCM9, 0x00000000); // ITCM mirrors, these are a hack
+            ARM9_Bus.Attach(ITCM9, 0x01FF8000); // and should be moved to the
+            ARM9_Bus.Attach(ITCM9, 0x07FF8000); // MMU/MPU layer
             ARM9_Bus.Attach(DTCM9, 0xFFF00000);
             ARM9_Bus.Attach(WRAM9, 0x08000000);
 
@@ -81,6 +81,9 @@ namespace LemonLime.LLE
 
         public void Start()
         {
+            ARM9_Core.Reset();
+            ARM11_Core.Reset();
+
             ARM9_Thread.Start();
             ARM11_Thread.Start();
         }
