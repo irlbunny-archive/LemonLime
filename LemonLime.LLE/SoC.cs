@@ -26,15 +26,21 @@ namespace LemonLime.LLE
             RAM DTCM9 = new RAM(0x4000, "Data TCM");
             RAM WRAM9 = new RAM(0x100000, "AHB Work RAM");
 
+            PXI ARM9_PXI = new PXI(7);
+            PXI ARM11_PXI = new PXI(6);
+
+            ARM9_PXI.AttachEndpoint(ARM11_PXI);
+            ARM11_PXI.AttachEndpoint(ARM9_PXI);
+
             // Quick hack: set up the ARM9 to infinitely spin in place
-            for (uint i = 0; i < 32768; i += 4)
-                ITCM9.WriteUInt32(i, 0xEAFFFFFE); // b .
+            for (uint i = 0; i < ITCM9.Size(); i += 4)
+                ITCM9.WriteWord(i, 0xEAFFFFFE); // b .
 
             ARM9_Bus.Attach(Boot9, 0xFFFF0000);
             ARM9_Bus.Attach(ITCM9, 0x00000000); // ITCM mirrors, these are a hack
             ARM9_Bus.Attach(ITCM9, 0x01FF8000); // and should be moved to the
             ARM9_Bus.Attach(ITCM9, 0x07FF8000); // MMU/MPU layer
-            ARM9_Bus.Attach(DTCM9, 0xFFF00000);
+            ARM9_Bus.Attach(DTCM9, 0xFFF00000); // same goes to DTCM
             ARM9_Bus.Attach(WRAM9, 0x08000000);
 
             // ARM11 exclusive memory
@@ -54,6 +60,12 @@ namespace LemonLime.LLE
             ARM11_Bus.Attach(AXIWRAM, 0x1FF00000);
             ARM11_Bus.Attach(FCRAM, 0x20000000);
             ARM11_Bus.Attach(VRAM, 0x18000000);
+
+            // IO Devices
+            ARM9_Bus.Attach(ARM9_PXI, 0x10008000);
+            ARM9_Bus.Attach(ARM11_PXI, 0x10163000);
+            ARM11_Bus.Attach(ARM11_PXI, 0x10163000);
+
 
             ARM9_Core = new Interpreter(ARM9_Bus);
             ARM11_Core = new Interpreter(ARM11_Bus);
@@ -98,6 +110,13 @@ namespace LemonLime.LLE
             Interpreter Core = (Type == CPUType.ARM9) ? ARM9_Core : ARM11_Core;
             Logger.WriteInfo($"Triggering IRQ on ${Type}");
             Core.IRQ = true;
+        }
+
+        public void Reset(CPUType Type)
+        {
+            Interpreter Core = (Type == CPUType.ARM9) ? ARM9_Core : ARM11_Core;
+            Logger.WriteInfo($"Resetting {Type} CPU");
+            Core.Reset();
         }
 
         private void Run9()

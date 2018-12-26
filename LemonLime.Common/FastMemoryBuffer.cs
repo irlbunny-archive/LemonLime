@@ -12,6 +12,9 @@ namespace LemonLime.Common
 
         public FastMemoryBuffer(uint Size)
         {
+            if ((int)Size < 0)
+                throw new Exception($"Marshal.AllocHGlobal can't allocate over 2GiB of memory (tried {Size} bytes)");
+
             this.Memory = Marshal.AllocHGlobal((int)Size);
             this.MemorySize = Size;
         }

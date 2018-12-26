@@ -10,17 +10,29 @@ namespace LemonLime.LLE.Device.ARM9
     {
         private Random RandomGenerator;
 
-    	public PRNG()
-    	{
+        public PRNG()
+        {
             this.RandomGenerator = new Random();
-    	}
+        }
 
-    	public uint ReadUInt32(uint Offset)
-    	{
+        public uint ReadWord(uint Offset)
+        {
             return (uint)this.RandomGenerator.Next();
-    	}
+        }
 
-    	public void WriteUInt32(uint Offset, uint Word) {}
+        public ushort ReadShort(uint Offset)
+        {
+            return (ushort)this.RandomGenerator.Next();
+        }
+
+        public byte ReadByte(uint Offset)
+        {
+            return (byte)this.RandomGenerator.Next();
+        }
+
+        public void WriteWord(uint Offset, uint Value) {}
+        public void WriteShort(uint Offset, ushort Value) {}
+        public void WriteByte(uint Offset, byte Value) {}
 
         public uint Size()
         {
