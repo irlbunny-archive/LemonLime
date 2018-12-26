@@ -11,8 +11,10 @@ namespace LemonLime
 
             Settings.SettingsFile = "settings.txt";
             Settings.Load();
-            LLE.CTR CTR = new LLE.CTR();
-            CTR.Start();
+
+            LLE.SoC MainSoC = new LLE.SoC();
+            MainSoC.SetCPU(LLE.CPUType.ARM9, true);
+            MainSoC.Start();
         }
     }
 }

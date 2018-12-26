@@ -265,3 +265,7 @@ __pycache__/
 
 # The settings file of the emulator
 LemonLime/settings.txt
+
+# Data files that shouldn't be uploaded
+boot9.bin
+boot11.bin
