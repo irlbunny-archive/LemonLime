@@ -1,24 +1,23 @@
 using System;
 using System.IO;
 
-using LemonLime.ARM;
 using LemonLime.Common;
 
 namespace LemonLime.LLE.Device.ARM9
 {
-    public class OTP : CPUDevice
+    class OTP : Device
     {
-        private FastMemoryBuffer OTP_Registers;
+        private FMemBuffer OTPRegisters;
 
         public OTP()
         {
-            this.OTP_Registers = new FastMemoryBuffer(0x108);
+            this.OTPRegisters = new FMemBuffer(0x108);
         }
 
         public void LockOut()
         {
-            for (uint i = 0; i < 256; i += 4)
-                this.OTP_Registers.WriteWord(i, 0xFFFFFFFF);
+            for (uint Index = 0; Index < 256; Index += 4)
+                this.OTPRegisters.WriteWord(Index, 0xFFFFFFFF);
         }
 
         public void SetOTP(byte[] OTP)
@@ -26,15 +25,18 @@ namespace LemonLime.LLE.Device.ARM9
             if (OTP.Length != 256)
                 throw new Exception($"OTP size is invalid (should be 256 bytes, not {OTP.Length})");
 
-            for (uint i = 0; i < OTP.Length; i++)
-                this.OTP_Registers.WriteByte(i, OTP[i]);
+            for (uint Index = 0; Index < OTP.Length; Index++)
+                this.OTPRegisters.WriteByte(Index, OTP[Index]);
         }
 
         public void SetOTP(String Path)
         {
-            try {
+            try
+            {
                 this.SetOTP(File.ReadAllBytes(Path));
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Logger.WriteError($"Failed to load data from {Path} to the OTP buffer");
                 Logger.WriteError(e.ToString());
             }
@@ -42,31 +44,24 @@ namespace LemonLime.LLE.Device.ARM9
 
         public uint ReadWord(uint Offset)
         {
-            return this.OTP_Registers.ReadWord(Offset);
+            return this.OTPRegisters.ReadWord(Offset);
         }
 
         public ushort ReadShort(uint Offset)
         {
-            return this.OTP_Registers.ReadShort(Offset);
+            return this.OTPRegisters.ReadShort(Offset);
         }
 
         public byte ReadByte(uint Offset)
         {
-            return this.OTP_Registers.ReadByte(Offset);
+            return this.OTPRegisters.ReadByte(Offset);
         }
 
-        public void WriteWord(uint Offset, uint Value) {}
-        public void WriteShort(uint Offset, ushort Value) {}
-        public void WriteByte(uint Offset, byte Value) {}
+        public void WriteWord (uint Offset, uint   Value) { }
+        public void WriteShort(uint Offset, ushort Value) { }
+        public void WriteByte (uint Offset, byte   Value) { }
 
-        public uint Size()
-        {
-            return 264;
-        }
-
-        public String Name()
-        {
-            return "OTP";
-        }
+        public uint   Size() { return 264;   }
+        public String Name() { return "OTP"; }
     }
 }

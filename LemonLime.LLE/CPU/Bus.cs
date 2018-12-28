@@ -1,93 +1,94 @@
-﻿using LemonLime.ARM;
-using LemonLime.Common;
-using LemonLime.LLE.Device;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LemonLime.LLE
+using LemonLime.ARM;
+
+namespace LemonLime.LLE.CPU
 {
-    class CPUBus : IBus
+    class Bus : IBus
     {
         private class DeviceDescriptor
         {
-            public CPUDevice Device;
+            public Device.Device Device;
             public uint Start, End;
 
-            public DeviceDescriptor(CPUDevice Device, uint Start)
+            public DeviceDescriptor(Device.Device Device, uint Start)
             {
                 this.Device = Device;
-                this.Start = Start;
-                this.End = Start + Device.Size();
+                this.Start  = Start;
+                this.End    = Start + Device.Size();
             }
         }
 
         private List<DeviceDescriptor> BusMap;
 
-        public CPUBus()
+        public Bus()
         {
             this.BusMap = new List<DeviceDescriptor>();
         }
 
-        public void Attach(CPUDevice Device, uint Start)
+        public void Attach(Device.Device Device, uint Start)
         {
             this.BusMap.Add(new DeviceDescriptor(Device, Start));
         }
 
         public uint ReadUInt32(uint Address)
         {
-            DeviceDescriptor Map = FindMap(Address, 4);
+            DeviceDescriptor Map = GetMap(Address, 4);
             return Map.Device.ReadWord(Address - Map.Start);
         }
 
         public ushort ReadUInt16(uint Address)
         {
-            DeviceDescriptor Map = FindMap(Address, 2);
+            DeviceDescriptor Map = GetMap(Address, 2);
             return Map.Device.ReadShort(Address - Map.Start);
         }
 
         public byte ReadUInt8(uint Address)
         {
-            DeviceDescriptor Map = FindMap(Address, 1);
+            DeviceDescriptor Map = GetMap(Address, 1);
             return Map.Device.ReadByte(Address - Map.Start);
         }
 
         public void WriteUInt32(uint Address, uint Value)
         {
-            DeviceDescriptor Map = FindMap(Address, 4);
+            DeviceDescriptor Map = GetMap(Address, 4);
             Map.Device.WriteWord(Address - Map.Start, Value);
         }
 
         public void WriteUInt16(uint Address, ushort Value)
         {
-            DeviceDescriptor Map = FindMap(Address, 2);
+            DeviceDescriptor Map = GetMap(Address, 2);
             Map.Device.WriteShort(Address - Map.Start, Value);
         }
 
         public void WriteUInt8(uint Address, byte Value)
         {
-            DeviceDescriptor Map = FindMap(Address, 1);
+            DeviceDescriptor Map = GetMap(Address, 1);
             Map.Device.WriteByte(Address - Map.Start, Value);
         }
 
-        public string DumpMemoryMap()
+        public string GetMemoryMaps()
         {
-            string MapDump = "Memory map:\n";
-            foreach(DeviceDescriptor MapEntry in this.BusMap)
+            string MapsString = "Memory Maps:\n";
+            foreach (DeviceDescriptor MapEntry in this.BusMap)
             {
-                CPUDevice Dev = MapEntry.Device;
+                Device.Device Dev = MapEntry.Device;
                 uint StartAddress = MapEntry.Start;
 
-                MapDump += $"{Dev.Name()}@{StartAddress.ToString("X8")}\n";
+                MapsString += $"{Dev.Name()}@{StartAddress.ToString("X8")}\n";
             }
-            return MapDump;
+
+            return MapsString;
         }
 
-        private DeviceDescriptor FindMap(uint Address, uint WordSize)
+        private DeviceDescriptor GetMap(uint Address, uint WordSize)
         {
-            DeviceDescriptor Map = BusMap.Where(map => Address >= map.Start && (Address + WordSize) <= map.End).SingleOrDefault();
-            if (Map == null) throw new Exception($"Unhandled read @ 0x{Address.ToString($"X8")}");
-            return Map;
+            DeviceDescriptor Map = BusMap.Where(_Map => Address >= _Map.Start && (Address + WordSize) <= _Map.End).SingleOrDefault();
+            if (Map != null) return Map;
+
+            throw new Exception($"Unhandled read @ 0x{Address.ToString($"X8")}");
         }
     }
 }

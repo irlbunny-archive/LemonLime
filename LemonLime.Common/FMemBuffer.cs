@@ -1,32 +1,30 @@
 using System;
 using System.Runtime.InteropServices;
 
-using LemonLime.Common;
-
 namespace LemonLime.Common
 {
-    public class FastMemoryBuffer
+    public class FMemBuffer
     {
         private IntPtr Memory;
-        private uint MemorySize;
+        private uint   Size;
 
-        public FastMemoryBuffer(uint Size)
+        public FMemBuffer(uint Size)
         {
             if ((int)Size < 0)
                 throw new Exception($"Marshal.AllocHGlobal can't allocate over 2GiB of memory (tried {Size} bytes)");
 
             this.Memory = Marshal.AllocHGlobal((int)Size);
-            this.MemorySize = Size;
+            this.Size   = Size;
         }
 
-        ~FastMemoryBuffer()
+        ~FMemBuffer()
         {
             Marshal.FreeHGlobal(this.Memory);
         }
 
         public uint ByteSize()
         {
-            return this.MemorySize;
+            return this.Size;
         }
 
         public byte ReadByte(uint Offset)

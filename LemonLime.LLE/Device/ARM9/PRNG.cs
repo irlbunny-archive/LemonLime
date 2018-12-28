@@ -1,47 +1,36 @@
 using System;
-using System.IO;
-
-using LemonLime.ARM;
-using LemonLime.Common;
 
 namespace LemonLime.LLE.Device.ARM9
 {
-    public class PRNG : CPUDevice
+    class PRNG : Device
     {
-        private Random RandomGenerator;
+        private Random RNG;
 
         public PRNG()
         {
-            this.RandomGenerator = new Random();
+            this.RNG = new Random();
         }
 
         public uint ReadWord(uint Offset)
         {
-            return (uint)this.RandomGenerator.Next();
+            return (uint)this.RNG.Next();
         }
 
         public ushort ReadShort(uint Offset)
         {
-            return (ushort)this.RandomGenerator.Next();
+            return (ushort)this.RNG.Next();
         }
 
         public byte ReadByte(uint Offset)
         {
-            return (byte)this.RandomGenerator.Next();
+            return (byte)this.RNG.Next();
         }
 
-        public void WriteWord(uint Offset, uint Value) {}
-        public void WriteShort(uint Offset, ushort Value) {}
-        public void WriteByte(uint Offset, byte Value) {}
+        public void WriteWord (uint Offset, uint   Value) { }
+        public void WriteShort(uint Offset, ushort Value) { }
+        public void WriteByte (uint Offset, byte   Value) { }
 
-        public uint Size()
-        {
-            return 4096;
-        }
-
-        public String Name()
-        {
-            return "PRNG";
-        }
+        public uint   Size() { return 4096;   }
+        public String Name() { return "PRNG"; }
     }
 }
