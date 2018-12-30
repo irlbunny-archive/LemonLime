@@ -36,8 +36,9 @@ namespace LemonLime.LLE
             for (uint i = 0; i < ITCM9.Size(); i += 4)
                 ITCM9.WriteWord(i, 0xEAFFFFFE); // b .
 
-            ARM9Bus.Attach(Boot9, 0xFFFF0000);
-            ARM9Bus.Attach(ITCM9, 0x00000000); // ITCM mirrors, these are a hack
+            ARM9Bus.Attach(Boot9, 0xFFFF0000); // TODO: Figure out why this won't work
+            ARM9Bus.Attach(Boot9, 0x00000000); // so let's attach it at 0x00000000.
+            //ARM9Bus.Attach(ITCM9, 0x00000000); // ITCM mirrors, these are a hack
             ARM9Bus.Attach(ITCM9, 0x01FF8000); // and should be moved to the
             ARM9Bus.Attach(ITCM9, 0x07FF8000); // MMU/MPU layer
             ARM9Bus.Attach(DTCM9, 0xFFF00000); // same goes to DTCM
