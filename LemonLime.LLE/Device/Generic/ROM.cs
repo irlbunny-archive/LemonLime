@@ -5,7 +5,7 @@ using LemonLime.Common;
 
 namespace LemonLime.LLE.Device.Generic
 {
-    class ROM : Device
+    class ROM : CPU.Device
     {
         // TODO: Potentially move to a memory mapped file?
 

@@ -4,7 +4,7 @@ using LemonLime.Common;
 
 namespace LemonLime.LLE.Device.Generic
 {
-    class RAM : Device
+    class RAM : CPU.Device
     {
         private FMemBuffer Buffer;
         private String     DevName;

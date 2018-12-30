@@ -2,7 +2,7 @@ using System;
 
 namespace LemonLime.LLE.Device.ARM9
 {
-    class PRNG : Device
+    class PRNG : CPU.Device
     {
         private Random RNG;
 

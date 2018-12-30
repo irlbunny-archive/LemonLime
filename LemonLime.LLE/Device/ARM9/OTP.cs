@@ -5,7 +5,7 @@ using LemonLime.Common;
 
 namespace LemonLime.LLE.Device.ARM9
 {
-    class OTP : Device
+    class OTP : CPU.Device
     {
         private FMemBuffer OTPRegisters;
 

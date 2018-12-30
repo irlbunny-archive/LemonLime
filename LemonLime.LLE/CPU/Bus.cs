@@ -10,10 +10,10 @@ namespace LemonLime.LLE.CPU
     {
         private class DeviceDescriptor
         {
-            public Device.Device Device;
+            public CPU.Device Device;
             public uint Start, End;
 
-            public DeviceDescriptor(Device.Device Device, uint Start)
+            public DeviceDescriptor(CPU.Device Device, uint Start)
             {
                 this.Device = Device;
                 this.Start  = Start;
@@ -28,7 +28,7 @@ namespace LemonLime.LLE.CPU
             this.BusMap = new List<DeviceDescriptor>();
         }
 
-        public void Attach(Device.Device Device, uint Start)
+        public void Attach(CPU.Device Device, uint Start)
         {
             this.BusMap.Add(new DeviceDescriptor(Device, Start));
         }
@@ -74,8 +74,8 @@ namespace LemonLime.LLE.CPU
             string MapsString = "Memory Maps:\n";
             foreach (DeviceDescriptor MapEntry in this.BusMap)
             {
-                Device.Device Dev = MapEntry.Device;
-                uint StartAddress = MapEntry.Start;
+                CPU.Device Dev          = MapEntry.Device;
+                uint       StartAddress = MapEntry.Start;
 
                 MapsString += $"{Dev.Name()}@{StartAddress.ToString("X8")}\n";
             }

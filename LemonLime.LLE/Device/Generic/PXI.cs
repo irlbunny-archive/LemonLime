@@ -20,7 +20,7 @@ namespace LemonLime.LLE.Device.Generic
         FIFO_ENABLE = 0x8000
     }
 
-    class PXI : Device
+    class PXI : CPU.Device
     {
         private Queue<uint> SendFIFO, RecvFIFO;
         private FMemBuffer  ConfigBuffer;
@@ -73,14 +73,16 @@ namespace LemonLime.LLE.Device.Generic
                 case 0x4: return this.ConfigBuffer.ReadWord(Offset);
 
                 case 0xC:
-                    try
                     {
-                        return this.Endpoint.SendWord();
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        this.FIFOError = true;
-                        return 0xFFFFFFFF;
+                        try
+                        {
+                            return this.Endpoint.SendWord();
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            this.FIFOError = true;
+                            return 0xFFFFFFFF;
+                        }
                     }
 
                 case 0x8:

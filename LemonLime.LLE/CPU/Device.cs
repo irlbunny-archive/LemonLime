@@ -1,6 +1,6 @@
 using System;
 
-namespace LemonLime.LLE.Device
+namespace LemonLime.LLE.CPU
 {
     interface Device
     {
