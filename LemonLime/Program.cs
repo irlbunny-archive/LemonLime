@@ -13,7 +13,7 @@ namespace LemonLime
             Settings.Load();
 
             LLE.CTR CTR = new LLE.CTR();
-            CTR.SetCPU(Type.ARM9, true);
+            LLE.CTR.SetCPU(Type.ARM9, true);
             CTR.Start();
         }
     }

@@ -45,7 +45,7 @@ namespace LemonLime.LLE.Device.Generic
         public void WriteShort(uint Offset, ushort Value) { }
         public void WriteByte (uint Offset, byte   Value) { }
 
-        public uint   Size() { return this.Buffer.ByteSize(); }
-        public String Name() { return this.DevName;           }
+        public uint   Size() { return this.Buffer.ByteSize() - 1; }
+        public String Name() { return this.DevName;               }
     }
 }

@@ -4,16 +4,17 @@ using System.Threading;
 using LemonLime.ARM;
 using LemonLime.Common;
 using LemonLime.LLE.CPU;
+using LemonLime.LLE.Device.ARM9;
 using LemonLime.LLE.Device.Generic;
 
 namespace LemonLime.LLE
 {
     public class CTR
     {
-        private Bus         ARM9Bus,     ARM11Bus;
-        private Thread      ARM9Thread,  ARM11Thread;
-        private bool        ARM9Enabled, ARM11Enabled;
-        private Interpreter ARM9Core,    ARM11Core;
+        private Bus                ARM9Bus,     ARM11Bus;
+        private Thread             ARM9Thread,  ARM11Thread;
+        private static bool        ARM9Enabled, ARM11Enabled;
+        private static Interpreter ARM9Core,    ARM11Core;
 
         public CTR()
         {
@@ -26,6 +27,8 @@ namespace LemonLime.LLE
             RAM DTCM9 = new RAM(0x4000,      "Data TCM");
             RAM WRAM9 = new RAM(0x100000,    "AHB Work RAM");
 
+            CFG9 ARM9CFG9 = new CFG9();
+
             PXI ARM9PXI  = new PXI(7);
             PXI ARM11PXI = new PXI(6);
 
@@ -36,9 +39,8 @@ namespace LemonLime.LLE
             for (uint i = 0; i < ITCM9.Size(); i += 4)
                 ITCM9.WriteWord(i, 0xEAFFFFFE); // b .
 
-            ARM9Bus.Attach(Boot9, 0xFFFF0000); // TODO: Figure out why this won't work
-            ARM9Bus.Attach(Boot9, 0x00000000); // so let's attach it at 0x00000000.
-            //ARM9Bus.Attach(ITCM9, 0x00000000); // ITCM mirrors, these are a hack
+            ARM9Bus.Attach(Boot9, 0xFFFF0000);
+            ARM9Bus.Attach(ITCM9, 0x00000000); // ITCM mirrors, these are a hack
             ARM9Bus.Attach(ITCM9, 0x01FF8000); // and should be moved to the
             ARM9Bus.Attach(ITCM9, 0x07FF8000); // MMU/MPU layer
             ARM9Bus.Attach(DTCM9, 0xFFF00000); // same goes to DTCM
@@ -63,11 +65,12 @@ namespace LemonLime.LLE
             ARM11Bus.Attach(VRAM,    0x18000000);
 
             // IO Devices
+            ARM9Bus.Attach(ARM9CFG9,  0x10000000);
             ARM9Bus.Attach(ARM9PXI,   0x10008000);
             ARM9Bus.Attach(ARM11PXI,  0x10163000);
             ARM11Bus.Attach(ARM11PXI, 0x10163000);
 
-            ARM9Core  = new Interpreter(ARM9Bus);
+            ARM9Core  = new Interpreter(ARM9Bus, true);
             ARM11Core = new Interpreter(ARM11Bus);
 
             ARM9Thread  = new Thread(Run9);
@@ -82,7 +85,7 @@ namespace LemonLime.LLE
         /// </summary>
         /// <param name="Type">CPU Type (ARM9/ARM11)</param>
         /// <param name="Enabled">True = Enabled, False = Disabled</param>
-        public void SetCPU(CPU.Type Type, bool Enabled)
+        public static void SetCPU(CPU.Type Type, bool Enabled)
         {
             Logger.WriteInfo($"{(Enabled ? "Enabling" : "Disabling")} CPU ({Type})");
 
@@ -122,11 +125,16 @@ namespace LemonLime.LLE
         ///     Assert an IRQ on a CPU.
         /// </summary>
         /// <param name="Type">CPU Type (ARM9/ARM11)</param>
-        public void AssertIRQ(CPU.Type Type)
+        public static void AssertIRQ(CPU.Type Type)
         {
             Interpreter Core = (Type == CPU.Type.ARM9) ? ARM9Core : ARM11Core;
-            Logger.WriteInfo($"Triggering IRQ on ${Type}");
-            Core.IRQ = true;
+            if (Core != null)
+            {
+                Logger.WriteInfo($"Triggering IRQ on {Type}");
+                Core.IRQ = true;
+            }
+
+            throw new Exception($"Core ({Type}) is not initialized!");
         }
 
         /// <summary>
