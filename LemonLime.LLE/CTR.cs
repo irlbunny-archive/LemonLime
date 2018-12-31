@@ -29,6 +29,10 @@ namespace LemonLime.LLE
 
             CFG9  ARM9CFG9  = new CFG9();
             TIMER ARM9TIMER = new TIMER();
+            PRNG  ARM9PRNG  = new PRNG();
+            OTP   ARM9OTP   = new OTP();
+
+            ARM9OTP.SetOTP("otp.bin");
 
             PXI ARM9PXI  = new PXI(7);
             PXI ARM11PXI = new PXI(6);
@@ -69,6 +73,8 @@ namespace LemonLime.LLE
             ARM9Bus.Attach(ARM9CFG9,  0x10000000);
             ARM9Bus.Attach(ARM9TIMER, 0x10003000);
             ARM9Bus.Attach(ARM9PXI,   0x10008000);
+            ARM9Bus.Attach(ARM9PRNG,  0x10011000);
+            ARM9Bus.Attach(ARM9OTP,   0x10012000);
             ARM9Bus.Attach(ARM11PXI,  0x10163000);
             ARM11Bus.Attach(ARM11PXI, 0x10163000);
 
@@ -89,7 +95,7 @@ namespace LemonLime.LLE
         /// <param name="Enabled">True = Enabled, False = Disabled</param>
         public static void SetCPU(CPU.Type Type, bool Enabled)
         {
-            Logger.WriteInfo($"{(Enabled ? "Enabling" : "Disabling")} CPU ({Type})");
+            Logger.WriteInfo($"{(Enabled ? "Enabling" : "Disabling")} CPU ({Type}).");
 
             switch (Type)
             {
@@ -132,11 +138,11 @@ namespace LemonLime.LLE
             Interpreter Core = (Type == CPU.Type.ARM9) ? ARM9Core : ARM11Core;
             if (Core != null)
             {
-                Logger.WriteInfo($"Triggering IRQ on {Type}");
+                Logger.WriteInfo($"Asserting IRQ on {Type}.");
                 Core.IRQ = true;
             }
 
-            throw new Exception($"Core ({Type}) is not initialized!");
+            throw new Exception($"CPU ({Type}) is not initialized!");
         }
 
         /// <summary>
@@ -146,7 +152,7 @@ namespace LemonLime.LLE
         public void Reset(CPU.Type Type)
         {
             Interpreter Core = (Type == CPU.Type.ARM9) ? ARM9Core : ARM11Core;
-            Logger.WriteInfo($"Resetting {Type} CPU");
+            Logger.WriteInfo($"Resetting CPU ({Type}).");
             Core.Reset();
         }
 

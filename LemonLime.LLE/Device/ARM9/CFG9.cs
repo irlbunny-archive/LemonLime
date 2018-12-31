@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LemonLime.LLE.Device.ARM9
+﻿namespace LemonLime.LLE.Device.ARM9
 {
     class CFG9 : CPU.Device
     {
@@ -16,15 +14,13 @@ namespace LemonLime.LLE.Device.ARM9
             switch (Offset)
             {
                 case 2: // CFG9_RST11
-                    Console.WriteLine("CFG9_RST11");
                     bool Reset = (Value << 31 != 1);
-                    Console.WriteLine(Reset);
-                    if (Reset && Value != 0) CTR.SetCPU(CPU.Type.ARM11, Reset);
+                    if (Reset != false) CTR.SetCPU(CPU.Type.ARM11, Reset);
                     break;
             }
         }
 
         public uint   Size() { return 30;     }
-        public String Name() { return "CFG9"; }
+        public string Name() { return "CFG9"; }
     }
 }

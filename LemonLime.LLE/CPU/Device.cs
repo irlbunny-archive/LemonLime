@@ -1,5 +1,3 @@
-using System;
-
 namespace LemonLime.LLE.CPU
 {
     interface Device
@@ -13,6 +11,6 @@ namespace LemonLime.LLE.CPU
         void WriteByte (uint Offset, byte   Value);
 
         uint   Size();
-        String Name();
+        string Name();
     }
 }

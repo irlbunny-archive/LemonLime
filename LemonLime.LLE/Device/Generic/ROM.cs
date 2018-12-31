@@ -10,14 +10,14 @@ namespace LemonLime.LLE.Device.Generic
         // TODO: Potentially move to a memory mapped file?
 
         private FMemBuffer Buffer;
-        private String     DevName;
+        private string     DevName;
 
-        public ROM(String Path, String Name)
+        public ROM(string Path, string Name)
         {
             byte[] FileData = File.ReadAllBytes(Path);
 
             if ((FileData.Length % 16) != 0)
-                throw new Exception("ROM file size should always be a multiple of 16");
+                throw new Exception("ROM file size should always be a multiple of 16.");
 
             this.Buffer = new FMemBuffer((uint)FileData.Length);
             for (uint Index = 0; Index < FileData.Length; Index++)
@@ -45,7 +45,7 @@ namespace LemonLime.LLE.Device.Generic
         public void WriteShort(uint Offset, ushort Value) { }
         public void WriteByte (uint Offset, byte   Value) { }
 
-        public uint   Size() { return this.Buffer.ByteSize() - 1; }
-        public String Name() { return this.DevName;               }
+        public uint   Size() { return this.Buffer.GetSize() - 1; }
+        public string Name() { return this.DevName;              }
     }
 }

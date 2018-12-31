@@ -1,5 +1,3 @@
-using System;
-
 using LemonLime.Common;
 
 namespace LemonLime.LLE.Device.Generic
@@ -7,9 +5,9 @@ namespace LemonLime.LLE.Device.Generic
     class RAM : CPU.Device
     {
         private FMemBuffer Buffer;
-        private String     DevName;
+        private string     DevName;
 
-        public RAM(uint Size, String Name)
+        public RAM(uint Size, string Name)
         {
             this.Buffer  = new FMemBuffer(Size);
             this.DevName = Name;
@@ -45,7 +43,7 @@ namespace LemonLime.LLE.Device.Generic
             this.Buffer.WriteByte(Offset, Value);
         }
 
-        public uint   Size() { return this.Buffer.ByteSize(); }
-        public String Name() { return this.DevName;           }
+        public uint   Size() { return this.Buffer.GetSize(); }
+        public string Name() { return this.DevName;           }
     }
 }

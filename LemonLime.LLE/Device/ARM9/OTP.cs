@@ -23,13 +23,13 @@ namespace LemonLime.LLE.Device.ARM9
         public void SetOTP(byte[] OTP)
         {
             if (OTP.Length != 256)
-                throw new Exception($"OTP size is invalid (should be 256 bytes, not {OTP.Length})");
+                throw new Exception($"OTP size is invalid (should be 256 bytes, not {OTP.Length}).");
 
             for (uint Index = 0; Index < OTP.Length; Index++)
                 this.OTPRegisters.WriteByte(Index, OTP[Index]);
         }
 
-        public void SetOTP(String Path)
+        public void SetOTP(string Path)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace LemonLime.LLE.Device.ARM9
             }
             catch (Exception e)
             {
-                Logger.WriteError($"Failed to load data from {Path} to the OTP buffer");
+                Logger.WriteError($"Failed to load data from {Path} to the OTP buffer.");
                 Logger.WriteError(e.ToString());
             }
         }
@@ -62,6 +62,6 @@ namespace LemonLime.LLE.Device.ARM9
         public void WriteByte (uint Offset, byte   Value) { }
 
         public uint   Size() { return 264;   }
-        public String Name() { return "OTP"; }
+        public string Name() { return "OTP"; }
     }
 }

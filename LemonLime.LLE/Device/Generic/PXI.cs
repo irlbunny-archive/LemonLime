@@ -134,7 +134,7 @@ namespace LemonLime.LLE.Device.Generic
             if (this.SendFIFO.Count > 0)
                 return this.SendFIFO.Dequeue();
             else
-                throw new InvalidOperationException("Send FIFO is already empty");
+                throw new InvalidOperationException("Send FIFO is already empty.");
         }
 
         private void Config_UpdateRead()

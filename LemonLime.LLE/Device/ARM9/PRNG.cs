@@ -31,6 +31,6 @@ namespace LemonLime.LLE.Device.ARM9
         public void WriteByte (uint Offset, byte   Value) { }
 
         public uint   Size() { return 4096;   }
-        public String Name() { return "PRNG"; }
+        public string Name() { return "PRNG"; }
     }
 }

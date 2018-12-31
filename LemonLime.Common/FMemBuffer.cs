@@ -22,7 +22,7 @@ namespace LemonLime.Common
             Marshal.FreeHGlobal(this.Memory);
         }
 
-        public uint ByteSize()
+        public uint GetSize()
         {
             return this.Size;
         }

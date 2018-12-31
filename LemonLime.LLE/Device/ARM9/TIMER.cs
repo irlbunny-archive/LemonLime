@@ -1,4 +1,4 @@
-﻿using System;
+﻿using LemonLime.Common;
 
 namespace LemonLime.LLE.Device.ARM9
 {
@@ -11,29 +11,29 @@ namespace LemonLime.LLE.Device.ARM9
             switch (Offset)
             {
                 case (0 + (4 * 0)): // TIMER_VAL(1)
-                    Console.WriteLine("Read, TIMER_VAL(1)");
+                    Logger.WriteInfo("TIMER_VAL(1)");
                     break;
                 case (0 + (4 * 1)): // TIMER_VAL(2)
-                    Console.WriteLine("Read, TIMER_VAL(2)");
+                    Logger.WriteInfo("TIMER_VAL(2)");
                     break;
                 case (0 + (4 * 2)): // TIMER_VAL(3)
-                    Console.WriteLine("Read, TIMER_VAL(3)");
+                    Logger.WriteInfo("TIMER_VAL(3)");
                     break;
                 case (0 + (4 * 3)): // TIMER_VAL(4)
-                    Console.WriteLine("Read, TIMER_VAL(4)");
+                    Logger.WriteInfo("TIMER_VAL(4)");
                     break;
 
                 case (2 + (4 * 0)): // TIMER_CNT(1)
-                    Console.WriteLine("Read, TIMER_CNT(1)");
+                    Logger.WriteInfo("TIMER_CNT(1)");
                     break;
                 case (2 + (4 * 1)): // TIMER_CNT(2)
-                    Console.WriteLine("Read, TIMER_CNT(2)");
+                    Logger.WriteInfo("TIMER_CNT(2)");
                     break;
                 case (2 + (4 * 2)): // TIMER_CNT(3)
-                    Console.WriteLine("Read, TIMER_CNT(3)");
+                    Logger.WriteInfo("TIMER_CNT(3)");
                     break;
                 case (2 + (4 * 3)): // TIMER_CNT(4)
-                    Console.WriteLine("Read, TIMER_CNT(4)");
+                    Logger.WriteInfo("TIMER_CNT(4)");
                     break;
 
             }
@@ -50,29 +50,29 @@ namespace LemonLime.LLE.Device.ARM9
             switch (Offset)
             {
                 case (0 + (4 * 0)): // TIMER_VAL(1)
-                    Console.WriteLine("Write, TIMER_VAL(1)");
+                    Logger.WriteInfo("TIMER_VAL(1)");
                     break;
                 case (0 + (4 * 1)): // TIMER_VAL(2)
-                    Console.WriteLine("Write, TIMER_VAL(2)");
+                    Logger.WriteInfo("TIMER_VAL(2)");
                     break;
                 case (0 + (4 * 2)): // TIMER_VAL(3)
-                    Console.WriteLine("Write, TIMER_VAL(3)");
+                    Logger.WriteInfo("TIMER_VAL(3)");
                     break;
                 case (0 + (4 * 3)): // TIMER_VAL(4)
-                    Console.WriteLine("Write, TIMER_VAL(4)");
+                    Logger.WriteInfo("TIMER_VAL(4)");
                     break;
 
                 case (2 + (4 * 0)): // TIMER_CNT(1)
-                    Console.WriteLine("Write, TIMER_CNT(1)");
+                    Logger.WriteInfo("TIMER_CNT(1)");
                     break;
                 case (2 + (4 * 1)): // TIMER_CNT(2)
-                    Console.WriteLine("Write, TIMER_CNT(2)");
+                    Logger.WriteInfo("TIMER_CNT(2)");
                     break;
                 case (2 + (4 * 2)): // TIMER_CNT(3)
-                    Console.WriteLine("Write, TIMER_CNT(3)");
+                    Logger.WriteInfo("TIMER_CNT(3)");
                     break;
                 case (2 + (4 * 3)): // TIMER_CNT(4)
-                    Console.WriteLine("Write, TIMER_CNT(4)");
+                    Logger.WriteInfo("TIMER_CNT(4)");
                     break;
 
             }
@@ -81,6 +81,6 @@ namespace LemonLime.LLE.Device.ARM9
         public void WriteByte(uint Offset, byte Value) { }
 
         public uint   Size() { return 16;      } // Is this wrong?
-        public String Name() { return "TIMER"; }
+        public string Name() { return "TIMER"; }
     }
 }
