@@ -27,7 +27,8 @@ namespace LemonLime.LLE
             RAM DTCM9 = new RAM(0x4000,      "Data TCM");
             RAM WRAM9 = new RAM(0x100000,    "AHB Work RAM");
 
-            CFG9 ARM9CFG9 = new CFG9();
+            CFG9  ARM9CFG9  = new CFG9();
+            TIMER ARM9TIMER = new TIMER();
 
             PXI ARM9PXI  = new PXI(7);
             PXI ARM11PXI = new PXI(6);
@@ -66,6 +67,7 @@ namespace LemonLime.LLE
 
             // IO Devices
             ARM9Bus.Attach(ARM9CFG9,  0x10000000);
+            ARM9Bus.Attach(ARM9TIMER, 0x10003000);
             ARM9Bus.Attach(ARM9PXI,   0x10008000);
             ARM9Bus.Attach(ARM11PXI,  0x10163000);
             ARM11Bus.Attach(ARM11PXI, 0x10163000);

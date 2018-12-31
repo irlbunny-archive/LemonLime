@@ -1,38 +1,15 @@
 ﻿using System;
 
-using LemonLime.Common;
-
 namespace LemonLime.LLE.Device.ARM9
 {
     class CFG9 : CPU.Device
     {
-        public uint ReadWord(uint Offset)
-        {
-            // TODO
-            return 0;
-        }
+        public uint   ReadWord (uint Offset) { return 0; }
+        public ushort ReadShort(uint Offset) { return 0; }
+        public byte   ReadByte (uint Offset) { return 0; }
 
-        public ushort ReadShort(uint Offset)
-        {
-            // TODO
-            return 0;
-        }
-
-        public byte ReadByte(uint Offset)
-        {
-            // TODO
-            return 0;
-        }
-
-        public void WriteWord(uint Offset, uint Value)
-        {
-            // TODO
-        }
-
-        public void WriteShort(uint Offset, ushort Value)
-        {
-            // TODO
-        }
+        public void WriteWord (uint Offset, uint   Value) { }
+        public void WriteShort(uint Offset, ushort Value) { }
 
         public void WriteByte(uint Offset, byte Value)
         {
@@ -47,7 +24,7 @@ namespace LemonLime.LLE.Device.ARM9
             }
         }
 
-        public uint   Size() { return 30;    }
+        public uint   Size() { return 30;     }
         public String Name() { return "CFG9"; }
     }
 }

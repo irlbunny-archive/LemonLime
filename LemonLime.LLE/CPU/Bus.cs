@@ -88,7 +88,7 @@ namespace LemonLime.LLE.CPU
             DeviceDescriptor Map = BusMap.Where(_Map => Address >= _Map.Start && (Address + WordSize) <= _Map.End).SingleOrDefault();
             if (Map != null) return Map;
 
-            throw new Exception($"Unhandled read @ 0x{Address.ToString($"X8")}");
+            throw new Exception($"Unhandled address @ 0x{Address.ToString($"X8")}");
         }
     }
 }

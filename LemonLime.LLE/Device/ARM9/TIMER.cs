@@ -1,10 +1,86 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LemonLime.LLE.Device.ARM9
 {
-    class TIMER
+    class TIMER : CPU.Device
     {
+        public uint ReadWord(uint Offset) { return 0; }
+
+        public ushort ReadShort(uint Offset)
+        {
+            switch (Offset)
+            {
+                case (0 + (4 * 0)): // TIMER_VAL(1)
+                    Console.WriteLine("Read, TIMER_VAL(1)");
+                    break;
+                case (0 + (4 * 1)): // TIMER_VAL(2)
+                    Console.WriteLine("Read, TIMER_VAL(2)");
+                    break;
+                case (0 + (4 * 2)): // TIMER_VAL(3)
+                    Console.WriteLine("Read, TIMER_VAL(3)");
+                    break;
+                case (0 + (4 * 3)): // TIMER_VAL(4)
+                    Console.WriteLine("Read, TIMER_VAL(4)");
+                    break;
+
+                case (2 + (4 * 0)): // TIMER_CNT(1)
+                    Console.WriteLine("Read, TIMER_CNT(1)");
+                    break;
+                case (2 + (4 * 1)): // TIMER_CNT(2)
+                    Console.WriteLine("Read, TIMER_CNT(2)");
+                    break;
+                case (2 + (4 * 2)): // TIMER_CNT(3)
+                    Console.WriteLine("Read, TIMER_CNT(3)");
+                    break;
+                case (2 + (4 * 3)): // TIMER_CNT(4)
+                    Console.WriteLine("Read, TIMER_CNT(4)");
+                    break;
+
+            }
+
+            return 0;
+        }
+
+        public byte ReadByte(uint Offset) { return 0; }
+
+        public void WriteWord(uint Offset, uint Value) { }
+
+        public void WriteShort(uint Offset, ushort Value)
+        {
+            switch (Offset)
+            {
+                case (0 + (4 * 0)): // TIMER_VAL(1)
+                    Console.WriteLine("Write, TIMER_VAL(1)");
+                    break;
+                case (0 + (4 * 1)): // TIMER_VAL(2)
+                    Console.WriteLine("Write, TIMER_VAL(2)");
+                    break;
+                case (0 + (4 * 2)): // TIMER_VAL(3)
+                    Console.WriteLine("Write, TIMER_VAL(3)");
+                    break;
+                case (0 + (4 * 3)): // TIMER_VAL(4)
+                    Console.WriteLine("Write, TIMER_VAL(4)");
+                    break;
+
+                case (2 + (4 * 0)): // TIMER_CNT(1)
+                    Console.WriteLine("Write, TIMER_CNT(1)");
+                    break;
+                case (2 + (4 * 1)): // TIMER_CNT(2)
+                    Console.WriteLine("Write, TIMER_CNT(2)");
+                    break;
+                case (2 + (4 * 2)): // TIMER_CNT(3)
+                    Console.WriteLine("Write, TIMER_CNT(3)");
+                    break;
+                case (2 + (4 * 3)): // TIMER_CNT(4)
+                    Console.WriteLine("Write, TIMER_CNT(4)");
+                    break;
+
+            }
+        }
+
+        public void WriteByte(uint Offset, byte Value) { }
+
+        public uint   Size() { return 16;      } // Is this wrong?
+        public String Name() { return "TIMER"; }
     }
 }
