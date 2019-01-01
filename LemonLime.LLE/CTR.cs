@@ -41,8 +41,8 @@ namespace LemonLime.LLE
             ARM11PXI.AttachEndpoint(ARM9PXI);
 
             // Quick hack: set up the ARM9 to infinitely spin in place
-            for (uint i = 0; i < ITCM9.Size(); i += 4)
-                ITCM9.WriteWord(i, 0xEAFFFFFE); // b .
+            for (uint Index = 0; Index < ITCM9.Size(); Index += 4)
+                ITCM9.WriteWord(Index, 0xEAFFFFFE); // b .
 
             ARM9Bus.Attach(Boot9, 0xFFFF0000);
             ARM9Bus.Attach(ITCM9, 0x00000000); // ITCM mirrors, these are a hack
