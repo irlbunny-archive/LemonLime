@@ -127,7 +127,7 @@ namespace LemonLime.LLE.Device.Generic
         }
 
         public uint   Size() { return 16;    }
-        public String Name() { return "PXI"; }
+        public string Name() { return "PXI"; }
 
         public uint SendWord()
         {

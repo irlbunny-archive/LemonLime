@@ -53,7 +53,10 @@ namespace LemonLime.LLE
 
             // ARM11 exclusive memory
             ROM Boot11 = new ROM("boot11.bin", "ARM11 BootROM");
+            RAM PMR11  = new RAM(0x00002000,   "MPCore PMR");
             ARM11Bus.Attach(Boot11, 0x00000000);
+            ARM11Bus.Attach(Boot11, 0x00010000);
+            ARM11Bus.Attach(PMR11,  0x17E00000);
             ARM11Bus.Attach(Boot11, 0xFFFF0000);
 
             // Shared memory
