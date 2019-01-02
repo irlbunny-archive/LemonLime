@@ -60,7 +60,7 @@ namespace LemonLime.LLE.Device.Generic
 
         public void Sync()
         {
-            // TODO?
+            Logger.WriteWarning("Core syncing not implemented.");
             return;
         }
 

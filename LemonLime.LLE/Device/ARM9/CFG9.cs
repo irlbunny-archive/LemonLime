@@ -1,7 +1,6 @@
-﻿using LemonLime.Common;
-
-namespace LemonLime.LLE.Device.ARM9
+﻿namespace LemonLime.LLE.Device.ARM9
 {
+    // TODO
     class CFG9 : CPU.Device
     {
         public uint   ReadWord (uint Offset) { return 0; }
@@ -22,7 +21,7 @@ namespace LemonLime.LLE.Device.ARM9
             }
         }
 
-        public uint   Size() { return 30;     }
+        public uint   Size() { return 30;     } // TODO: Possibly wrong?
         public string Name() { return "CFG9"; }
     }
 }

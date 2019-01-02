@@ -16,10 +16,14 @@ namespace LemonLime.LLE
         private static bool        ARM9Enabled, ARM11Enabled;
         private static Interpreter ARM9Core,    ARM11Core;
 
+        private HID HID; // TODO: HID is the same across both cores?
+
         public CTR()
         {
             ARM9Bus  = new Bus();
             ARM11Bus = new Bus();
+
+            HID = new HID();
 
             // ARM9 exclusive memory
             ROM Boot9 = new ROM("boot9.bin", "ARM9 BootROM");
@@ -28,7 +32,10 @@ namespace LemonLime.LLE
             RAM WRAM9 = new RAM(0x100000,    "AHB Work RAM");
 
             CFG9  ARM9CFG9  = new CFG9();
+            IRQ   ARM9IRQ   = new IRQ();
+            NDMA  ARM9NDMA  = new NDMA();
             TIMER ARM9TIMER = new TIMER();
+            XDMA  ARM9CDMA  = new XDMA();
             PRNG  ARM9PRNG  = new PRNG();
             OTP   ARM9OTP   = new OTP();
 
@@ -75,10 +82,16 @@ namespace LemonLime.LLE
 
             // IO Devices
             ARM9Bus.Attach(ARM9CFG9,  0x10000000);
+            ARM9Bus.Attach(ARM9IRQ,   0x10001000);
+            ARM9Bus.Attach(ARM9NDMA,  0x10002000);
             ARM9Bus.Attach(ARM9TIMER, 0x10003000);
             ARM9Bus.Attach(ARM9PXI,   0x10008000);
+            ARM9Bus.Attach(ARM9CDMA,  0x1000C000);
+            ARM9Bus.Attach(ARM9CDMA,  0x1000CD00); // Mirror?
             ARM9Bus.Attach(ARM9PRNG,  0x10011000);
             ARM9Bus.Attach(ARM9OTP,   0x10012000);
+            ARM9Bus.Attach(HID,       0x10146000);
+            ARM11Bus.Attach(HID,      0x10146000);
             ARM9Bus.Attach(ARM11PXI,  0x10163000);
             ARM11Bus.Attach(ARM11PXI, 0x10163000);
 
