@@ -58,8 +58,9 @@ namespace LemonLime.LLE.Device.Generic
             return this.RemoteByte;
         }
 
-        public void TriggerSync()
+        public void Sync()
         {
+            // TODO?
             return;
         }
 
@@ -179,7 +180,7 @@ namespace LemonLime.LLE.Device.Generic
 
                     case 3: // Sync configuration
                         this.SyncIRQEnable = ((Data & (uint)0x80) != 0) ? true : false;
-                        if ((Data & this.InterruptBitMask) != 0) this.Endpoint.TriggerSync();
+                        if ((Data & this.InterruptBitMask) != 0) this.Endpoint.Sync();
                         break;
 
                     case 4: // Lower half Control Register

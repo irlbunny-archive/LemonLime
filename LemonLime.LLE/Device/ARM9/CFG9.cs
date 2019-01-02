@@ -1,4 +1,6 @@
-﻿namespace LemonLime.LLE.Device.ARM9
+﻿using LemonLime.Common;
+
+namespace LemonLime.LLE.Device.ARM9
 {
     class CFG9 : CPU.Device
     {
