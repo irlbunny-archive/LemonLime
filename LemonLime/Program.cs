@@ -1,4 +1,5 @@
 ﻿using LemonLime.Common;
+using LemonLime.LLE.CPU;
 
 namespace LemonLime
 {
@@ -6,12 +7,13 @@ namespace LemonLime
     {
         static void Main(string[] args)
         {
-            // Logger.LogFile = "lemonlime_log-" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
             Logger.WriteInfo("Starting...");
 
-            Settings.SettingsFile = "settings.txt";
+            Settings.SettingsFile = "config.ini";
             Settings.Load();
+
             LLE.CTR CTR = new LLE.CTR();
+            LLE.CTR.SetCPU(Type.ARM9, true);
             CTR.Start();
         }
     }

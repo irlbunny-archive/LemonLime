@@ -9,8 +9,6 @@ namespace LemonLime.Common
     {
         public static string LogFile = string.Empty;
 
-        private static StreamWriter TextWriter;
-
         public static void WriteInfo(string Input, [CallerMemberName] string CallerName = "")
         {
             Console.ForegroundColor = ConsoleColor.White;
