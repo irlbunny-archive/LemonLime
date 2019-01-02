@@ -2,12 +2,54 @@
 
 namespace LemonLime.LLE.Device.ARM9
 {
-    // TODO
     class IRQ : CPU.Device
     {
+        private enum IRQ_INT
+        {
+            // DMAC
+            DMAC_1_0 = 0,
+            DMAC_1_1 = 1,
+            DMAC_1_2 = 2,
+            DMAC_1_3 = 3,
+            DMAC_1_4 = 4,
+            DMAC_1_5 = 5,
+            DMAC_1_6 = 6,
+            DMAC_1_7 = 7,
+
+            // TIMER
+            TIMER_0 = 8,
+            TIMER_1 = 9,
+            TIMER_2 = 10,
+            TIMER_3 = 11,
+
+            // PXI
+            PXI_SYNC      = 12,
+            PXI_NOT_FULL  = 13,
+            PXI_NOT_EMPTY = 14,
+
+            // AES
+        }
+
+        private uint IRQ_IE;
+        private uint IRQ_IF;
+
+        public IRQ()
+        {
+            this.IRQ_IE = 0;
+            this.IRQ_IF = 0;
+        }
+
         public uint ReadWord(uint Offset)
         {
-            Logger.WriteInfo($"Offset = {Offset}");
+            switch (Offset)
+            {
+                case 0:
+                    break;
+
+                case 4:
+                    break;
+            }
+
             return 0;
         }
 

@@ -5,23 +5,26 @@ using LemonLime.Common;
 
 namespace LemonLime.LLE.Device.Generic
 {
-    enum PXI_CNT_Masks
-    {
-        SEND_FIFO_EMPTY     = 0x01,
-        SEND_FIFO_FULL      = 0x02,
-        SEND_FIFO_EMPTY_IRQ = 0x04,
-        SEND_FIFO_CLEAR     = 0x08,
-
-        RECV_FIFO_EMPTY         = 0x100,
-        RECV_FIFO_FULL          = 0x200,
-        RECV_FIFO_NOT_EMPTY_IRQ = 0x400,
-
-        FIFO_ERROR  = 0x4000,
-        FIFO_ENABLE = 0x8000
-    }
-
     class PXI : CPU.Device
     {
+        private enum PXI_CNT
+        {
+            // SEND
+            SEND_FIFO_EMPTY     = 0x01,
+            SEND_FIFO_FULL      = 0x02,
+            SEND_FIFO_EMPTY_IRQ = 0x04,
+            SEND_FIFO_CLEAR     = 0x08,
+
+            // RECV
+            RECV_FIFO_EMPTY         = 0x100,
+            RECV_FIFO_FULL          = 0x200,
+            RECV_FIFO_NOT_EMPTY_IRQ = 0x400,
+
+            // FIFO
+            FIFO_ERROR  = 0x4000,
+            FIFO_ENABLE = 0x8000,
+        }
+
         private Queue<uint> SendFIFO, RecvFIFO;
         private FMemBuffer  ConfigBuffer;
         private uint        InterruptBitMask;
@@ -148,16 +151,16 @@ namespace LemonLime.LLE.Device.Generic
             this.ConfigBuffer.WriteWord(0, SyncReg);
 
             ushort NewControlReg = 0;
-            NewControlReg |= (ushort)((this.SendFIFO.Count == 0)  ? PXI_CNT_Masks.SEND_FIFO_EMPTY     : 0);
-            NewControlReg |= (ushort)((this.SendFIFO.Count == 16) ? PXI_CNT_Masks.SEND_FIFO_FULL      : 0);
-            NewControlReg |= (ushort)(this.SendEmptyIRQ           ? PXI_CNT_Masks.SEND_FIFO_EMPTY_IRQ : 0);
+            NewControlReg |= (ushort)((this.SendFIFO.Count == 0)  ? PXI_CNT.SEND_FIFO_EMPTY     : 0);
+            NewControlReg |= (ushort)((this.SendFIFO.Count == 16) ? PXI_CNT.SEND_FIFO_FULL      : 0);
+            NewControlReg |= (ushort)(this.SendEmptyIRQ           ? PXI_CNT.SEND_FIFO_EMPTY_IRQ : 0);
 
-            NewControlReg |= (ushort)((this.RecvFIFO.Count == 0)  ? PXI_CNT_Masks.RECV_FIFO_EMPTY         : 0);
-            NewControlReg |= (ushort)((this.RecvFIFO.Count == 16) ? PXI_CNT_Masks.RECV_FIFO_FULL          : 0);
-            NewControlReg |= (ushort)(this.RecvNotEmptyIRQ        ? PXI_CNT_Masks.RECV_FIFO_NOT_EMPTY_IRQ : 0);
+            NewControlReg |= (ushort)((this.RecvFIFO.Count == 0)  ? PXI_CNT.RECV_FIFO_EMPTY         : 0);
+            NewControlReg |= (ushort)((this.RecvFIFO.Count == 16) ? PXI_CNT.RECV_FIFO_FULL          : 0);
+            NewControlReg |= (ushort)(this.RecvNotEmptyIRQ        ? PXI_CNT.RECV_FIFO_NOT_EMPTY_IRQ : 0);
 
-            NewControlReg |= (ushort)(this.FIFOError  ? PXI_CNT_Masks.FIFO_ERROR  : 0);
-            NewControlReg |= (ushort)(this.FIFOEnable ? PXI_CNT_Masks.FIFO_ENABLE : 0);
+            NewControlReg |= (ushort)(this.FIFOError  ? PXI_CNT.FIFO_ERROR  : 0);
+            NewControlReg |= (ushort)(this.FIFOEnable ? PXI_CNT.FIFO_ENABLE : 0);
 
             this.ConfigBuffer.WriteShort(4, NewControlReg);
         }
@@ -184,16 +187,16 @@ namespace LemonLime.LLE.Device.Generic
                         break;
 
                     case 4: // Lower half Control Register
-                        this.SendEmptyIRQ = ((Data & (uint)PXI_CNT_Masks.SEND_FIFO_EMPTY_IRQ) != 0) ? true : false;
+                        this.SendEmptyIRQ = ((Data & (uint)PXI_CNT.SEND_FIFO_EMPTY_IRQ) != 0) ? true : false;
                         if ((Data & 0x08) != 0)
                             this.SendFIFO.Clear();
                         break;
 
                     case 5: // Upper half Control Register
                         Data <<= 8;
-                        this.RecvNotEmptyIRQ = ((Data & (uint)PXI_CNT_Masks.RECV_FIFO_NOT_EMPTY_IRQ) != 0) ? true  : false;
-                        this.FIFOEnable      = ((Data & (uint)PXI_CNT_Masks.FIFO_ENABLE)             != 0) ? true  : false;
-                        this.FIFOError      &= ((Data & (uint)PXI_CNT_Masks.FIFO_ERROR)              != 0) ? false : true;
+                        this.RecvNotEmptyIRQ = ((Data & (uint)PXI_CNT.RECV_FIFO_NOT_EMPTY_IRQ) != 0) ? true  : false;
+                        this.FIFOEnable      = ((Data & (uint)PXI_CNT.FIFO_ENABLE)             != 0) ? true  : false;
+                        this.FIFOError      &= ((Data & (uint)PXI_CNT.FIFO_ERROR)              != 0) ? false : true;
                         break;
                 }
             }
